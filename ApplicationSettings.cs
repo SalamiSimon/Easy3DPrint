@@ -6,22 +6,99 @@ using System.Threading.Tasks;
 
 namespace _3DPrint_SW
 {
-    internal class ApplicationSettings
+    public class ApplicationSettings
     {
-        public class CuraSettings
+        public enum FileType
         {
-            //private CuraSettings curaSettings = new CuraSettings();
+            _NONE,
+            _STL,
+            _OBJ,
+            _STEP,
+            _3MF
+        }
+        
+        public class ExportSettings
+        {
 
             public string Path { get; set; } = "";
-            public string FileType { get; set; } = "";
+
+            public ExportSettings() { }
+
+            public ExportSettings(string path)
+            {
+                Path = path;
+            }
+        }
+
+        public class CuraSettings
+        {
+            public string Path { get; set; } = "";
+            public FileType FileType { get; set; } = FileType._NONE;
 
             public CuraSettings() { }
 
-            public CuraSettings(string path, string fileType)
+            public CuraSettings(string path, FileType fileType)
             {
                 Path = path;
                 FileType = fileType;
             }
         }
+
+        public class BambuSettings
+        {
+            public string Path { get; set; } = "";
+            public FileType FileType { get; set; } = FileType._NONE;
+
+            public BambuSettings() { }
+
+            public BambuSettings(string path, FileType fileType)
+            {
+                Path = path;
+                FileType = fileType;
+            }
+        }
+
+        public class AnkerMakeSettings
+        {
+            public string Path { get; set; } = "";
+            public FileType FileType { get; set; } = FileType._NONE;
+
+            public AnkerMakeSettings() { }
+
+            public AnkerMakeSettings(string path, FileType fileType)
+            {
+                Path = path;
+                FileType = fileType;
+            }
+        }
+
+        public class PrusaSettings
+        {
+            public string Path { get; set; } = "";
+            public FileType FileType { get; set; } = FileType._NONE;
+
+            public PrusaSettings() { }
+
+            public PrusaSettings(string path, FileType fileType)
+            {
+                Path = path;
+                FileType = fileType;
+            }
+        }
+
+        public class Slic3rSettings
+        {
+            public string Path { get; set; } = "";
+            public FileType FileType { get; set; } = FileType._NONE;
+
+            public Slic3rSettings() { }
+
+            public Slic3rSettings(string path, FileType fileType)
+            {
+                Path = path;
+                FileType = fileType;
+            }
+        }
+
     }
 }

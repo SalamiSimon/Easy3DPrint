@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\3DPrint_SW.csproj": {}
+    "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\3DPrint_SW.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\3DPrint_SW.csproj": {
+    "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\3DPrint_SW.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\3DPrint_SW.csproj",
+        "projectUniqueName": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\3DPrint_SW.csproj",
         "projectName": "3DPrint_SW",
-        "projectPath": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\3DPrint_SW.csproj",
+        "projectPath": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\3DPrint_SW.csproj",
         "packagesPath": "C:\\Users\\Simon\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\obj\\",
+        "outputPath": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
