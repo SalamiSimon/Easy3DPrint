@@ -5,7 +5,7 @@ Easy3DPrint is a SolidWorks add-in designed to streamline the process of prepari
 ## Supported File Formats
 
 - STL (.stl)
-- OBJ (.obj)
+- OBJ (.obj) (soon)
 - STEP (.step)
 - 3MF (.3mf)
 
