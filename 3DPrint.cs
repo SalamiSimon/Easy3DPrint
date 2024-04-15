@@ -10,6 +10,7 @@ using System.Drawing;
 using Newtonsoft.Json;
 using System.IO;
 using static _3DPrint_SW.ApplicationSettings;
+using _3DPrint_SW.Properties;
 
 namespace _3DPrint_SW
 {
@@ -32,12 +33,15 @@ namespace _3DPrint_SW
         {
             [Title("Open in Ultimaker Cura")]
             [Description("Opens the model in Ultimaker Cura")]
+            [Icon(typeof(Resources), nameof(Resources.cura))]
             OpenInUltimakerCura,
             [Title("Open in Bambu Studio")]
             [Description("Opens the model in Bambu Lab")]
+            [Icon(typeof(Resources), nameof(Resources.bambu))]
             OpenInBambuLab,
             [Title("Settings")]
             [Description("Easy3DPrint Settings")]
+            [Icon(typeof(Resources), nameof(Resources.settings))]
             Settings
         }
         public override void OnConnect()
@@ -65,13 +69,13 @@ namespace _3DPrint_SW
                     curaSettings.Path = settings.CuraPath;
 
                 if (settings.ExportFormatCura != null)
-                    curaSettings.FileType = settings.ExportFormatCura.TrimStart('_');
+                    curaSettings.FileType = settings.ExportFormatCura;
 
                 if (settings.BambuPath != null)
                     bambuSettings.Path = settings.BambuPath;
 
                 if (settings.ExportFormatBambu != null)
-                    bambuSettings.FileType = settings.ExportFormatBambu.TrimStart('_');
+                    bambuSettings.FileType = settings.ExportFormatBambu;
 
                 return true; // Settings loaded successfully
             }
