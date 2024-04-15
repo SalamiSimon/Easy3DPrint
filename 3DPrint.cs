@@ -23,32 +23,67 @@ namespace _3DPrint_SW
         private ExportSettings exportSettings = new ExportSettings();
         private CuraSettings curaSettings = new CuraSettings();
         private BambuSettings bambuSettings = new BambuSettings();
+        private AnkerMakeSettings ankerMakeSettings = new AnkerMakeSettings();
+        private PrusaSettings prusaSettings = new PrusaSettings();
+        private Slic3rSettings slic3rSettings = new Slic3rSettings();
 
+        private readonly string? settingsDirectoryPath;
 
         private readonly string settingsFilePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Easy3DPrintSettings.json");
 
         [Title("Easy3DPrint")]
+        [Description("Open parts directly in slicing apps")]
 
         public enum Commands_e 
         {
             [Title("Open in Ultimaker Cura")]
             [Description("Opens the model in Ultimaker Cura")]
+            /* Menu won't load with custom icons enabled ? */
             //[Icon(typeof(Resources), nameof(Resources.cura))]
             OpenInUltimakerCura,
+
             [Title("Open in Bambu Studio")]
             [Description("Opens the model in Bambu Lab")]
             //[Icon(typeof(Resources), nameof(Resources.bambu))]
             OpenInBambuLab,
+
+            [Title("Open in AnkerMake Studio")]
+            [Description("Opens the model in AnkerMake Studio")]
+            OpenInAnkerMake,
+
+            [Title("Open in Prusa")]
+            [Description("Opens the model in Prusa")]
+            OpenInPrusa,
+
+            [Title("Open in Slic3r")]
+            [Description("Opens the model in Slic3r")]
+            OpenInSlic3r,
+
             [Title("Settings")]
             [Description("Easy3DPrint Settings")]
             //[Icon(typeof(Resources), nameof(Resources.settings))]
             Settings
         }
+
+        public Easy3DPrint()
+        {
+            settingsDirectoryPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "AutoExportSW");
+        }
+
         public override void OnConnect()
         {
             if (!LoadSettings())
             {
                 Application.ShowMessageBox("Before use, enter executable paths and filetype in Easy3DPrint settings.");
+
+                if (!Directory.Exists(settingsDirectoryPath))
+                {
+                    Directory.CreateDirectory(settingsDirectoryPath);
+                    exportSettings.ExportPath = settingsDirectoryPath;
+                    ShowSettingsDialog();
+                    LoadSettings();
+                }
+
             }
             var cmdGrp = this.CommandManager.AddCommandGroup<Commands_e>();
             cmdGrp.CommandClick += OnCommandClick;
@@ -62,30 +97,33 @@ namespace _3DPrint_SW
                 var settings = JsonConvert.DeserializeObject<dynamic>(json);
 
                 // Load settings
-                //if (settings.ExportPath != null)
-                exportSettings.Path = settings.ExportPath;
+                exportSettings.ExportPath = settings.ExportPath;
 
-                // if (settings.CuraPath != null)
                 curaSettings.Path = settings.CuraPath;
-
-                //if (settings.ExportFormatCura != null)
                 curaSettings.FileType = settings.ExportFormatCura;
 
-                //if (settings.BambuPath != null)
                 bambuSettings.Path = settings.BambuPath;
-
-                //if (settings.ExportFormatBambu != null)
                 bambuSettings.FileType = settings.ExportFormatBambu;
+
+                ankerMakeSettings.Path = settings.AnkerMakePath;
+                ankerMakeSettings.FileType = settings.ExportFormatAnkerMake;
+
+                slic3rSettings.Path = settings.Slic3rPath;
+                slic3rSettings.FileType = settings.ExportFormatSlic3r;
+
+                prusaSettings.Path = settings.PrusaPath;
+                prusaSettings.FileType = settings.ExportFormatPrusa;
 
                 return true; // Settings loaded successfully
             }
             // Settings not loaded
+
             return false;
         }
 
-        private void ShowSettingsDialog()
+        public void ShowSettingsDialog()
         {
-            SettingsDialog settingsDialog = new SettingsDialog(exportSettings, curaSettings, bambuSettings);
+            SettingsDialog settingsDialog = new SettingsDialog(exportSettings, curaSettings, bambuSettings, ankerMakeSettings, prusaSettings, slic3rSettings);
             if (settingsDialog.ShowDialog() == DialogResult.OK)
             {
                 LoadSettings();
@@ -101,7 +139,7 @@ namespace _3DPrint_SW
 
                     if (curaSettings.FileType != FileType._NONE)
                     {
-                        FilePathCura = SaveCurrentPart(exportSettings.Path, curaSettings.FileType);
+                        FilePathCura = SaveCurrentPart(exportSettings.ExportPath, curaSettings.FileType);
                     }
                     else
                     {
@@ -122,7 +160,7 @@ namespace _3DPrint_SW
 
                     if (bambuSettings.FileType != FileType._NONE)
                     {
-                        FilePathBambu = SaveCurrentPart(exportSettings.Path, bambuSettings.FileType);
+                        FilePathBambu = SaveCurrentPart(exportSettings.ExportPath, bambuSettings.FileType);
                     }
                     else
                     {
@@ -136,6 +174,72 @@ namespace _3DPrint_SW
                     else
                     {
                         Application.ShowMessageBox("No BambuLab executable path entered in settings or file not saved sucessfully.");
+                    }
+                    break;
+
+                case Commands_e.OpenInAnkerMake:
+                    string? FilePathAnker = null;
+
+                    if (ankerMakeSettings.FileType != FileType._NONE)
+                    {
+                        FilePathAnker = SaveCurrentPart(exportSettings.ExportPath, ankerMakeSettings.FileType);
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("Select file format in settings.");
+                    }
+
+                    if (!string.IsNullOrEmpty(FilePathAnker) && !string.IsNullOrEmpty(ankerMakeSettings.Path))
+                    {
+                        System.Diagnostics.Process.Start(ankerMakeSettings.Path, $"\"{FilePathAnker}\"");
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("No AnkerMake executable path entered in settings or file not saved sucessfully.");
+                    }
+                    break;
+
+                case Commands_e.OpenInPrusa:
+                    string? FilePathPrusa = null;
+
+                    if (prusaSettings.FileType != FileType._NONE)
+                    {
+                        FilePathPrusa = SaveCurrentPart(exportSettings.ExportPath, prusaSettings.FileType);
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("Select file format in settings.");
+                    }
+
+                    if (!string.IsNullOrEmpty(FilePathPrusa) && !string.IsNullOrEmpty(prusaSettings.Path))
+                    {
+                        System.Diagnostics.Process.Start(prusaSettings.Path, $"\"{FilePathPrusa}\"");
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("No Prusa executable path entered in settings or file not saved sucessfully.");
+                    }
+                    break;
+
+                case Commands_e.OpenInSlic3r:
+                    string? FilePathSlic3r = null;
+
+                    if (slic3rSettings.FileType != FileType._NONE)
+                    {
+                        FilePathSlic3r = SaveCurrentPart(exportSettings.ExportPath, slic3rSettings.FileType);
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("Select file format in settings.");
+                    }
+
+                    if (!string.IsNullOrEmpty(FilePathSlic3r) && !string.IsNullOrEmpty(slic3rSettings.Path))
+                    {
+                        System.Diagnostics.Process.Start(slic3rSettings.Path, $"\"{FilePathSlic3r}\"");
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("No Slic3r executable path entered in settings or file not saved sucessfully.");
                     }
                     break;
 

@@ -16,24 +16,23 @@ namespace _3DPrint_SW
             _STEP,
             _3MF
         }
-        
+
         public class ExportSettings
         {
-
-            public string Path { get; set; } = "";
+            public string ExportPath { get; set; } = "";
 
             public ExportSettings() { }
 
             public ExportSettings(string path)
             {
-                Path = path;
+                ExportPath = path;
             }
         }
 
         public class CuraSettings
         {
             public string Path { get; set; } = "";
-            public FileType FileType { get; set; } = FileType._NONE;
+            public FileType FileType { get; set; } = FileType._STL;
 
             public CuraSettings() { }
 
@@ -47,7 +46,7 @@ namespace _3DPrint_SW
         public class BambuSettings
         {
             public string Path { get; set; } = "";
-            public FileType FileType { get; set; } = FileType._NONE;
+            public FileType FileType { get; set; } = FileType._STL;
 
             public BambuSettings() { }
 
@@ -61,7 +60,7 @@ namespace _3DPrint_SW
         public class AnkerMakeSettings
         {
             public string Path { get; set; } = "";
-            public FileType FileType { get; set; } = FileType._NONE;
+            public FileType FileType { get; set; } = FileType._STL;
 
             public AnkerMakeSettings() { }
 
@@ -75,7 +74,7 @@ namespace _3DPrint_SW
         public class PrusaSettings
         {
             public string Path { get; set; } = "";
-            public FileType FileType { get; set; } = FileType._NONE;
+            public FileType FileType { get; set; } = FileType._STL;
 
             public PrusaSettings() { }
 
@@ -89,7 +88,7 @@ namespace _3DPrint_SW
         public class Slic3rSettings
         {
             public string Path { get; set; } = "";
-            public FileType FileType { get; set; } = FileType._NONE;
+            public FileType FileType { get; set; } = FileType._STL;
 
             public Slic3rSettings() { }
 
