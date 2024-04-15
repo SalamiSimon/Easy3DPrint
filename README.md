@@ -19,16 +19,7 @@ Easy3DPrint is a SolidWorks add-in designed to streamline the process of prepari
 
 ## Installation
 
-To install the Easy3DPrint add-in for SolidWorks, follow these steps:
-
-1. **Download the Add-in**: Download the latest version of Easy3DPrint from the Releases section of this GitHub repository.
-2. **Install the Add-in**: Copy the downloaded `.dll` file to your SolidWorks add-ins directory. This location can vary depending on your SolidWorks installation, but it is typically found under `C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\`.
-3. **Enable the Add-in in SolidWorks**:
-    - Open SolidWorks.
-    - Go to `Tools` > `Add-Ins`.
-    - In the Add-Ins window, find Easy3DPrint in the list of available add-ins.
-    - Check the boxes under "Active Add-Ins" and "Start Up" to enable Easy3DPrint.
-    - Click `OK` to apply the changes.
+Run installer or build from source
 
 ## Usage
 
@@ -49,8 +40,4 @@ To configure or change settings for Easy3DPrint:
 
 ## Contributing
 
-We welcome contributions to Easy3DPrint! If you have suggestions for new features, improvements, or want to add support for additional slicing software, please feel free to open an issue or submit a pull request.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+We welcome contributions to Easy3DPrint! If you have suggestions for new features, improvements, or want to add support for additional slicing software, please feel free to open an issue or submit a pull request. I'm still learning to code, so all feedback, positive or negative, is appreciated!
