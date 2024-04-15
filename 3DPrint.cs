@@ -33,15 +33,15 @@ namespace _3DPrint_SW
         {
             [Title("Open in Ultimaker Cura")]
             [Description("Opens the model in Ultimaker Cura")]
-            [Icon(typeof(Resources), nameof(Resources.cura))]
+            //[Icon(typeof(Resources), nameof(Resources.cura))]
             OpenInUltimakerCura,
             [Title("Open in Bambu Studio")]
             [Description("Opens the model in Bambu Lab")]
-            [Icon(typeof(Resources), nameof(Resources.bambu))]
+            //[Icon(typeof(Resources), nameof(Resources.bambu))]
             OpenInBambuLab,
             [Title("Settings")]
             [Description("Easy3DPrint Settings")]
-            [Icon(typeof(Resources), nameof(Resources.settings))]
+            //[Icon(typeof(Resources), nameof(Resources.settings))]
             Settings
         }
         public override void OnConnect()
@@ -62,20 +62,20 @@ namespace _3DPrint_SW
                 var settings = JsonConvert.DeserializeObject<dynamic>(json);
 
                 // Load settings
-                if (settings.ExportPath != null)
-                    exportSettings.Path = settings.ExportPath;
+                //if (settings.ExportPath != null)
+                exportSettings.Path = settings.ExportPath;
 
-                if (settings.CuraPath != null)
-                    curaSettings.Path = settings.CuraPath;
+                // if (settings.CuraPath != null)
+                curaSettings.Path = settings.CuraPath;
 
-                if (settings.ExportFormatCura != null)
-                    curaSettings.FileType = settings.ExportFormatCura;
+                //if (settings.ExportFormatCura != null)
+                curaSettings.FileType = settings.ExportFormatCura;
 
-                if (settings.BambuPath != null)
-                    bambuSettings.Path = settings.BambuPath;
+                //if (settings.BambuPath != null)
+                bambuSettings.Path = settings.BambuPath;
 
-                if (settings.ExportFormatBambu != null)
-                    bambuSettings.FileType = settings.ExportFormatBambu;
+                //if (settings.ExportFormatBambu != null)
+                bambuSettings.FileType = settings.ExportFormatBambu;
 
                 return true; // Settings loaded successfully
             }
@@ -164,7 +164,7 @@ namespace _3DPrint_SW
                     bool status = extension.SaveAs(fullPath, (int)swSaveAsVersion_e.swSaveAsCurrentVersion, (int)swSaveAsOptions_e.swSaveAsOptions_Silent, null, ref errors, ref warnings);
                     if (status)
                     {
-                        this.Application.ShowMessageBox($"Part saved as {format} at: {fullPath}");
+                        this.Application.ShowMessageBox($"Part saved as {format.ToString().TrimStart('_')} at: {fullPath}");
                         return fullPath; // Return the path of the saved file
                     }
                     else

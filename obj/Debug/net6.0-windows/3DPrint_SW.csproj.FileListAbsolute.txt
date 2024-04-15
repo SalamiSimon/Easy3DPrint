@@ -25,11 +25,6 @@ C:\Users\Simon\source\repos\3DPrint_SW\obj\Debug\net6.0-windows\refint\3DPrint_S
 C:\Users\Simon\source\repos\3DPrint_SW\obj\Debug\net6.0-windows\3DPrint_SW.pdb
 C:\Users\Simon\source\repos\3DPrint_SW\obj\Debug\net6.0-windows\3DPrint_SW.genruntimeconfig.cache
 C:\Users\Simon\source\repos\3DPrint_SW\obj\Debug\net6.0-windows\ref\3DPrint_SW.dll
-C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.csproj.AssemblyReference.cache
-C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.AssemblyInfoInputs.cache
-C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.AssemblyInfo.cs
-C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.csproj.CoreCompileInputs.cache
 C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\bin\Debug\net6.0-windows\3DPrint_SW.comhost.dll
 C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\bin\Debug\net6.0-windows\3DPrint_SW.deps.json
 C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\bin\Debug\net6.0-windows\3DPrint_SW.runtimeconfig.json
@@ -46,6 +41,13 @@ C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\bin\Debug\net6.0-windows\Xari
 C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\bin\Debug\net6.0-windows\Xarial.XCad.Toolkit.dll
 C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\bin\Debug\net6.0-windows\runtimes\win\lib\net6.0\System.Drawing.Common.dll
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.csproj.AssemblyReference.cache
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\_3DPrint_SW.Properties.Resources.resources
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.csproj.GenerateResource.cache
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.AssemblyInfoInputs.cache
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.AssemblyInfo.cs
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.csproj.CoreCompileInputs.cache
 C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.csproj.CopyComplete
 C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\3DPrint_SW.dll
 C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\net6.0-windows\refint\3DPrint_SW.dll

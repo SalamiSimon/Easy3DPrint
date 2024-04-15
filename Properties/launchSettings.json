@@ -1,8 +1,1 @@
-{
-  "profiles": {
-    "Attach to SW2024": {
-      "commandName": "Executable",
-      "executablePath": "E:\\SolidWorks\\SOLIDWORKS Corp\\SOLIDWORKS\\SLDWORKS.exe"
-    }
-  }
-}
+{}

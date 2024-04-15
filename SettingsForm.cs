@@ -30,9 +30,9 @@ namespace _3DPrint_SW
 
             txtCuraPath.Text = curaSettings.Path;
             txtExportPath.Text = exportSettings.Path;
-            cmbExportFormatCura.SelectedItem = curaSettings.FileType.ToString();
+            cmbExportFormatCura.SelectedItem = curaSettings.FileType.ToString().TrimStart('_');
             txtBambuLabPath.Text = bambuSettings.Path;
-            cmbExportFormatBambuLab.Text = bambuSettings.FileType.ToString();
+            cmbExportFormatBambuLab.Text = bambuSettings.FileType.ToString().TrimStart('_');
         }
 
         private void InitializeComponents()

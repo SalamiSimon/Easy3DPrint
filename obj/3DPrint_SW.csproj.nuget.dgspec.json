@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Sten\\Documents\\GitHub\\Easy3DPrint\\3DPrint_SW.csproj": {}
+    "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\3DPrint_SW.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Sten\\Documents\\GitHub\\Easy3DPrint\\3DPrint_SW.csproj": {
+    "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\3DPrint_SW.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Sten\\Documents\\GitHub\\Easy3DPrint\\3DPrint_SW.csproj",
+        "projectUniqueName": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\3DPrint_SW.csproj",
         "projectName": "3DPrint_SW",
-        "projectPath": "C:\\Users\\Sten\\Documents\\GitHub\\Easy3DPrint\\3DPrint_SW.csproj",
-        "packagesPath": "C:\\Users\\Sten\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Sten\\Documents\\GitHub\\Easy3DPrint\\obj\\",
+        "projectPath": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\3DPrint_SW.csproj",
+        "packagesPath": "C:\\Users\\Simon\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Sten\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Simon\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -38,11 +38,6 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -69,30 +64,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "downloadDependencies": [
-            {
-              "name": "Microsoft.AspNetCore.App.Ref",
-              "version": "[6.0.29, 6.0.29]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Host.win-x64",
-              "version": "[6.0.29, 6.0.29]"
-            },
-            {
-              "name": "Microsoft.NETCore.App.Ref",
-              "version": "[6.0.29, 6.0.29]"
-            },
-            {
-              "name": "Microsoft.WindowsDesktop.App.Ref",
-              "version": "[6.0.29, 6.0.29]"
-            }
-          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       }
     }
