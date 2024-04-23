@@ -116,9 +116,9 @@ namespace _3DPrint_SW
             // Populate ComboBoxes
             cmbExportFormatCura.Items.AddRange(new string[] { "OBJ", "STL", "3MF" });
             cmbExportFormatBambuLab.Items.AddRange(new string[] { "OBJ", "STL", "STEP", "3MF" });
-            cmbExportFormatAnkerMake.Items.AddRange(new string[] { "OBJ", "STL", "3MF" }); // Assuming available formats
-            cmbExportFormatPrusa.Items.AddRange(new string[] { "OBJ", "STL", "3MF" }); // Assuming available formats
-            cmbExportFormatSlic3r.Items.AddRange(new string[] { "OBJ", "STL", "3MF" }); // Assuming available formats
+            cmbExportFormatAnkerMake.Items.AddRange(new string[] { "OBJ", "STL", "3MF" }); // Potentially add PLY & AMF in the future
+            cmbExportFormatPrusa.Items.AddRange(new string[] { "OBJ", "STL", "STEP", "3MF" });
+            cmbExportFormatSlic3r.Items.AddRange(new string[] { "OBJ", "STL", "3MF" }); // Potentially add AMF in the future
 
             btnSave.Click += (sender, e) =>
             {
