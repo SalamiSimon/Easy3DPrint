@@ -10,13 +10,7 @@ using System.Drawing;
 using Newtonsoft.Json;
 using System.IO;
 using static Easy3DPrint_NetFW.ApplicationSettings;
-using static System.Net.Mime.MediaTypeNames;
-using System.Runtime.InteropServices.ComTypes;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Easy3DPrint_NetFW.Properties;
 
 namespace Easy3DPrint_NetFW

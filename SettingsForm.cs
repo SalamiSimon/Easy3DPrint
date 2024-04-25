@@ -1,12 +1,8 @@
-﻿using Easy3DPrint_NetFW;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Drawing;
 using System.IO;
-using System.Windows;
 using System.Windows.Forms;
-using System.Xml;
 using static Easy3DPrint_NetFW.ApplicationSettings;
 using Formatting = Newtonsoft.Json.Formatting;
 using MessageBox = System.Windows.Forms.MessageBox;
