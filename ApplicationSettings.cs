@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace _3DPrint_SW
+namespace Easy3DPrint_NetFW
 {
     public class ApplicationSettings
     {

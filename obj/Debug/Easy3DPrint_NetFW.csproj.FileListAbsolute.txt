@@ -1,0 +1,2 @@
+C:\Users\Sten\source\repos\Easy3DPrint_NetFW\Easy3DPrint_NetFW\obj\Debug\Easy3DPrint_NetFW.csproj.AssemblyReference.cache
+C:\Users\Sten\source\repos\Easy3DPrint_NetFW\Easy3DPrint_NetFW\obj\Debug\Easy3DPrint_NetFW.csproj.CoreCompileInputs.cache

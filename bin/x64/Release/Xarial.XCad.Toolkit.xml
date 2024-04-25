@@ -1,0 +1,760 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Xarial.XCad.Toolkit</name>
+    </assembly>
+    <members>
+        <member name="T:Xarial.XCad.Toolkit.Base.ColorMaskDelegate">
+            <summary>
+            Custom handler for the image replace function
+            </summary>
+            <param name="r">Red component of pixel</param>
+            <param name="g">Green component of pixel</param>
+            <param name="b">Blue component of pixel</param>
+            <param name="a">Alpha component of pixel</param>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Base.IIconSpec">
+            <summary>
+            Descriptor for the icon of a specific type
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IIconSpec.BaseName">
+            <summary>
+            Base name of the icon
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IIconSpec.SourceImage">
+            <summary>
+            Original image of the icon
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IIconSpec.TargetSize">
+            <summary>
+            Required size of the icon
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IIconSpec.Mask">
+            <summary>
+            Handler for the mask
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IIconSpec.Margin">
+            <summary>
+            Image margin
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Base.IconSpec">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Base.IconSpec.CreateFileName(System.String,System.Drawing.Size,Xarial.XCad.Toolkit.Base.IconImageFormat_e)">
+            <summary>
+            Generates the file name for the icon
+            </summary>
+            <param name="baseName">Base name for the icon</param>
+            <param name="targetSize">Required icon size</param>
+            <param name="format">Format</param>
+            <returns>Suggested file name</returns>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IconSpec.BaseName">
+            <inheritdoc/>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IconSpec.SourceImage">
+            <inheritdoc/>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IconSpec.TargetSize">
+            <inheritdoc/>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IconSpec.Mask">
+            <inheritdoc/>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IconSpec.Margin">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Base.IconSpec.#ctor(Xarial.XCad.UI.IXImage,System.Drawing.Size,System.Int32,System.String)">
+            <summary>
+            Icon size constructor with source image, target size and optional base name
+            </summary>
+            <param name="srcImage">Source image</param>
+            <param name="targetSize">Target size of the image</param>
+            <param name="margin">Margin of the icon</param>
+            <param name="baseName">Base name of the image</param>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Base.IconImageFormat_e">
+            <summary>
+            Format of the image icon
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Toolkit.Base.IconImageFormat_e.Bmp">
+            <summary>
+            .bmp
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Toolkit.Base.IconImageFormat_e.Png">
+            <summary>
+            .png
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Toolkit.Base.IconImageFormat_e.Jpeg">
+            <summary>
+            .jpeg
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Base.IIcon">
+            <summary>
+            Represents the specific icon descriptor
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IIcon.IsPermanent">
+            <summary>
+            Indicates that this icon is permanent and should not be removed on dispose
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IIcon.TransparencyKey">
+            <summary>
+            Transparency key to be applied to transparent color
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IIcon.IconSizes">
+            <summary>
+            List of required icon sizes
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Base.IIcon.Format">
+            <summary>
+            Image format
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.CustomFeature.CustomFeatureDefinitionInstanceCache">
+            <summary>
+            Manages the cache of custom feature servers
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.CustomFeature.CustomFeatureDefinitionInstanceCache.RegisterInstance(Xarial.XCad.Features.CustomFeature.IXCustomFeatureDefinition)">
+            <summary>
+            Registers instance of the custom feature server
+            </summary>
+            <param name="inst">Instance to register</param>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.CustomFeature.CustomFeatureDefinitionInstanceCache.GetInstance(System.Type)">
+            <summary>
+            Returns the instance of custom feature server
+            </summary>
+            <param name="defType">Type of custom feature definition</param>
+            <returns>Instance of the custom feature server</returns>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Data.ComStorage">
+            <summary>
+            Represents the implementation of Storage in .NET
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Data.ComStream">
+            <summary>
+            Represents the COM stream wrapper
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Data.GlobalTagsRegistry">
+            <summary>
+            Golbal tags registry used in <see cref="T:Xarial.XCad.Toolkit.Data.GlobalTagsManager"/>
+            </summary>
+            <remarks>Store a singleton instance of this service and pass to all instances of <see cref="T:Xarial.XCad.Toolkit.Data.GlobalTagsManager"/></remarks>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Data.GlobalTagsManager">
+            <summary>
+            Manages tags with global registry
+            </summary>
+            <remarks>Use this service instead of <see cref="T:Xarial.XCad.Toolkit.Data.LocalTagsManager"/> when instance of <see cref="T:Xarial.XCad.IXObject"/>
+            is not guaranteed to be the same for the native (underline) object</remarks>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Data.LocalTagsManager">
+            <summary>
+            Manages tags locally on the object
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Exceptions.CommittedElementPropertyChangeNotSupported">
+            <summary>
+            Exception indicates that proeprty of the <see cref="!:Base.IXTransaction"/> cannot be modified after the transaction is committed
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Exceptions.CommittedElementPropertyChangeNotSupported.#ctor(System.String)">
+            <summary>
+            Default constructor
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Exceptions.DocumentsQueueDispatchException">
+            <summary>
+            Exception indicates that some documents in the queue were not dispatched
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Exceptions.DocumentsQueueDispatchException.Errors">
+            <summary>
+            Dispatch errors
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Exceptions.IconTransparencyMismatchException">
+            <summary>
+            Exception indicates that the transparency key <see cref="P:Xarial.XCad.Toolkit.Base.IIcon.TransparencyKey"/> is different for
+            some icons in the icons group passed to <see cref="!:Utils.IconsConverter.ConvertIconsGroup(Base.IIcon[])"/>
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Extensions.XImageExtension">
+            <summary>
+            Additional methods for <see cref="T:Xarial.XCad.UI.IXImage"/>
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Extensions.XImageExtension.ToImage(Xarial.XCad.UI.IXImage)">
+            <summary>
+            Tries converts <see cref="T:Xarial.XCad.UI.IXImage"/> to <see cref="T:System.Drawing.Image"/>
+            </summary>
+            <param name="img"></param>
+            <returns>Imgage or null</returns>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.PageBuilder.Binders.ControlDescriptorWrapper">
+            <summary>
+            Wrapper is used to transform context of the dynamic control to be equal to property value resolved in runtime
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Services.BaseIconsCreator.#ctor(System.String)">
+            <param name="iconsDir">Directory to store the icons</param>
+            <param name="disposeIcons">True to remove the icons when class is disposed</param>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Services.BaseIconsCreator.ReplaceColor(System.Drawing.Image,Xarial.XCad.Toolkit.Base.ColorMaskDelegate)">
+            <summary>
+            Replaces the pixels in the image based on the custom replacer handler
+            </summary>
+            <param name="icon">Image to replace</param>
+            <param name="mask">Handler to replace which is called for each pixel</param>
+            <returns>Resulting image</returns>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Services.BaseIconsCreator.ConvertIconsGroup(Xarial.XCad.Toolkit.Base.IIcon[],System.String)">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Services.BaseIconsCreator.Dispose">
+            <summary>
+            Disposing temp icon files
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Services.DocumentsHandler">
+            <summary>
+            Handles documents lifecycle
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Services.DocumentsHandler.RegisterHandler``1(System.Func{``0})">
+            <summary>
+            Registers the specified handler
+            </summary>
+            <typeparam name="THandler">Handler type</typeparam>
+            <param name="handlerFact">Handler instance factory</param>
+            <exception cref="T:System.Exception">Handler already registered</exception>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Services.DocumentsHandler.UnregisterHandler``1">
+            <summary>
+            Unregisters the specific handler
+            </summary>
+            <typeparam name="THandler">Handler type</typeparam>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Services.DocumentsHandler.GetHandler``1(Xarial.XCad.Documents.IXDocument)">
+            <summary>
+            Retrieves the specific handle of this document
+            </summary>
+            <typeparam name="THandler">Handler type</typeparam>
+            <param name="doc">Document</param>
+            <returns>Handler</returns>
+            <exception cref="T:System.Exception">Handler not registered</exception>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Services.EntityCache`1">
+            <summary>
+            This service allows to manage the entities which are created from the uncommitted object
+            </summary>
+            <typeparam name="TEnt">Type of entity</typeparam>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Services.EventsHandler`1">
+            <summary>
+            Utility allowing to implement lazy event handlers for a wrapped events
+            </summary>
+            <typeparam name="TDel">Delegate type of the wrapped event</typeparam>
+            <remarks>Use this approach when handling of events might result in the performance penalties or other issues
+            so it is only required to subscribe to events when underlying users are subscribed</remarks>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Services.IIconsCreator">
+            <summary>
+            Creates images from icons
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Services.IIconsCreator.ConvertIcon(Xarial.XCad.Toolkit.Base.IIcon,System.String)">
+            <summary>
+            Creates image from the icon in all sizes
+            </summary>
+            <param name="icon">Icon</param>
+            <param name="folder">Custom folder, if empty - default folder is used</param>
+            <returns>Paths to icons of all sizes</returns>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Services.IIconsCreator.ConvertIconsGroup(Xarial.XCad.Toolkit.Base.IIcon[],System.String)">
+             <summary>
+             Creates group of images from the input icons
+             </summary>
+             <param name="icons">Icons to group</param>
+            <inheritdoc/>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Utils.ColorUtils">
+            <summary>
+            Utility to convert between the .NET Color and Win32 color
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.ColorUtils.ToColorRef(System.Drawing.Color)">
+            <summary>
+            Creates a Win32 color
+            </summary>
+            <param name="color">Input color</param>
+            <returns>Wind32 color</returns>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.ColorUtils.FromColorRef(System.Int32)">
+            <summary>
+            Converts Win32 color to .NET color
+            </summary>
+            <param name="colorRef">Input color</param>
+            <returns>Converted color</returns>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.ColorUtils.ConvertPixelToGrayscale(System.Byte@,System.Byte@,System.Byte@)">
+            <summary>
+            Converts the pix to grayscale
+            </summary>
+            <param name="r">Red component of the pixel</param>
+            <param name="g">Green component of the pixex</param>
+            <param name="b">Blue component of the pixel</param>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Utils.FaultObjectFactory">
+            <summary>
+            Creates fault object of the specified type
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Utils.PopupHelper">
+            <summary>
+            Utilities for <see cref="!:UI.IXPopupWindow&lt;TWindow&gt;>"/>
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.PopupHelper.CalculateLocation(System.IntPtr,Xarial.XCad.UI.Enums.PopupDock_e,System.Boolean,System.Double,System.Double,Xarial.XCad.Geometry.Structures.Thickness)">
+            <summary>
+            Returns top-left location of the popup
+            </summary>
+            <param name="parentWnd">Parent window</param>
+            <param name="dock"></param>
+            <param name="scaleDpi">True to scale according to the screen resolution</param>
+            <param name="width">Width of the popup</param>
+            <param name="height">Height of the popup</param>
+            <param name="padding">Padding of the popup</param>
+            <returns>Top-left location</returns>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Utils.RepositoryHelper">
+            <summary>
+            Helper functions of <see cref="T:Xarial.XCad.Base.IXRepository"/>
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.RepositoryHelper.PreCreate``2(Xarial.XCad.Base.IXRepository{``0},System.Linq.Expressions.Expression{System.Func{``0}}[])">
+            <summary>
+            Helper tool to automatically create specific entities
+            </summary>
+            <typeparam name="TEnt">Generic entity</typeparam>
+            <typeparam name="TSpecEnt">Specific entity</typeparam>
+            <param name="repo">Repository</param>
+            <param name="factories">Factories of the specific objects</param>
+            <returns>Specific entity</returns>
+            <exception cref="T:Xarial.XCad.Exceptions.EntityNotSupportedException"/>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.RepositoryHelper.RemoveAll``1(Xarial.XCad.Base.IXRepository{``0},System.Collections.Generic.IEnumerable{``0},System.Threading.CancellationToken)">
+            <summary>
+            Removes the entities
+            </summary>
+            <typeparam name="TEnt">Type of entity</typeparam>
+            <param name="repo">Repository</param>
+            <param name="ents">Entities</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <exception cref="T:System.Exception">Thrown if entity is not selectable</exception>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.RepositoryHelper.TryFindByName``1(Xarial.XCad.Base.IXRepository{``0},System.String,``0@)">
+            <summary>
+            Tries to find the <see cref="T:Xarial.XCad.IHasName"/> entity in the repository
+            </summary>
+            <typeparam name="TEnt">Entity type</typeparam>
+            <param name="repo">Repository</param>
+            <param name="name">Name of the entity</param>
+            <param name="ent">Entity</param>
+            <returns>True if found</returns>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.RepositoryHelper.Get``1(Xarial.XCad.Base.IXRepository{``0},System.String)">
+            <summary>
+            Gets the entity by name
+            </summary>
+            <typeparam name="TEnt">Type of entity</typeparam>
+            <param name="repo">Target repository</param>
+            <param name="name">Name of the entity</param>
+            <returns>Pointer to named entity</returns>
+            <exception cref="T:Xarial.XCad.Exceptions.EntityNotFoundException"/>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.RepositoryHelper.AddRange``1(System.Collections.Generic.IEnumerable{``0},System.Threading.CancellationToken)">
+            <summary>
+            Performs the default commiting of entities into repository one-by-one
+            </summary>
+            <typeparam name="TEnt">Entity type</typeparam>
+            <param name="repo">Repository</param>
+            <param name="ents">Entities</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <exception cref="T:System.OperationCanceledException"/>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.RepositoryHelper.FilterDefault``1(System.Collections.Generic.IEnumerable{``0},Xarial.XCad.Base.RepositoryFilterQuery[],System.Boolean)">
+            <summary>
+            Performs the default filtering of the entities
+            </summary>
+            <typeparam name="TEnt"></typeparam>
+            <param name="repoEnts">Repository entities to filter</param>
+            <param name="filters">Filters</param>
+            <param name="reverseOrder">True to reverse the order</param>
+            <returns>Filtered entities</returns>
+            <exception cref="T:Xarial.XCad.Exceptions.EntityNotFoundException"></exception>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Utils.RepositoryHelper.MatchesFilters``1(``0,Xarial.XCad.Base.RepositoryFilterQuery[])">
+            <summary>
+            Checks if the specified entity matches the filter
+            </summary>
+            <typeparam name="TEnt">Entity type</typeparam>
+            <param name="ent">Entity to match</param>
+            <param name="filters">Filters</param>
+            <returns>True if entity matches the filter</returns>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Utils.IShellThumbnail">
+            <summary>
+            Represents the thumbnai
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Utils.IShellThumbnail.BitmapHandle">
+            <summary>
+            hBitmap of the thumbnail image
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Utils.ShellThumbnail">
+            <inheritdoc/>
+        </member>
+        <member name="P:Xarial.XCad.Toolkit.Utils.ShellThumbnail.BitmapHandle">
+            <inheritdoc/>
+        </member>
+        <member name="T:Xarial.XCad.Toolkit.Windows.RotHelper">
+            <summary>
+            Utilities for accessing Running Object Table
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Toolkit.Windows.RotHelper.TryGetComObjectByMonikerName``1(System.String,Xarial.XCad.Base.IXLogger,System.Predicate{``0})">
+            <summary>
+            Returns the COM object by moniker name
+            </summary>
+            <typeparam name="TComObj">Type of COM object</typeparam>
+            <param name="monikerName">Name of the moniker or an empty string to iterate all monikers</param>
+            <param name="logger">Custom logger</param>
+            <param name="predicate">Predicate</param>
+            <returns>COM objects</returns>
+        </member>
+        <member name="T:Xarial.XCad.Utils.CustomFeature.CustomFeatureEditorBehavior_e">
+            <summary>
+            Additional behaviors defined in the macro feature editor
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Utils.CustomFeature.CustomFeatureEditorBehavior_e.Default">
+            <summary>
+            Default behavior
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Utils.CustomFeature.CustomFeatureEditorBehavior_e.ReopenOnApply">
+            <summary>
+            If editor page has a pushpin button this option and it is applied,
+            this option will close and reopen page instead of keeping the page open
+            </summary>
+            <remarks>Some of the feature migth not be able to be created while page is open thus making pushpin not usable</remarks>
+        </member>
+        <member name="T:Xarial.XCad.Utils.CustomFeature.CustomFeatureAttribute">
+            <summary>
+            Represents the custom attribute of the <see cref="T:Xarial.XCad.Features.CustomFeature.IXCustomFeature"/>
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Utils.CustomFeature.CustomFeatureAttribute.Name">
+            <summary>
+            Name of the attribute
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Utils.CustomFeature.CustomFeatureAttribute.Type">
+            <summary>
+            Data type of the attribute
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Utils.CustomFeature.CustomFeatureAttribute.Value">
+            <summary>
+            Value of the attribute
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Utils.CustomFeature.CustomFeatureAttribute.#ctor(System.String,System.Type,System.Object)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="name">Attribute name</param>
+            <param name="type">Attribute data type</param>
+            <param name="value">Attribute value</param>
+        </member>
+        <member name="T:Xarial.XCad.Utils.CustomFeature.CustomFeatureParametersParser">
+            <summary>
+            Helper utility allowsing to parse and convert parameters of the custom feature to the class
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Utils.CustomFeature.CustomFeatureParametersParser.VERSION_DIMENSIONS_NAME">
+            <summary>
+            Name of the attribute which is holding version of dimensions
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Utils.CustomFeature.CustomFeatureParametersParser.VERSION_PARAMETERS_NAME">
+            <summary>
+            Name of the attribute which is holding version of parameters
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Utils.CustomFeature.CustomFeatureParametersParser.BuildParameters(System.Type,System.Collections.Generic.Dictionary{System.String,System.Object}@,Xarial.XCad.Annotations.IXDimension[]@,Xarial.XCad.Geometry.IXBody[]@,Xarial.XCad.Features.CustomFeature.Structures.CustomFeatureSelectionInfo[]@,System.String[]@)">
+            <summary>
+            Reads the parameters from the feature definition
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Utils.CustomFeature.CustomFeatureParametersParser.Parse(System.Object,Xarial.XCad.Utils.CustomFeature.CustomFeatureAttribute[]@,Xarial.XCad.IXSelObject[]@,Xarial.XCad.Features.CustomFeature.Enums.CustomFeatureDimensionType_e[]@,System.Double[]@,Xarial.XCad.Geometry.IXBody[]@)">
+            <summary>
+            Parses the custom feature data from the parameters structure
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Utils.CustomFeature.CustomFeatureParametersParser.ConvertParameters(System.Type,Xarial.XCad.Documents.IXDocument,Xarial.XCad.Features.CustomFeature.IXCustomFeature,System.Collections.Generic.Dictionary{System.String,System.Object}@,Xarial.XCad.Features.CustomFeature.Structures.CustomFeatureSelectionInfo[]@,Xarial.XCad.Annotations.IXDimension[]@,Xarial.XCad.Geometry.IXBody[]@)">
+            <summary>
+            Converts the parameters using the assigned converters
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Utils.CustomFeature.CustomFeatureParametersParser.TraverseParametersDefinition(System.Object,System.Action{System.Object,System.Reflection.PropertyInfo},System.Action{Xarial.XCad.Features.CustomFeature.Enums.CustomFeatureDimensionType_e,System.Object,System.Reflection.PropertyInfo},System.Action{System.Object,System.Reflection.PropertyInfo},System.Action{System.Object,System.Reflection.PropertyInfo})">
+            <summary>
+            Traverses the definiton of the parameters class with custom handler for each parameter group
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Utils.Diagnostics.TraceLogger">
+            <summary>
+            Logger logs messages to trace window
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:Xarial.XCad.Utils.PageBuilder.Base.Attributes.IDefaultTypeAttribute" -->
+        <member name="P:Xarial.XCad.Utils.PageBuilder.Base.Attributes.IDefaultTypeAttribute.Type">
+            <summary>
+            Specifies the type of the data which this constructor creates control for
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Utils.PageBuilder.Internal.ConstructorsContainer`2.m_DefaultConstructors">
+            <summary>
+            Constructors for the default data types (i.e. int, double, bool etc.)
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Utils.PageBuilder.Internal.ConstructorsContainer`2.m_SpecialTypeConstructors">
+            <summary>
+            Constructors for the special types (i.e. complex, enums, etc.)
+            </summary>
+        </member>
+        <member name="F:Xarial.XCad.Utils.PageBuilder.Internal.ConstructorsContainer`2.m_SpecificConstructors">
+            <summary>
+            Specific constructor for specific data types
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.AssemblyExtension.TryGetAttribute``1(System.Reflection.Assembly,System.Action{``0})">
+            <summary>
+            Tries to get attribute from the assembly
+            </summary>
+            <typeparam name="TAtt">Type of attribute to get</typeparam>
+            <param name="assm">Assembly</param>
+            <param name="attProc">Action to process attribute</param>
+            <returns>True if attribute exists</returns>
+        </member>
+        <member name="T:Xarial.XCad.Utils.Reflection.EnumExtension">
+            <summary>
+            Provides extension classes for the <see cref="T:System.Enum"/> enumerator
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.EnumExtension.GetAttribute``1(System.Enum)">
+            <summary>
+            Get the specified attribute from the enumerator field
+            </summary>
+            <typeparam name="TAtt">Attribute type</typeparam>
+            <param name="enumer">Enumerator field</param>
+            <returns>Attribute</returns>
+            <exception cref="T:System.NullReferenceException"/>
+            <remarks>This method throws an exception if attribute is missing</remarks>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.EnumExtension.TryGetAttribute``1(System.Enum)">
+            <summary>
+            Attempts to the attribute from enumeration
+            </summary>
+            <typeparam name="TAtt">Type of the attribute</typeparam>
+            <param name="type">Type to get attribute from</param>
+            <returns>Attribute or null if not found</returns>
+        </member>
+        <member name="T:Xarial.XCad.Utils.Reflection.MemberInfoExtension">
+            <summary>
+            Provides extension methods for the <see cref="T:System.Reflection.MemberInfo"/>
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.MemberInfoExtension.TryGetAttribute``1(System.Reflection.MemberInfo)">
+            <summary>
+            Attempts to get the attribute from the class member
+            </summary>
+            <typeparam name="TAtt">Attribute type</typeparam>
+            <param name="membInfo">Pointer to member (field or property)</param>
+            <returns>Pointer to attribute or null if not found</returns>
+        </member>
+        <member name="T:Xarial.XCad.Utils.Reflection.TypeExtension">
+            <summary>
+            Provides the extension methods for <see cref="T:System.Type"/>
+            </summary>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.TypeExtension.GetAttribute``1(System.Type)">
+            <summary>
+            Get the specified attribute from the type, all parent types and interfaces
+            </summary>
+            <typeparam name="TAtt">Attribute type</typeparam>
+            <param name="type">Type</param>
+            <returns>Attribute</returns>
+            <exception cref="T:System.NullReferenceException"/>
+            <remarks>This method throws an exception if attribute is missing</remarks>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.TypeExtension.TryGetAttribute``1(System.Type)">
+            <summary>
+            Attempts to the attribute from type, all parent types and interfaces
+            </summary>
+            <typeparam name="TAtt">Type of the attribute</typeparam>
+            <param name="type">Type to get attribute from</param>
+            <returns>Attribute or null if not found</returns>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.TypeExtension.TryGetAttribute``1(System.Type,``0@)">
+            <summary>
+            Attempts to get the attribute from the type, all parent types and interfaces
+            </summary>
+            <typeparam name="TAtt">Type of the attribute</typeparam>
+            <param name="type">Type to get attribute from</param>
+            <param name="att">Attribute of the type</param>
+            <returns>True if attribute exists</returns>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.TypeExtension.IsAssignableToGenericType(System.Type,System.Type)">
+            <summary>
+            Checks if this type can be assigned to the generic type
+            </summary>
+            <param name="thisType">Type</param>
+            <param name="genericType">Base generic type (i.e. MyGenericType&lt;&gt;)</param>
+            <returns>True if type is assignable to generic</returns>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.TypeExtension.GetArgumentsOfGenericType(System.Type,System.Type)">
+            <summary>
+            Gets the specific arguments of this type in relation to specified generic type
+            </summary>
+            <param name="thisType">This type which must be assignable to the specified genericType</param>
+            <param name="genericType">Generic type</param>
+            <returns>Arguments</returns>
+            <remarks>For example this method called on List&lt;string&gt; where the genericType is IEnumerable&lt;&gt; would return string</remarks>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.TypeExtension.TryFindGenericType(System.Type,System.Type)">
+            <summary>
+            Finds the specific generic type to a specified base generic type
+            </summary>
+            <param name="thisType">This type</param>
+            <param name="genericType">Base generic type</param>
+            <returns>Specific generic type or null if not found</returns>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.TypeExtension.GetProgId(System.Type)">
+            <summary>
+            Returns the COM ProgId of a type
+            </summary>
+            <param name="type">Input type</param>
+            <returns>COM Prog id</returns>
+        </member>
+        <member name="M:Xarial.XCad.Utils.Reflection.TypeExtension.IsComVisible(System.Type)">
+            <summary>
+            Identifies if type is COM visible
+            </summary>
+            <param name="type">Type to check</param>
+            <returns>True if type is COM visible</returns>
+        </member>
+        <member name="T:Xarial.XCad.Exceptions.FutureVersionParametersException">
+            <summary>
+            Exception indicates that the version of the parameters of macro feature
+            belongs of a never version of the add-in
+            </summary>
+            <remarks>Suggest users to upgrade the add-in version to support the feature</remarks>
+        </member>
+        <member name="T:Xarial.XCad.Exceptions.ParametersMismatchException">
+            <summary>
+            Exception indicates that the macro feature parameters have not been updated via <see cref="T:Xarial.XCad.Features.CustomFeature.Services.IParametersVersionConverter"/>
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Services.CachedProperties">
+            <summary>
+            Manages cached properties of <see cref="T:Xarial.XCad.Base.IXTransaction"/>
+            </summary>
+        </member>
+        <member name="T:Xarial.XCad.Services.IElementCreatorBase`1">
+            <summary>
+            Helper class to manage the lifecycle of <see cref="T:Xarial.XCad.Base.IXTransaction"/>
+            </summary>
+            <typeparam name="TElem">Type of the underlying object</typeparam>
+        </member>
+        <member name="P:Xarial.XCad.Services.IElementCreatorBase`1.IsCreated">
+            <summary>
+            True if this element is created or false if it is a template
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Services.IElementCreatorBase`1.CachedProperties">
+            <summary>
+            Provides access to manage cached properties
+            </summary>
+        </member>
+        <member name="P:Xarial.XCad.Services.IElementCreatorBase`1.Element">
+            <summary>
+            Pointer to the specific element
+            </summary>
+            <exception cref="T:Xarial.XCad.Exceptions.NonCommittedElementAccessException"/>
+        </member>
+        <member name="M:Xarial.XCad.Services.IElementCreatorBase`1.Set(`0)">
+            <summary>
+            Sets the element to the specified value and updates the state
+            </summary>
+            <param name="elem">Element or null</param>
+        </member>
+        <member name="M:Xarial.XCad.Services.IElementCreatorBase`1.Init(`0,System.Threading.CancellationToken)">
+            <summary>
+            Forcibly inits the element instance
+            </summary>
+            <param name="elem">Element to set</param>
+            <param name="cancellationToken">Cancellation token</param>
+            <exception cref="T:Xarial.XCad.Toolkit.Exceptions.ElementAlreadyCommittedException"/>
+            <remarks> Element must not be null and not commited. This method will also call the post creation handler</remarks>
+        </member>
+        <member name="T:Xarial.XCad.Services.IElementCreator`1">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xarial.XCad.Services.IElementCreator`1.Create(System.Threading.CancellationToken)">
+            <summary>
+            Creates element from the template
+            </summary>
+            <param name="cancellationToken">Cancellation token</param>
+            <exception cref="T:Xarial.XCad.Toolkit.Exceptions.ElementAlreadyCommittedException"/>
+            <returns>Instance of the specific element</returns>
+        </member>
+        <member name="T:Xarial.XCad.Services.IAsyncElementCreator`1">
+            <inheritdoc/>
+        </member>
+        <member name="M:Xarial.XCad.Services.IAsyncElementCreator`1.CreateAsync(System.Threading.CancellationToken)">
+            <summary>
+            Async creates element from the template
+            </summary>
+            <param name="cancellationToken">Cancellation token</param>
+            <exception cref="T:Xarial.XCad.Toolkit.Exceptions.ElementAlreadyCommittedException"/>
+            <returns>Instance of the specific element</returns>
+        </member>
+        <member name="T:Xarial.XCad.Services.XObjectEqualityComparer`1">
+            <summary>
+            Represents the generic equality of the <see cref="T:Xarial.XCad.IXObject"/>
+            </summary>
+            <typeparam name="TObj">Specific type of <see cref="T:Xarial.XCad.IXObject"/></typeparam>
+        </member>
+    </members>
+</doc>

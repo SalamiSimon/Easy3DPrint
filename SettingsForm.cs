@@ -1,10 +1,19 @@
-﻿using Newtonsoft.Json;
+﻿using Easy3DPrint_NetFW;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
 using System.Drawing;
+using System.IO;
+using System.Windows;
 using System.Windows.Forms;
-using static _3DPrint_SW.ApplicationSettings;
+using System.Xml;
+using static Easy3DPrint_NetFW.ApplicationSettings;
+using Formatting = Newtonsoft.Json.Formatting;
+using MessageBox = System.Windows.Forms.MessageBox;
+using Point = System.Drawing.Point;
+using Size = System.Drawing.Size;
 
-namespace _3DPrint_SW
+namespace Easy3DPrint_NetFW
 {
     public class SettingsDialog : Form
     {
