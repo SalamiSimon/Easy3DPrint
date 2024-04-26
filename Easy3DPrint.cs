@@ -39,7 +39,6 @@ namespace Easy3DPrint_NetFW
         {
             [Title("Open in Ultimaker Cura")]
             [Description("Opens the model in Ultimaker Cura")]
-            /* Menu won't load with custom icons enabled ? */
             [Icon(typeof(Resources), nameof(Resources.cura))]
             OpenInUltimakerCura,
 
