@@ -19,7 +19,7 @@ namespace Easy3DPrint_NetFW
     [Guid("0FE9F3CB-62B7-4604-9D33-7918B49E4675")]
     [Title("Easy3DPrint")]
 
-    public class Easy3DPrint : SwAddInEx, IControlVisibility
+    public class Easy3DPrint : SwAddInEx
     {
         private ExportSettings exportSettings = new ExportSettings();
         private CuraSettings curaSettings = new CuraSettings();
@@ -90,17 +90,6 @@ namespace Easy3DPrint_NetFW
             }
             var cmdGrp = this.CommandManager.AddCommandGroup<Commands_e>();
             cmdGrp.CommandClick += OnCommandClick;
-        }
-
-        public bool OnConnectCommandGroup(Commands_e spec)
-        {
-            switch (spec)
-            {
-                case Commands_e.OpenInBambuLab:
-                    return bambuSettings.enabled;
-                default:
-                    return true;
-            }
         }
 
         private bool LoadSettings()

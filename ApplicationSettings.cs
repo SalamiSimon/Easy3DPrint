@@ -47,7 +47,7 @@
 
             public BambuSettings() { }
 
-            public BambuSettings(string path, FileType fileType)
+            public BambuSettings(string path, FileType fileType, bool enabled)
             {
                 Path = path;
                 FileType = fileType;
@@ -63,7 +63,7 @@
 
             public AnkerMakeSettings() { }
 
-            public AnkerMakeSettings(string path, FileType fileType)
+            public AnkerMakeSettings(string path, FileType fileType, bool enabled)
             {
                 Path = path;
                 FileType = fileType;
@@ -79,7 +79,7 @@
 
             public PrusaSettings() { }
 
-            public PrusaSettings(string path, FileType fileType)
+            public PrusaSettings(string path, FileType fileType, bool enabled)
             {
                 Path = path;
                 FileType = fileType;
@@ -95,7 +95,7 @@
 
             public Slic3rSettings() { }
 
-            public Slic3rSettings(string path, FileType fileType)
+            public Slic3rSettings(string path, FileType fileType, bool enabled)
             {
                 Path = path;
                 FileType = fileType;

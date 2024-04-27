@@ -1,2 +1,6 @@
 C:\Users\Sten\source\repos\Easy3DPrint_NetFW\Easy3DPrint_NetFW\obj\Debug\Easy3DPrint_NetFW.csproj.AssemblyReference.cache
 C:\Users\Sten\source\repos\Easy3DPrint_NetFW\Easy3DPrint_NetFW\obj\Debug\Easy3DPrint_NetFW.csproj.CoreCompileInputs.cache
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\Easy3DPrint_NetFW.csproj.AssemblyReference.cache
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\Easy3DPrint_NetFW.Properties.Resources.resources
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\Easy3DPrint_NetFW.csproj.GenerateResource.cache
+C:\Users\Simon\source\repos\3DPrint_SW\Easy3DPrint\obj\Debug\Easy3DPrint_NetFW.csproj.CoreCompileInputs.cache
