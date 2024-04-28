@@ -65,7 +65,12 @@ namespace Easy3DPrint_NetFW
             [Title("Settings")]
             [Description("Easy3DPrint Settings")]
             [Icon(typeof(Resources), nameof(Resources.settings))]
-            Settings
+            Settings,
+
+            [Title("View Github Repo")]
+            [Description("Easy3DPrint Github Repo")]
+            [Icon(typeof(Resources), nameof(Resources.github))]
+            Github
         }
 
         public Easy3DPrint()
@@ -246,6 +251,10 @@ namespace Easy3DPrint_NetFW
                     {
                         Application.ShowMessageBox("No Slic3r executable path entered in settings or file not saved sucessfully.");
                     }
+                    break;
+
+                case Commands_e.Github:
+                    System.Diagnostics.Process.Start("https://github.com/SalamiSimon/Easy3DPrint");
                     break;
 
                 case Commands_e.Settings:

@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="3DPrint_SW.sln" />
+    <None Include="img\github.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Xarial.XCad.SolidWorks.0.8.0\build\Xarial.XCad.SolidWorks.targets" Condition="Exists('..\packages\Xarial.XCad.SolidWorks.0.8.0\build\Xarial.XCad.SolidWorks.targets')" />
