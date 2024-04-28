@@ -21,12 +21,12 @@ namespace Easy3DPrint_NetFW
 
     public class Easy3DPrint : SwAddInEx
     {
-        private ExportSettings exportSettings = new ExportSettings();
-        private CuraSettings curaSettings = new CuraSettings();
-        private BambuSettings bambuSettings = new BambuSettings();
-        private AnkerMakeSettings ankerMakeSettings = new AnkerMakeSettings();
-        private PrusaSettings prusaSettings = new PrusaSettings();
-        private Slic3rSettings slic3rSettings = new Slic3rSettings();
+        private readonly ExportSettings exportSettings = new ExportSettings();
+        private readonly CuraSettings curaSettings = new CuraSettings();
+        private readonly BambuSettings bambuSettings = new BambuSettings();
+        private readonly AnkerMakeSettings ankerMakeSettings = new AnkerMakeSettings();
+        private readonly PrusaSettings prusaSettings = new PrusaSettings();
+        private readonly Slic3rSettings slic3rSettings = new Slic3rSettings();
 
         private readonly string? settingsDirectoryPath;
 
@@ -90,6 +90,7 @@ namespace Easy3DPrint_NetFW
             }
             var cmdGrp = this.CommandManager.AddCommandGroup<Commands_e>();
             cmdGrp.CommandClick += OnCommandClick;
+
         }
 
         private bool LoadSettings()
