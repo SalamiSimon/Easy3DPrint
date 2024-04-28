@@ -34,11 +34,11 @@ namespace Easy3DPrint_NetFW
         public string PrusaPath => txtPrusaPath.Text;
         public string Slic3rPath => txtSlic3rPath.Text;
         public string ExportPath => txtExportPath.Text;
-        public string? ExportFormatCura => cmbExportFormatCura.SelectedItem.ToString();
-        public string? ExportFormatBambuLab => cmbExportFormatBambuLab.SelectedItem.ToString();
-        public string? ExportFormatAnkerMake => cmbExportFormatAnkerMake.SelectedItem.ToString();
-        public string? ExportFormatPrusa => cmbExportFormatPrusa.SelectedItem.ToString();
-        public string? ExportFormatSlic3r => cmbExportFormatSlic3r.SelectedItem.ToString();
+        public string ExportFormatCura => cmbExportFormatCura.SelectedItem.ToString();
+        public string ExportFormatBambuLab => cmbExportFormatBambuLab.SelectedItem.ToString();
+        public string ExportFormatAnkerMake => cmbExportFormatAnkerMake.SelectedItem.ToString();
+        public string ExportFormatPrusa => cmbExportFormatPrusa.SelectedItem.ToString();
+        public string ExportFormatSlic3r => cmbExportFormatSlic3r.SelectedItem.ToString();
 
         public SettingsDialog(
             ApplicationSettings.ExportSettings exportSettings,

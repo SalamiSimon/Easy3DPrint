@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Easy3DPrint_NetFW", "Easy3DPrint_NetFW.csproj", "{2477F33E-D045-40C5-881E-459BFBA6AB0D}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Easy3DPrintInstaller", "..\Easy3DPrintInstaller\Easy3DPrintInstaller.vdproj", "{EF42945A-C49F-4B9A-B647-A6330FA32D3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{2477F33E-D045-40C5-881E-459BFBA6AB0D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2477F33E-D045-40C5-881E-459BFBA6AB0D}.Release|x64.ActiveCfg = Release|x64
 		{2477F33E-D045-40C5-881E-459BFBA6AB0D}.Release|x64.Build.0 = Release|x64
+		{EF42945A-C49F-4B9A-B647-A6330FA32D3F}.Debug|Any CPU.ActiveCfg = Debug
+		{EF42945A-C49F-4B9A-B647-A6330FA32D3F}.Debug|x64.ActiveCfg = Debug
+		{EF42945A-C49F-4B9A-B647-A6330FA32D3F}.Release|Any CPU.ActiveCfg = Release
+		{EF42945A-C49F-4B9A-B647-A6330FA32D3F}.Release|x64.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -27,15 +27,13 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            public bool Enabled { get; set; } = true;
 
             public CuraSettings() { }
 
-            public CuraSettings(string path, FileType fileType, bool enabled)
+            public CuraSettings(string path, FileType fileType)
             {
                 Path = path;
                 FileType = fileType;
-                Enabled = enabled;
             }
         }
 
@@ -43,15 +41,13 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            public bool Enabled { get; set; } = false;
 
             public BambuSettings() { }
 
-            public BambuSettings(string path, FileType fileType, bool enabled)
+            public BambuSettings(string path, FileType fileType)
             {
                 Path = path;
                 FileType = fileType;
-                Enabled = enabled;
             }
         }
 
@@ -59,15 +55,13 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            public bool Enabled { get; set; } = true;
 
             public AnkerMakeSettings() { }
 
-            public AnkerMakeSettings(string path, FileType fileType, bool enabled)
+            public AnkerMakeSettings(string path, FileType fileType)
             {
                 Path = path;
                 FileType = fileType;
-                Enabled = enabled;
             }
         }
 
@@ -75,15 +69,13 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            public bool Enabled { get; set; } = true;
 
             public PrusaSettings() { }
 
-            public PrusaSettings(string path, FileType fileType, bool enabled)
+            public PrusaSettings(string path, FileType fileType)
             {
                 Path = path;
                 FileType = fileType;
-                Enabled = enabled;
             }
         }
 
@@ -91,16 +83,13 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            public bool Enabled { get; set; } = true;
 
             public Slic3rSettings() { }
 
-            public Slic3rSettings(string path, FileType fileType, bool enabled)
+            public Slic3rSettings(string path, FileType fileType)
             {
                 Path = path;
-                FileType = fileType;
-                Enabled = enabled;
-            }
+                FileType = fileType;            }
         }
 
     }

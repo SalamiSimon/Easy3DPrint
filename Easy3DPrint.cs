@@ -138,7 +138,7 @@ namespace Easy3DPrint_NetFW
             switch (spec)
             {
                 case Commands_e.OpenInUltimakerCura:
-                    string? FilePathCura = null;
+                    string FilePathCura = null;
 
                     if (curaSettings.FileType != FileType._NONE)
                     {
