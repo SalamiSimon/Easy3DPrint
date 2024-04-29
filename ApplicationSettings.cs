@@ -1,4 +1,7 @@
-﻿namespace Easy3DPrint_NetFW
+﻿using System;
+using System.IO;
+
+namespace Easy3DPrint_NetFW
 {
     public class ApplicationSettings
     {
@@ -11,13 +14,15 @@
             _3MF
         }
 
-        public class ExportSettings
+        public class AddinSettings
         {
-            public string ExportPath { get; set; } = "";
+            public string ExportPath { get; set; } = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "AutoExportSW");
+            public string DataPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Easy3DPrintSettings_" + Version + ".json");
+            public const string Version = "V1.0.2";
 
-            public ExportSettings() { }
+            public AddinSettings() { }
 
-            public ExportSettings(string path)
+            public AddinSettings(string path)
             {
                 ExportPath = path;
             }
@@ -27,13 +32,15 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
+            public bool Enabled { get; set; } = false;
 
             public CuraSettings() { }
 
-            public CuraSettings(string path, FileType fileType)
+            public CuraSettings(string path, FileType fileType, bool enabled)
             {
                 Path = path;
                 FileType = fileType;
+                Enabled = enabled;
             }
         }
 
@@ -41,13 +48,15 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
+            public bool Enabled { get; set; } = false;
 
             public BambuSettings() { }
 
-            public BambuSettings(string path, FileType fileType)
+            public BambuSettings(string path, FileType fileType, bool enabled)
             {
                 Path = path;
                 FileType = fileType;
+                Enabled = enabled;
             }
         }
 
@@ -55,13 +64,15 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
+            public bool Enabled { get; set; } = false;
 
             public AnkerMakeSettings() { }
 
-            public AnkerMakeSettings(string path, FileType fileType)
+            public AnkerMakeSettings(string path, FileType fileType, bool enabled)
             {
                 Path = path;
                 FileType = fileType;
+                Enabled = enabled;
             }
         }
 
@@ -69,13 +80,15 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
+            public bool Enabled { get; set; } = false;
 
             public PrusaSettings() { }
 
-            public PrusaSettings(string path, FileType fileType)
+            public PrusaSettings(string path, FileType fileType, bool enabled)
             {
                 Path = path;
                 FileType = fileType;
+                Enabled = enabled;
             }
         }
 
@@ -83,13 +96,16 @@
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
+            public bool Enabled { get; set; } = false;
 
             public Slic3rSettings() { }
 
-            public Slic3rSettings(string path, FileType fileType)
+            public Slic3rSettings(string path, FileType fileType, bool enabled)
             {
                 Path = path;
-                FileType = fileType;            }
+                FileType = fileType;
+                Enabled = enabled;
+            }
         }
 
     }

@@ -12,6 +12,7 @@ using System.IO;
 using static Easy3DPrint_NetFW.ApplicationSettings;
 using System;
 using Easy3DPrint_NetFW.Properties;
+using Xarial.XCad.UI.Commands.Structures;
 
 namespace Easy3DPrint_NetFW
 {
@@ -21,16 +22,14 @@ namespace Easy3DPrint_NetFW
 
     public class Easy3DPrint : SwAddInEx
     {
-        private readonly ExportSettings exportSettings = new ExportSettings();
+        private readonly AddinSettings exportSettings = new AddinSettings();
         private readonly CuraSettings curaSettings = new CuraSettings();
         private readonly BambuSettings bambuSettings = new BambuSettings();
         private readonly AnkerMakeSettings ankerMakeSettings = new AnkerMakeSettings();
         private readonly PrusaSettings prusaSettings = new PrusaSettings();
         private readonly Slic3rSettings slic3rSettings = new Slic3rSettings();
 
-        private readonly string? settingsDirectoryPath;
-
-        private readonly string settingsFilePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Easy3DPrintSettings.json");
+        private readonly string settingsDirectoryPath;
 
         [Title("Easy3DPrint")]
         [Description("Open parts directly in slicing apps")]
@@ -75,7 +74,7 @@ namespace Easy3DPrint_NetFW
 
         public Easy3DPrint()
         {
-            settingsDirectoryPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "AutoExportSW");
+            settingsDirectoryPath = exportSettings.ExportPath;
         }
 
         public override void OnConnect()
@@ -84,25 +83,48 @@ namespace Easy3DPrint_NetFW
             {
                 Application.ShowMessageBox("Before use, enter executable paths and filetype in Easy3DPrint settings.");
 
+                ShowSettingsDialog();
+
                 if (!Directory.Exists(settingsDirectoryPath))
                 {
                     Directory.CreateDirectory(settingsDirectoryPath);
-                    exportSettings.ExportPath = settingsDirectoryPath;
-                    ShowSettingsDialog();
-                    LoadSettings();
                 }
 
+                LoadSettings();
             }
-            var cmdGrp = this.CommandManager.AddCommandGroup<Commands_e>();
-            cmdGrp.CommandClick += OnCommandClick;
+        var cmdGrp = this.CommandManager.AddCommandGroup<Commands_e>();
+        cmdGrp.CommandStateResolve += OnButtonEnable;
+        cmdGrp.CommandClick += OnCommandClick;
 
+        }
+
+        private void OnButtonEnable(Commands_e cmd, CommandState state)
+        {
+            switch (cmd)
+            {
+                case Commands_e.OpenInUltimakerCura:
+                    state.Enabled = curaSettings.Enabled;
+                    break;
+                case Commands_e.OpenInBambuLab:
+                    state.Enabled = bambuSettings.Enabled;
+                    break;
+                case Commands_e.OpenInAnkerMake:
+                    state.Enabled = ankerMakeSettings.Enabled;
+                    break;
+                case Commands_e.OpenInPrusa:
+                    state.Enabled = prusaSettings.Enabled;
+                    break;
+                case Commands_e.OpenInSlic3r:
+                    state.Enabled = slic3rSettings.Enabled;
+                    break;
+            }
         }
 
         private bool LoadSettings()
         {
-            if (File.Exists(settingsFilePath))
+            if (File.Exists(exportSettings.DataPath))
             {
-                string json = File.ReadAllText(settingsFilePath);
+                string json = File.ReadAllText(exportSettings.ExportPath);
                 var settings = JsonConvert.DeserializeObject<dynamic>(json);
 
                 // Load settings
@@ -110,18 +132,23 @@ namespace Easy3DPrint_NetFW
 
                 curaSettings.Path = settings.CuraPath;
                 curaSettings.FileType = settings.ExportFormatCura;
+                curaSettings.Enabled = settings.CuraEnabled;
 
                 bambuSettings.Path = settings.BambuPath;
                 bambuSettings.FileType = settings.ExportFormatBambu;
+                bambuSettings.Enabled = settings.BambuEnabled;
 
                 ankerMakeSettings.Path = settings.AnkerMakePath;
                 ankerMakeSettings.FileType = settings.ExportFormatAnkerMake;
+                ankerMakeSettings.Enabled = settings.AnkerMakeEnabled;
 
                 slic3rSettings.Path = settings.Slic3rPath;
                 slic3rSettings.FileType = settings.ExportFormatSlic3r;
+                slic3rSettings.Enabled = settings.Slic3rEnabled;
 
                 prusaSettings.Path = settings.PrusaPath;
                 prusaSettings.FileType = settings.ExportFormatPrusa;
+                prusaSettings.Enabled = settings.PrusaEnabled;
 
                 return true; // Settings loaded successfully
             }
