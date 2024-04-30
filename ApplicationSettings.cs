@@ -28,26 +28,11 @@ namespace Easy3DPrint_NetFW
             }
         }
 
-       public class CuraSettings
+        public class CuraSettings
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            private bool _enabled = false;
-
-            public event EventHandler<bool> EnabledChanged;
-
-            public bool Enabled
-            {
-                get => _enabled;
-                set
-                {
-                    if (_enabled != value)
-                    {
-                        _enabled = value;
-                        EnabledChanged?.Invoke(this, value);
-                    }
-                }
-            }
+            public bool Enabled { get; set; } = false;
 
             public CuraSettings() { }
 
@@ -55,7 +40,7 @@ namespace Easy3DPrint_NetFW
             {
                 Path = path;
                 FileType = fileType;
-                _enabled = enabled;
+                Enabled = enabled;
             }
         }
 
@@ -63,22 +48,7 @@ namespace Easy3DPrint_NetFW
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            private bool _enabled = false;
-
-            public event EventHandler<bool> EnabledChanged;
-
-            public bool Enabled
-            {
-                get => _enabled;
-                set
-                {
-                    if (_enabled != value)
-                    {
-                        _enabled = value;
-                        EnabledChanged?.Invoke(this, value);
-                    }
-                }
-            }
+            public bool Enabled { get; set; } = false;
 
             public BambuSettings() { }
 
@@ -86,7 +56,7 @@ namespace Easy3DPrint_NetFW
             {
                 Path = path;
                 FileType = fileType;
-                _enabled = enabled;
+                Enabled = enabled;
             }
         }
 
@@ -94,22 +64,7 @@ namespace Easy3DPrint_NetFW
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            private bool _enabled = false;
-
-            public event EventHandler<bool> EnabledChanged;
-
-            public bool Enabled
-            {
-                get => _enabled;
-                set
-                {
-                    if (_enabled != value)
-                    {
-                        _enabled = value;
-                        EnabledChanged?.Invoke(this, value);
-                    }
-                }
-            }
+            public bool Enabled { get; set; } = false;
 
             public AnkerMakeSettings() { }
 
@@ -117,7 +72,7 @@ namespace Easy3DPrint_NetFW
             {
                 Path = path;
                 FileType = fileType;
-                _enabled = enabled;
+                Enabled = enabled;
             }
         }
 
@@ -125,22 +80,7 @@ namespace Easy3DPrint_NetFW
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            private bool _enabled = false;
-
-            public event EventHandler<bool> EnabledChanged;
-
-            public bool Enabled
-            {
-                get => _enabled;
-                set
-                {
-                    if (_enabled != value)
-                    {
-                        _enabled = value;
-                        EnabledChanged?.Invoke(this, value);
-                    }
-                }
-            }
+            public bool Enabled { get; set; } = false;
 
             public PrusaSettings() { }
 
@@ -148,7 +88,7 @@ namespace Easy3DPrint_NetFW
             {
                 Path = path;
                 FileType = fileType;
-                _enabled = enabled;
+                Enabled = enabled;
             }
         }
 
@@ -156,22 +96,7 @@ namespace Easy3DPrint_NetFW
         {
             public string Path { get; set; } = "";
             public FileType FileType { get; set; } = FileType._STL;
-            private bool _enabled = false;
-
-            public event EventHandler<bool> EnabledChanged;
-
-            public bool Enabled
-            {
-                get => _enabled;
-                set
-                {
-                    if (_enabled != value)
-                    {
-                        _enabled = value;
-                        EnabledChanged?.Invoke(this, value);
-                    }
-                }
-            }
+            public bool Enabled { get; set; } = false;
 
             public Slic3rSettings() { }
 
@@ -179,7 +104,7 @@ namespace Easy3DPrint_NetFW
             {
                 Path = path;
                 FileType = fileType;
-                _enabled = enabled;
+                Enabled = enabled;
             }
         }
 

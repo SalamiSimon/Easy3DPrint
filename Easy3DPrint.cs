@@ -88,6 +88,7 @@ namespace Easy3DPrint_NetFW
             var cmdGrp = CommandManager.AddCommandGroup<Commands_e>();
             cmdGrp.CommandStateResolve += OnButtonEnable;
             cmdGrp.CommandClick += OnCommandClick;
+
         }
 
         private void OnButtonEnable(Commands_e cmd, CommandState state)
