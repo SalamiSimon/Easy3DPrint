@@ -14,6 +14,6 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>E:\SolidWorks\SOLIDWORKS Corp\SOLIDWORKS\SLDWORKS.exe</StartProgram>
+    <StartProgram>D:\SolidWorks\SOLIDWORKS Corp\SOLIDWORKS %282%29\SLDWORKS.exe</StartProgram>
   </PropertyGroup>
 </Project>

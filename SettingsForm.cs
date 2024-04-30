@@ -13,8 +13,6 @@ namespace Easy3DPrint_NetFW
 {
     public class SettingsDialog : Form
     {
-        private readonly string settingsFilePath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Easy3DPrintSettings.json");
-
         private ComboBox cmbExportFormatCura;
         private ComboBox cmbExportFormatBambuLab;
         private ComboBox cmbExportFormatAnkerMake;
@@ -27,6 +25,12 @@ namespace Easy3DPrint_NetFW
         private TextBox txtSlic3rPath;
         private TextBox txtExportPath;
         private Button? btnSave;
+
+        private CheckBox chkCuraEnabled;
+        private CheckBox chkSlic3rEnabled;
+        private CheckBox chkPrusaEnabled;
+        private CheckBox chkAnkerMakeEnabled;
+        private CheckBox chkBambuEnabled;
 
         public string CuraPath => txtCuraPath.Text;
         public string BambuLabPath => txtBambuLabPath.Text;
@@ -41,7 +45,7 @@ namespace Easy3DPrint_NetFW
         public string ExportFormatSlic3r => cmbExportFormatSlic3r.SelectedItem.ToString();
 
         public SettingsDialog(
-            ApplicationSettings.ExportSettings exportSettings,
+            ApplicationSettings.AddinSettings exportSettings,
             ApplicationSettings.CuraSettings curaSettings,
             ApplicationSettings.BambuSettings bambuSettings,
             ApplicationSettings.AnkerMakeSettings ankerMakeSettings,
@@ -54,18 +58,23 @@ namespace Easy3DPrint_NetFW
 
             txtCuraPath.Text = curaSettings?.Path ?? string.Empty;
             cmbExportFormatCura.SelectedItem = curaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkCuraEnabled.Checked = curaSettings.Enabled;
 
             txtBambuLabPath.Text = bambuSettings?.Path ?? string.Empty;
             cmbExportFormatBambuLab.SelectedItem = bambuSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkBambuEnabled.Checked = bambuSettings.Enabled;
 
             txtAnkerMakePath.Text = ankerMakeSettings?.Path ?? string.Empty;
             cmbExportFormatAnkerMake.SelectedItem = ankerMakeSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkAnkerMakeEnabled.Checked = ankerMakeSettings.Enabled;
 
             txtPrusaPath.Text = prusaSettings?.Path ?? string.Empty;
             cmbExportFormatPrusa.SelectedItem = prusaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkPrusaEnabled.Checked = prusaSettings.Enabled;
 
             txtSlic3rPath.Text = slic3rSettings?.Path ?? string.Empty;
             cmbExportFormatSlic3r.SelectedItem = slic3rSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkSlic3rEnabled.Checked = slic3rSettings.Enabled;
         }
 
         private void InitializeComponents()
@@ -78,45 +87,116 @@ namespace Easy3DPrint_NetFW
 
             // Cura Components
             Label lblCuraSettingsTitle = new Label { Text = "UltiMaker Cura", Location = new Point(10, 20), Size = new Size(150, 20) };
-            Label lblCuraFormat = new() { Text = "Cura Filetype:", Location = new Point(10, 50), Size = new Size(150, 20) };
-            cmbExportFormatCura = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 50), Size = new Size(220, 20) };
-            Label lblCuraPath = new() { Text = "Cura .EXE Path:", Location = new Point(10, 80), Size = new Size(150, 20) };
-            txtCuraPath = new TextBox { Location = new Point(170, 80), Size = new Size(220, 20) };
+            chkCuraEnabled = new CheckBox { Text = "Cura Enabled", Location = new Point(10, 50), Size = new Size(150, 20)};
+            Label lblCuraFormat = new() { Text = "Cura Filetype:", Location = new Point(10, 80), Size = new Size(150, 20) };
+            cmbExportFormatCura = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 80), Size = new Size(220, 20) };
+            Label lblCuraPath = new() { Text = "Cura .EXE Path:", Location = new Point(10, 110), Size = new Size(150, 20) };
+            txtCuraPath = new TextBox { Location = new Point(170, 110), Size = new Size(220, 20) };
+
+            lblCuraFormat.Visible = chkCuraEnabled.Checked;
+            cmbExportFormatCura.Visible = chkCuraEnabled.Checked;
+            lblCuraPath.Visible = chkCuraEnabled.Checked;
+            txtCuraPath.Visible = chkCuraEnabled.Checked;
+
+            chkCuraEnabled.CheckedChanged += (sender, e) =>
+            {
+                lblCuraFormat.Visible = chkCuraEnabled.Checked;
+                cmbExportFormatCura.Visible = chkCuraEnabled.Checked;
+                lblCuraPath.Visible = chkCuraEnabled.Checked;
+                txtCuraPath.Visible = chkCuraEnabled.Checked;
+            };
 
             // Bambu Lab Components
-            Label lblBambuSettingsTitle = new() { Text = "Bambu Lab", Location = new Point(10, 120), Size = new Size(150, 20) };
-            Label lblBambuFormat = new() { Text = "Bambu Filetype:", Location = new Point(10, 150), Size = new Size(150, 20) };
-            cmbExportFormatBambuLab = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 150), Size = new Size(220, 20) };
-            Label lblBambuPath = new() { Text = "Bambu .EXE Path:", Location = new Point(10, 180), Size = new Size(150, 20) };
-            txtBambuLabPath = new TextBox { Location = new Point(170, 180), Size = new Size(220, 20) };
+            Label lblBambuSettingsTitle = new() { Text = "Bambu Lab", Location = new Point(10, 140), Size = new Size(150, 20) };
+            chkBambuEnabled = new CheckBox { Text = "Bambu Enabled", Location = new Point(10, 170), Size = new Size(150, 20)};
+            Label lblBambuFormat = new() { Text = "Bambu Filetype:", Location = new Point(10, 200), Size = new Size(150, 20) };
+            cmbExportFormatBambuLab = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 200), Size = new Size(220, 20) };
+            Label lblBambuPath = new() { Text = "Bambu .EXE Path:", Location = new Point(10, 230), Size = new Size(150, 20) };
+            txtBambuLabPath = new TextBox { Location = new Point(170, 230), Size = new Size(220, 20) };
+
+            lblBambuFormat.Visible = chkBambuEnabled.Checked;
+            cmbExportFormatBambuLab.Visible = chkBambuEnabled.Checked;
+            lblBambuPath.Visible = chkBambuEnabled.Checked;
+            txtBambuLabPath.Visible = chkBambuEnabled.Checked;
+
+            chkBambuEnabled.CheckedChanged += (sender, e) =>
+            {
+                lblBambuFormat.Visible = chkBambuEnabled.Checked;
+                cmbExportFormatBambuLab.Visible = chkBambuEnabled.Checked;
+                lblBambuPath.Visible = chkBambuEnabled.Checked;
+                txtBambuLabPath.Visible = chkBambuEnabled.Checked;
+            };
 
             // AnkerMake Components
-            Label lblAnkerMakeSettingsTitle = new() { Text = "AnkerMake", Location = new Point(10, 220), Size = new Size(150, 20) };
-            Label lblAnkerMakeFormat = new() { Text = "AnkerMake Filetype:", Location = new Point(10, 250), Size = new Size(150, 20) };
-            cmbExportFormatAnkerMake = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 250), Size = new Size(220, 20) };
-            Label lblAnkerMakePath = new() { Text = "AnkerMake .EXE Path:", Location = new Point(10, 280), Size = new Size(150, 20) };
-            txtAnkerMakePath = new TextBox { Location = new Point(170, 280), Size = new Size(220, 20) };
+            Label lblAnkerMakeSettingsTitle = new() { Text = "AnkerMake Studio", Location = new Point(10, 260), Size = new Size(150, 20) };
+            chkAnkerMakeEnabled = new CheckBox { Text = "Anker Enabled", Location = new Point(10, 290), Size = new Size(150, 20)};
+            Label lblAnkerMakeFormat = new() { Text = "Anker Filetype:", Location = new Point(10, 320), Size = new Size(150, 20) };
+            cmbExportFormatAnkerMake = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 320), Size = new Size(220, 20) };
+            Label lblAnkerMakePath = new() { Text = "Anker .EXE Path:", Location = new Point(10, 350), Size = new Size(150, 20) };
+            txtAnkerMakePath = new TextBox { Location = new Point(170, 350), Size = new Size(220, 20) };
+
+            lblAnkerMakeFormat.Visible = chkAnkerMakeEnabled.Checked;
+            cmbExportFormatAnkerMake.Visible = chkAnkerMakeEnabled.Checked;
+            lblAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
+            txtAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
+
+            chkAnkerMakeEnabled.CheckedChanged += (sender, e) =>
+            {
+                lblAnkerMakeFormat.Visible = chkAnkerMakeEnabled.Checked;
+                cmbExportFormatAnkerMake.Visible = chkAnkerMakeEnabled.Checked;
+                lblAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
+                txtAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
+            };
 
             // Prusa Components
-            Label lblPrusaSettingsTitle = new() { Text = "Prusa", Location = new Point(10, 320), Size = new Size(150, 20) };
-            Label lblPrusaFormat = new() { Text = "Prusa Filetype:", Location = new Point(10, 350), Size = new Size(150, 20) };
-            cmbExportFormatPrusa = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 350), Size = new Size(220, 20) };
-            Label lblPrusaPath = new() { Text = "Prusa .EXE Path:", Location = new Point(10, 380), Size = new Size(150, 20) };
-            txtPrusaPath = new TextBox { Location = new Point(170, 380), Size = new Size(220, 20) };
+            Label lblPrusaSettingsTitle = new() { Text = "Prusa", Location = new Point(10, 380), Size = new Size(150, 20) };
+            chkPrusaEnabled = new CheckBox { Text = "Prusa Enabled", Location = new Point(10, 410), Size = new Size(150, 20)};
+            Label lblPrusaFormat = new() { Text = "Prusa Filetype:", Location = new Point(10, 440), Size = new Size(150, 20) };
+            cmbExportFormatPrusa = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 440), Size = new Size(220, 20) };
+            Label lblPrusaPath = new() { Text = "Prusa .EXE Path:", Location = new Point(10, 470), Size = new Size(150, 20) };
+            txtPrusaPath = new TextBox { Location = new Point(170, 470), Size = new Size(220, 20) };
+
+            lblPrusaFormat.Visible = chkPrusaEnabled.Checked;
+            cmbExportFormatPrusa.Visible = chkPrusaEnabled.Checked;
+            lblPrusaPath.Visible = chkPrusaEnabled.Checked;
+            txtPrusaPath.Visible = chkPrusaEnabled.Checked;
+
+            chkPrusaEnabled.CheckedChanged += (sender, e) =>
+            {
+                lblPrusaFormat.Visible = chkPrusaEnabled.Checked;
+                cmbExportFormatPrusa.Visible = chkPrusaEnabled.Checked;
+                lblPrusaPath.Visible = chkPrusaEnabled.Checked;
+                txtPrusaPath.Visible = chkPrusaEnabled.Checked;
+            };
 
             // Slic3r Components
-            Label lblSlic3rSettingsTitle = new() { Text = "Slic3r", Location = new Point(10, 420), Size = new Size(150, 20) };
-            Label lblSlic3rFormat = new() { Text = "Slic3r Filetype:", Location = new Point(10, 450), Size = new Size(150, 20) };
-            cmbExportFormatSlic3r = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 450), Size = new Size(220, 20) };
-            Label lblSlic3rPath = new() { Text = "Slic3r .EXE Path:", Location = new Point(10, 480), Size = new Size(150, 20) };
-            txtSlic3rPath = new TextBox { Location = new Point(170, 480), Size = new Size(220, 20) };
+            Label lblSlic3rSettingsTitle = new() { Text = "Slic3r", Location = new Point(10, 500), Size = new Size(150, 20) };
+            chkSlic3rEnabled = new CheckBox { Text = "Slic3r Enabled", Location = new Point(10, 530), Size = new Size(150, 20) };
+            Label lblSlic3rFormat = new() { Text = "Slic3r Filetype:", Location = new Point(10, 560), Size = new Size(150, 20) };
+            cmbExportFormatSlic3r = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 560), Size = new Size(220, 20) };
+            Label lblSlic3rPath = new() { Text = "Slic3r .EXE Path:", Location = new Point(10, 590), Size = new Size(150, 20) };
+            txtSlic3rPath = new TextBox { Location = new Point(170, 590), Size = new Size(220, 20) };
+
+            lblSlic3rFormat.Visible = chkSlic3rEnabled.Checked;
+            cmbExportFormatSlic3r.Visible = chkSlic3rEnabled.Checked;
+            lblSlic3rPath.Visible = chkSlic3rEnabled.Checked;
+            txtSlic3rPath.Visible = chkSlic3rEnabled.Checked;
+
+            chkSlic3rEnabled.CheckedChanged += (sender, e) =>
+            {
+                lblSlic3rFormat.Visible = chkSlic3rEnabled.Checked;
+                cmbExportFormatSlic3r.Visible = chkSlic3rEnabled.Checked;
+                lblSlic3rPath.Visible = chkSlic3rEnabled.Checked;
+                txtSlic3rPath.Visible = chkSlic3rEnabled.Checked;
+            };
 
             // Export Path Components
-            Label lblExportedTitle = new() { Text = "Exported File Path", Location = new Point(10, 520), Size = new Size(150, 20) };
-            Label lblExportPath = new() { Text = "Export Path:", Location = new Point(10, 550), Size = new Size(150, 20) };
-            txtExportPath = new TextBox { Location = new Point(170, 550), Size = new Size(220, 20) };
+            Label lblExportedTitle = new() { Text = "Exported File Path", Location = new Point(10, 620), Size = new Size(150, 20) };
+            Label lblExportPath = new() { Text = "Export Path:", Location = new Point(10, 650), Size = new Size(150, 20) };
+            txtExportPath = new TextBox { Location = new Point(170, 650), Size = new Size(220, 20) };
 
-            btnSave = new Button { Text = "Save", Location = new Point(10, 590), Size = new Size(380, 30) };
+            btnSave = new Button { Text = "Save", Location = new Point(10, 680), Size = new Size(380, 30) };
+
 
             // Populate ComboBoxes
             cmbExportFormatCura.Items.AddRange(new string[] { "OBJ", "STL", "3MF" });
@@ -132,44 +212,51 @@ namespace Easy3DPrint_NetFW
                 FileType exportFormatAnkerMake = (!string.IsNullOrEmpty(this.ExportFormatAnkerMake)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatAnkerMake) : FileType._NONE;
                 FileType exportFormatPrusa = (!string.IsNullOrEmpty(this.ExportFormatPrusa)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatPrusa) : FileType._NONE;
                 FileType exportFormatSlic3r = (!string.IsNullOrEmpty(this.ExportFormatSlic3r)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatSlic3r) : FileType._NONE;
-                SaveSettings(this.CuraPath, this.ExportPath, exportFormatCura, exportFormatBambu, this.BambuLabPath, this.AnkerMakePath, exportFormatAnkerMake, this.PrusaPath, exportFormatPrusa, this.Slic3rPath, exportFormatSlic3r);
+
+                SaveSettings(this.CuraPath, this.ExportPath, exportFormatCura, exportFormatBambu, this.BambuLabPath, this.AnkerMakePath, exportFormatAnkerMake, this.PrusaPath, exportFormatPrusa, this.Slic3rPath, exportFormatSlic3r, chkCuraEnabled.Checked, chkBambuEnabled.Checked, chkAnkerMakeEnabled.Checked, chkPrusaEnabled.Checked, chkSlic3rEnabled.Checked);
             };
 
             // Add components to the form
             Controls.AddRange(new Control[] {
-                lblCuraSettingsTitle, lblCuraFormat, cmbExportFormatCura, lblCuraPath, txtCuraPath,
-                lblBambuSettingsTitle, lblBambuFormat, cmbExportFormatBambuLab, lblBambuPath, txtBambuLabPath,
-                lblAnkerMakeSettingsTitle, lblAnkerMakeFormat, cmbExportFormatAnkerMake, lblAnkerMakePath, txtAnkerMakePath,
-                lblPrusaSettingsTitle, lblPrusaFormat, cmbExportFormatPrusa, lblPrusaPath, txtPrusaPath,
-                lblSlic3rSettingsTitle, lblSlic3rFormat, cmbExportFormatSlic3r, lblSlic3rPath, txtSlic3rPath,
+                lblCuraSettingsTitle, chkCuraEnabled, lblCuraFormat, cmbExportFormatCura, lblCuraPath, txtCuraPath,
+                lblBambuSettingsTitle, chkBambuEnabled, lblBambuFormat, cmbExportFormatBambuLab, lblBambuPath, txtBambuLabPath,
+                lblAnkerMakeSettingsTitle, chkAnkerMakeEnabled, lblAnkerMakeFormat, cmbExportFormatAnkerMake, lblAnkerMakePath, txtAnkerMakePath,
+                lblPrusaSettingsTitle, chkPrusaEnabled, lblPrusaFormat, cmbExportFormatPrusa, lblPrusaPath, txtPrusaPath,
+                lblSlic3rSettingsTitle, chkSlic3rEnabled, lblSlic3rFormat, cmbExportFormatSlic3r, lblSlic3rPath, txtSlic3rPath,
                 lblExportedTitle, lblExportPath, txtExportPath, btnSave
             });
 
-            // Set the size of the form
-            Size = new Size(450, 750);
+        // Set the size of the form
+        Size = new Size(450, 800);
         }
 
-        private void SaveSettings(string curaPath, string exportPath, FileType exportFormatCura, FileType exportFormatBambu, string bambuPath, string ankerMakePath, FileType exportFormatAnkerMake, string prusaPath, FileType exportFormatPrusa, string slic3rPath, FileType exportFormatSlic3r)
+        private void SaveSettings(string curaPath, string exportPath, FileType exportFormatCura, FileType exportFormatBambu, string bambuPath, string ankerMakePath, FileType exportFormatAnkerMake, string prusaPath, FileType exportFormatPrusa, string slic3rPath, FileType exportFormatSlic3r, bool curaEnabled, bool bambuEnabled, bool ankerMakeEnabled, bool prusaEnabled, bool slic3rEnabled)
         {
             var settings = new
             {
                 CuraPath = curaPath ?? "",
                 ExportPath = exportPath ?? "",
                 ExportFormatCura = exportFormatCura,
+                CuraEnabled = curaEnabled,
                 ExportFormatBambu = exportFormatBambu,
                 BambuPath = bambuPath ?? "",
+                BambuEnabled = bambuEnabled,
                 AnkerMakePath = ankerMakePath ?? "",
                 ExportFormatAnkerMake = exportFormatAnkerMake,
+                AnkerMakeEnabled = ankerMakeEnabled,
                 PrusaPath = prusaPath ?? "",
                 ExportFormatPrusa = exportFormatPrusa,
+                PrusaEnabled = prusaEnabled,
                 Slic3rPath = slic3rPath ?? "",
-                ExportFormatSlic3r = exportFormatSlic3r
+                ExportFormatSlic3r = exportFormatSlic3r,
+                Slic3rEnabled = slic3rEnabled
             };
 
+            AddinSettings addinSettings = new AddinSettings();
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented, new StringEnumConverter());
-            File.WriteAllText(settingsFilePath, json);
+            File.WriteAllText(addinSettings.DataPath, json);
 
-            MessageBox.Show("Settings saved.");
+            MessageBox.Show("Settings saved.\n\nEnable state will update correctly after the next restart. (Or open and close settings again)");
             this.Close();
         }
     }
