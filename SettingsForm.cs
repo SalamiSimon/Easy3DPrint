@@ -26,6 +26,12 @@ namespace Easy3DPrint_NetFW
         private TextBox txtExportPath;
         private Button? btnSave;
 
+        private CheckBox chkCuraEnabled;
+        private CheckBox chkSlic3rEnabled;
+        private CheckBox chkPrusaEnabled;
+        private CheckBox chkAnkerMakeEnabled;
+        private CheckBox chkBambuEnabled;
+
         public string CuraPath => txtCuraPath.Text;
         public string BambuLabPath => txtBambuLabPath.Text;
         public string AnkerMakePath => txtAnkerMakePath.Text;
@@ -52,18 +58,23 @@ namespace Easy3DPrint_NetFW
 
             txtCuraPath.Text = curaSettings?.Path ?? string.Empty;
             cmbExportFormatCura.SelectedItem = curaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkCuraEnabled.Checked = curaSettings.Enabled;
 
             txtBambuLabPath.Text = bambuSettings?.Path ?? string.Empty;
             cmbExportFormatBambuLab.SelectedItem = bambuSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkBambuEnabled.Checked = bambuSettings.Enabled;
 
             txtAnkerMakePath.Text = ankerMakeSettings?.Path ?? string.Empty;
             cmbExportFormatAnkerMake.SelectedItem = ankerMakeSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkAnkerMakeEnabled.Checked = ankerMakeSettings.Enabled;
 
             txtPrusaPath.Text = prusaSettings?.Path ?? string.Empty;
             cmbExportFormatPrusa.SelectedItem = prusaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkPrusaEnabled.Checked = prusaSettings.Enabled;
 
             txtSlic3rPath.Text = slic3rSettings?.Path ?? string.Empty;
             cmbExportFormatSlic3r.SelectedItem = slic3rSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkSlic3rEnabled.Checked = slic3rSettings.Enabled;
         }
 
         private void InitializeComponents()
@@ -80,7 +91,7 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatCura = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 50), Size = new Size(220, 20) };
             Label lblCuraPath = new() { Text = "Cura .EXE Path:", Location = new Point(10, 80), Size = new Size(150, 20) };
             txtCuraPath = new TextBox { Location = new Point(170, 80), Size = new Size(220, 20) };
-            CheckBox chkCuraEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 110), Size = new Size(150, 20), Checked = true };
+            chkCuraEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 110), Size = new Size(150, 20)};
 
             // Bambu Lab Components
             Label lblBambuSettingsTitle = new() { Text = "Bambu Lab", Location = new Point(10, 140), Size = new Size(150, 20) };
@@ -88,7 +99,7 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatBambuLab = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 170), Size = new Size(220, 20) };
             Label lblBambuPath = new() { Text = "Bambu .EXE Path:", Location = new Point(10, 200), Size = new Size(150, 20) };
             txtBambuLabPath = new TextBox { Location = new Point(170, 200), Size = new Size(220, 20) };
-            CheckBox chkBambuEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 230), Size = new Size(150, 20), Checked = true };
+            chkBambuEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 230), Size = new Size(150, 20)};
 
             // AnkerMake Components
             Label lblAnkerMakeSettingsTitle = new() { Text = "AnkerMake", Location = new Point(10, 260), Size = new Size(150, 20) };
@@ -96,7 +107,7 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatAnkerMake = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 290), Size = new Size(220, 20) };
             Label lblAnkerMakePath = new() { Text = "AnkerMake .EXE Path:", Location = new Point(10, 320), Size = new Size(150, 20) };
             txtAnkerMakePath = new TextBox { Location = new Point(170, 320), Size = new Size(220, 20) };
-            CheckBox chkAnkerMakeEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 350), Size = new Size(150, 20), Checked = true };
+            chkAnkerMakeEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 350), Size = new Size(150, 20)};
 
             // Prusa Components
             Label lblPrusaSettingsTitle = new() { Text = "Prusa", Location = new Point(10, 380), Size = new Size(150, 20) };
@@ -104,7 +115,7 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatPrusa = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 410), Size = new Size(220, 20) };
             Label lblPrusaPath = new() { Text = "Prusa .EXE Path:", Location = new Point(10, 440), Size = new Size(150, 20) };
             txtPrusaPath = new TextBox { Location = new Point(170, 440), Size = new Size(220, 20) };
-            CheckBox chkPrusaEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 470), Size = new Size(150, 20), Checked = true };
+            chkPrusaEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 470), Size = new Size(150, 20)};
 
             // Slic3r Components
             Label lblSlic3rSettingsTitle = new() { Text = "Slic3r", Location = new Point(10, 500), Size = new Size(150, 20) };
@@ -112,7 +123,7 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatSlic3r = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 530), Size = new Size(220, 20) };
             Label lblSlic3rPath = new() { Text = "Slic3r .EXE Path:", Location = new Point(10, 560), Size = new Size(150, 20) };
             txtSlic3rPath = new TextBox { Location = new Point(170, 560), Size = new Size(220, 20) };
-            CheckBox chkSlic3rEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 590), Size = new Size(150, 20), Checked = true };
+            chkSlic3rEnabled = new CheckBox { Text = "Enabled", Location = new Point(10, 590), Size = new Size(150, 20) };
 
             // Export Path Components
             Label lblExportedTitle = new() { Text = "Exported File Path", Location = new Point(10, 620), Size = new Size(150, 20) };
@@ -151,7 +162,7 @@ namespace Easy3DPrint_NetFW
             });
 
     // Set the size of the form
-    Size = new Size(450, 750);
+    Size = new Size(450, 800);
         }
 
         private void SaveSettings(string curaPath, string exportPath, FileType exportFormatCura, FileType exportFormatBambu, string bambuPath, string ankerMakePath, FileType exportFormatAnkerMake, string prusaPath, FileType exportFormatPrusa, string slic3rPath, FileType exportFormatSlic3r, bool curaEnabled, bool bambuEnabled, bool ankerMakeEnabled, bool prusaEnabled, bool slic3rEnabled)
@@ -161,18 +172,18 @@ namespace Easy3DPrint_NetFW
                 CuraPath = curaPath ?? "",
                 ExportPath = exportPath ?? "",
                 ExportFormatCura = exportFormatCura,
+                CuraEnabled = curaEnabled,
                 ExportFormatBambu = exportFormatBambu,
                 BambuPath = bambuPath ?? "",
+                BambuEnabled = bambuEnabled,
                 AnkerMakePath = ankerMakePath ?? "",
                 ExportFormatAnkerMake = exportFormatAnkerMake,
+                AnkerMakeEnabled = ankerMakeEnabled,
                 PrusaPath = prusaPath ?? "",
                 ExportFormatPrusa = exportFormatPrusa,
+                PrusaEnabled = prusaEnabled,
                 Slic3rPath = slic3rPath ?? "",
                 ExportFormatSlic3r = exportFormatSlic3r,
-                CuraEnabled = curaEnabled,
-                BambuEnabled = bambuEnabled,
-                AnkerMakeEnabled = ankerMakeEnabled,
-                PrusaEnabled = prusaEnabled,
                 Slic3rEnabled = slic3rEnabled
             };
 
