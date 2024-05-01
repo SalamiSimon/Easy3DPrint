@@ -109,5 +109,21 @@ namespace Easy3DPrint_NetFW
                 Enabled = enabled;
             }
         }
+
+        public class OrcaSettings
+        {
+            public string Path { get; set; } = "";
+            public FileType FileType { get; set; } = FileType._STL;
+            public bool Enabled { get; set; } = false;
+
+            public OrcaSettings() { }
+
+            public OrcaSettings(string path, FileType fileType, bool enabled)
+            {
+                Path = path;
+                FileType = fileType;
+                Enabled = enabled;
+            }
+        }
     }
 }

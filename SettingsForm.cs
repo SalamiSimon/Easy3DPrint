@@ -19,6 +19,7 @@ namespace Easy3DPrint_NetFW
         private ComboBox cmbExportFormatAnkerMake;
         private ComboBox cmbExportFormatPrusa;
         private ComboBox cmbExportFormatSlic3r;
+        private ComboBox cmbExportFormatOrca;
         private ComboBox cmbQuickSaveFileType;
 
         private TextBox txtCuraPath;
@@ -26,6 +27,7 @@ namespace Easy3DPrint_NetFW
         private TextBox txtAnkerMakePath;
         private TextBox txtPrusaPath;
         private TextBox txtSlic3rPath;
+        private TextBox txtOrcaPath;
         private TextBox txtExportPath;
 
         private CheckBox chkCuraEnabled;
@@ -33,6 +35,7 @@ namespace Easy3DPrint_NetFW
         private CheckBox chkPrusaEnabled;
         private CheckBox chkAnkerMakeEnabled;
         private CheckBox chkBambuEnabled;
+        private CheckBox chkOrcaEnabled;
 
         private Button btnSave;
 
@@ -42,11 +45,13 @@ namespace Easy3DPrint_NetFW
         public string AnkerMakePath => txtAnkerMakePath.Text;
         public string PrusaPath => txtPrusaPath.Text;
         public string Slic3rPath => txtSlic3rPath.Text;
+        public string OrcaPath => txtOrcaPath.Text;
         public string ExportFormatCura => cmbExportFormatCura.SelectedItem.ToString();
         public string ExportFormatBambuLab => cmbExportFormatBambuLab.SelectedItem.ToString();
         public string ExportFormatAnkerMake => cmbExportFormatAnkerMake.SelectedItem.ToString();
         public string ExportFormatPrusa => cmbExportFormatPrusa.SelectedItem.ToString();
         public string ExportFormatSlic3r => cmbExportFormatSlic3r.SelectedItem.ToString();
+        public string ExportFormatOrca => cmbExportFormatOrca.SelectedItem.ToString();
         public string ExportFormatQuickSave => cmbQuickSaveFileType.SelectedItem.ToString();
 
         public SettingsDialog(
@@ -55,7 +60,8 @@ namespace Easy3DPrint_NetFW
             ApplicationSettings.BambuSettings bambuSettings,
             ApplicationSettings.AnkerMakeSettings ankerMakeSettings,
             ApplicationSettings.PrusaSettings prusaSettings,
-            ApplicationSettings.Slic3rSettings slic3rSettings)
+            ApplicationSettings.Slic3rSettings slic3rSettings,
+            ApplicationSettings.OrcaSettings orcaSettings)
         {
             InitializeComponents();
 
@@ -80,6 +86,10 @@ namespace Easy3DPrint_NetFW
             txtSlic3rPath.Text = slic3rSettings?.Path ?? string.Empty;
             cmbExportFormatSlic3r.SelectedItem = slic3rSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
             chkSlic3rEnabled.Checked = slic3rSettings.Enabled;
+
+            txtOrcaPath.Text = orcaSettings?.Path ?? string.Empty;
+            cmbExportFormatOrca.SelectedItem = orcaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
+            chkOrcaEnabled.Checked = orcaSettings.Enabled;
 
             cmbQuickSaveFileType.SelectedItem = addInSettings?.QuickSaveType.ToString().TrimStart('_') ?? string.Empty;
         }
@@ -257,15 +267,48 @@ namespace Easy3DPrint_NetFW
                 btnBrowseSlic3rPath.Visible = chkSlic3rEnabled.Checked;
             };
 
+            // Orca Components
+            Label lblOrcaSettingsTitle = new() { Text = "Orca Slicer", Location = new Point(10, 620), Size = new Size(150, 20) };
+            lblOrcaSettingsTitle.Font = new Font(lblOrcaSettingsTitle.Font, FontStyle.Bold);
+            lblOrcaSettingsTitle.Font = new Font(lblOrcaSettingsTitle.Font.FontFamily, lblOrcaSettingsTitle.Font.Size + 1, FontStyle.Bold);
+            chkOrcaEnabled = new CheckBox { Text = "Orca Enabled", Location = new Point(10, 650), Size = new Size(150, 20) };
+            Label lblOrcaFormat = new() { Text = "Orca Filetype:", Location = new Point(10, 680), Size = new Size(150, 20) };
+            cmbExportFormatOrca = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 680), Size = new Size(220, 20) };
+            Label lblOrcaPath = new() { Text = "Orca .EXE Path:", Location = new Point(10, 710), Size = new Size(150, 20) };
+            txtOrcaPath = new TextBox { Location = new Point(170, 710), Size = new Size(220, 20) };
+            Button btnBrowseOrcaPath = new Button { Text = "Browse", Location = new Point(400, 710), Size = new Size(75, 20) };
+            btnBrowseOrcaPath.Click += (sender, e) => {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Executable files (*.exe)|*.exe";
+                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                    txtOrcaPath.Text = openFileDialog.FileName;
+                }
+            };
+
+            lblOrcaFormat.Visible = chkOrcaEnabled.Checked;
+            cmbExportFormatOrca.Visible = chkOrcaEnabled.Checked;
+            lblOrcaPath.Visible = chkOrcaEnabled.Checked;
+            txtOrcaPath.Visible = chkOrcaEnabled.Checked;
+            btnBrowseOrcaPath.Visible = chkOrcaEnabled.Checked;
+
+            chkOrcaEnabled.CheckedChanged += (sender, e) =>
+            {
+                lblOrcaFormat.Visible = chkOrcaEnabled.Checked;
+                cmbExportFormatOrca.Visible = chkOrcaEnabled.Checked;
+                lblOrcaPath.Visible = chkOrcaEnabled.Checked;
+                txtOrcaPath.Visible = chkOrcaEnabled.Checked;
+                btnBrowseOrcaPath.Visible = chkOrcaEnabled.Checked;
+            };
+
             // Add-in settings Components
-            Label lblExportedTitle = new() { Text = "Add-In Settings", Location = new Point(10, 620), Size = new Size(150, 20) };
+            Label lblExportedTitle = new() { Text = "Add-In Settings", Location = new Point(10, 750), Size = new Size(150, 20) };
             lblExportedTitle.Font = new Font(lblExportedTitle.Font, FontStyle.Bold);
             lblExportedTitle.Font = new Font(lblExportedTitle.Font.FontFamily, lblExportedTitle.Font.Size + 1, FontStyle.Bold);
-            Label lblQuickSaveFileTypeTitle = new() { Text = "QuickSave Filetype", Location = new Point(10, 650), Size = new Size(150, 20) };
-            cmbQuickSaveFileType = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 650), Size = new Size(220, 20) };
-            Label lblExportPath = new() { Text = "File Export Path:", Location = new Point(10, 680), Size = new Size(150, 20) };
-            txtExportPath = new TextBox { Location = new Point(170, 680), Size = new Size(220, 20) };
-            Button btnBrowseExportPath = new Button { Text = "Browse", Location = new Point(400, 680), Size = new Size(75, 20) };
+            Label lblQuickSaveFileTypeTitle = new() { Text = "QuickSave Filetype", Location = new Point(10, 780), Size = new Size(150, 20) };
+            cmbQuickSaveFileType = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 780), Size = new Size(220, 20) };
+            Label lblExportPath = new() { Text = "File Export Path:", Location = new Point(10, 810), Size = new Size(150, 20) };
+            txtExportPath = new TextBox { Location = new Point(170, 810), Size = new Size(220, 20) };
+            Button btnBrowseExportPath = new Button { Text = "Browse", Location = new Point(400, 810), Size = new Size(75, 20) };
             btnBrowseExportPath.Click += (sender, e) => {
                 FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK) {
@@ -274,7 +317,7 @@ namespace Easy3DPrint_NetFW
             };
 
             // Save button
-            btnSave = new Button { Text = "Save", Location = new Point(10, 720), Size = new Size(450, 30) };
+            btnSave = new Button { Text = "Save", Location = new Point(10, 840), Size = new Size(450, 30) };
 
             // Populate ComboBoxes
             cmbExportFormatCura.Items.AddRange(new string[] { "OBJ", "STL", "3MF" });
@@ -283,6 +326,7 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatPrusa.Items.AddRange(new string[] { "OBJ", "STL", "STEP", "3MF" });
             cmbExportFormatSlic3r.Items.AddRange(new string[] { "OBJ", "STL", "3MF" }); // Potentially add AMF in the future
             cmbQuickSaveFileType.Items.AddRange(new string[] { "OBJ", "STL", "STEP", "3MF" });
+            cmbExportFormatOrca.Items.AddRange(new string[] { "OBJ", "STL", "STEP", "3MF" });
 
             btnSave.Click += (sender, e) =>
             {
@@ -291,9 +335,31 @@ namespace Easy3DPrint_NetFW
                 FileType exportFormatAnkerMake = (!string.IsNullOrEmpty(this.ExportFormatAnkerMake)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatAnkerMake) : FileType._NONE;
                 FileType exportFormatPrusa = (!string.IsNullOrEmpty(this.ExportFormatPrusa)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatPrusa) : FileType._NONE;
                 FileType exportFormatSlic3r = (!string.IsNullOrEmpty(this.ExportFormatSlic3r)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatSlic3r) : FileType._NONE;
+                FileType exportFormatOrca = (!string.IsNullOrEmpty(this.ExportFormatOrca)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatOrca) : FileType._NONE;
                 FileType quickSaveFileType = (!string.IsNullOrEmpty(this.ExportFormatQuickSave)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatQuickSave) : FileType._NONE;
 
-                SaveSettings(this.CuraPath, this.ExportPath, exportFormatCura, exportFormatBambu, this.BambuLabPath, this.AnkerMakePath, exportFormatAnkerMake, this.PrusaPath, exportFormatPrusa, this.Slic3rPath, exportFormatSlic3r, quickSaveFileType, chkCuraEnabled.Checked, chkBambuEnabled.Checked, chkAnkerMakeEnabled.Checked, chkPrusaEnabled.Checked, chkSlic3rEnabled.Checked);
+                SaveSettings(
+                    this.ExportPath, 
+                    this.CuraPath, 
+                    this.BambuLabPath, 
+                    this.AnkerMakePath, 
+                    this.PrusaPath, 
+                    this.Slic3rPath,
+                    this.OrcaPath,
+                    exportFormatCura, 
+                    exportFormatBambu, 
+                    exportFormatAnkerMake, 
+                    exportFormatPrusa, 
+                    exportFormatSlic3r, 
+                    exportFormatOrca, 
+                    quickSaveFileType, 
+                    chkCuraEnabled.Checked, 
+                    chkBambuEnabled.Checked, 
+                    chkAnkerMakeEnabled.Checked, 
+                    chkPrusaEnabled.Checked, 
+                    chkSlic3rEnabled.Checked, 
+                    chkOrcaEnabled.Checked
+                );
             };
 
             // Add components to the form
@@ -303,20 +369,42 @@ namespace Easy3DPrint_NetFW
                 lblAnkerMakeSettingsTitle, chkAnkerMakeEnabled, lblAnkerMakeFormat, cmbExportFormatAnkerMake, lblAnkerMakePath, txtAnkerMakePath, btnBrowseAnkerMakePath,
                 lblPrusaSettingsTitle, chkPrusaEnabled, lblPrusaFormat, cmbExportFormatPrusa, lblPrusaPath, txtPrusaPath, btnBrowsePrusaPath,
                 lblSlic3rSettingsTitle, chkSlic3rEnabled, lblSlic3rFormat, cmbExportFormatSlic3r, lblSlic3rPath, txtSlic3rPath, btnBrowseSlic3rPath,
+                lblOrcaSettingsTitle, chkOrcaEnabled, lblOrcaFormat, cmbExportFormatOrca, lblOrcaPath, txtOrcaPath, btnBrowseOrcaPath,
                 lblExportedTitle, lblExportPath, txtExportPath, btnBrowseExportPath,
                 lblQuickSaveFileTypeTitle, cmbQuickSaveFileType, btnSave
             });
 
         // Set the size of the form
-        Size = new Size(500, 800);
+        Size = new Size(500, 950);
         }
 
-        private void SaveSettings(string curaPath, string exportPath, FileType exportFormatCura, FileType exportFormatBambu, string bambuPath, string ankerMakePath, FileType exportFormatAnkerMake, string prusaPath, FileType exportFormatPrusa, string slic3rPath, FileType exportFormatSlic3r, FileType quickSaveFileType, bool curaEnabled, bool bambuEnabled, bool ankerMakeEnabled, bool prusaEnabled, bool slic3rEnabled)
+        private void SaveSettings(
+            string exportPath, 
+            string curaPath, 
+            string bambuPath, 
+            string ankerMakePath, 
+            string prusaPath, 
+            string slic3rPath,
+            string orcaPath,
+            FileType exportFormatCura, 
+            FileType exportFormatBambu, 
+            FileType exportFormatAnkerMake, 
+            FileType exportFormatPrusa, 
+            FileType exportFormatSlic3r,
+            FileType exportFormatOrca,
+            FileType quickSaveFileType, 
+            bool curaEnabled, 
+            bool bambuEnabled, 
+            bool ankerMakeEnabled, 
+            bool prusaEnabled, 
+            bool slic3rEnabled,
+            bool orcaEnabled
+        )
         {
             var settings = new
             {
-                CuraPath = curaPath ?? "",
                 ExportPath = exportPath ?? "",
+                CuraPath = curaPath ?? "",
                 ExportFormatCura = exportFormatCura,
                 CuraEnabled = curaEnabled,
                 ExportFormatBambu = exportFormatBambu,
@@ -331,6 +419,9 @@ namespace Easy3DPrint_NetFW
                 Slic3rPath = slic3rPath ?? "",
                 ExportFormatSlic3r = exportFormatSlic3r,
                 Slic3rEnabled = slic3rEnabled,
+                OrcaPath = orcaPath ?? "",
+                ExportFormatOrca = exportFormatOrca,
+                OrcaEnabled = orcaEnabled,
                 ExportFormatQuickSave = quickSaveFileType
             };
 
@@ -338,7 +429,7 @@ namespace Easy3DPrint_NetFW
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented, new StringEnumConverter());
             File.WriteAllText(addinSettings.DataPath, json);
 
-            MessageBox.Show("Settings saved.\n\nEnable state will update correctly after the next restart. (Or open and close settings again)");
+            MessageBox.Show("Settings saved.\n\nKnown issue: Changes are not applied until you open and close settings again");
             this.Close();
         }
     }

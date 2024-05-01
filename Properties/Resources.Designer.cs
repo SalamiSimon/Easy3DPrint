@@ -103,6 +103,16 @@ namespace Easy3DPrint_NetFW.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap orca {
+            get {
+                object obj = ResourceManager.GetObject("orca", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap prusa {
             get {
                 object obj = ResourceManager.GetObject("prusa", resourceCulture);
