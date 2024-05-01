@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="3DPrint_SW.sln" />
+    <None Include="img\quicksave.png" />
     <None Include="img\github.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
