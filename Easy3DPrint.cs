@@ -22,12 +22,13 @@ namespace Easy3DPrint_NetFW
 
     public class Easy3DPrint : SwAddInEx
     {
-        private readonly AddinSettings exportSettings = new AddinSettings();
+        private readonly AddinSettings addInSettings = new AddinSettings();
         private readonly CuraSettings curaSettings = new CuraSettings();
         private readonly BambuSettings bambuSettings = new BambuSettings();
         private readonly AnkerMakeSettings ankerMakeSettings = new AnkerMakeSettings();
         private readonly PrusaSettings prusaSettings = new PrusaSettings();
         private readonly Slic3rSettings slic3rSettings = new Slic3rSettings();
+        private readonly OrcaSettings orcaSettings = new OrcaSettings();
 
         [Title("Easy3DPrint")]
         [Description("Open parts directly in slicing apps")]
@@ -59,10 +60,20 @@ namespace Easy3DPrint_NetFW
             [Icon(typeof(Resources), nameof(Resources.slic3r))]
             OpenInSlic3r,
 
+            [Title("Open in Orca")]
+            [Description("Opens the model in Orca")]
+            [Icon(typeof(Resources), nameof(Resources.orca))]
+            OpenInOrca,
+
             [Title("Settings")]
             [Description("Easy3DPrint Settings")]
             [Icon(typeof(Resources), nameof(Resources.settings))]
             Settings,
+
+            [Title("Quick Save")]
+            [Description("Quick Export File")]
+            [Icon(typeof(Resources), nameof(Resources.quicksave))]
+            QuickSave,
 
             [Title("View Github Repo")]
             [Description("Easy3DPrint Github Repo")]
@@ -78,9 +89,9 @@ namespace Easy3DPrint_NetFW
 
                 ShowSettingsDialog();
 
-                if (!Directory.Exists(exportSettings.ExportPath))
+                if (!Directory.Exists(addInSettings.ExportPath))
                 {
-                    Directory.CreateDirectory(exportSettings.ExportPath);
+                    Directory.CreateDirectory(addInSettings.ExportPath);
                 }
 
                 LoadSettings();
@@ -110,20 +121,23 @@ namespace Easy3DPrint_NetFW
                 case Commands_e.OpenInSlic3r:
                     state.Enabled = slic3rSettings.Enabled;
                     break;
+                case Commands_e.OpenInOrca:
+                    state.Enabled = orcaSettings.Enabled;
+                    break;
             }
         }
 
         private bool LoadSettings()
         {
-            if (File.Exists(exportSettings.DataPath))
+            if (File.Exists(addInSettings.DataPath))
             {
                 try
                 {
-                    string json = File.ReadAllText(exportSettings.DataPath);
+                    string json = File.ReadAllText(addInSettings.DataPath);
                     var settings = JsonConvert.DeserializeObject<dynamic>(json);
 
                     // Load settings
-                    exportSettings.ExportPath = settings.ExportPath;
+                    addInSettings.ExportPath = settings.ExportPath;
 
                     curaSettings.Path = settings.CuraPath;
                     curaSettings.FileType = settings.ExportFormatCura;
@@ -145,6 +159,13 @@ namespace Easy3DPrint_NetFW
                     prusaSettings.FileType = settings.ExportFormatPrusa;
                     prusaSettings.Enabled = settings.PrusaEnabled;
 
+                    orcaSettings.Path = settings.OrcaPath;
+                    orcaSettings.FileType = settings.ExportFormatOrca;
+                    orcaSettings.Enabled = settings.OrcaEnabled;
+
+                    if (settings.ExportFormatQuickSave != null)
+                        addInSettings.QuickSaveType = settings.ExportFormatQuickSave;
+
                     return true; // Settings loaded successfully
                 }
                 catch (Exception ex)
@@ -159,7 +180,7 @@ namespace Easy3DPrint_NetFW
 
         public void ShowSettingsDialog()
         {
-            SettingsDialog settingsDialog = new SettingsDialog(exportSettings, curaSettings, bambuSettings, ankerMakeSettings, prusaSettings, slic3rSettings);
+            SettingsDialog settingsDialog = new SettingsDialog(addInSettings, curaSettings, bambuSettings, ankerMakeSettings, prusaSettings, slic3rSettings, orcaSettings);
             if (settingsDialog.ShowDialog() == DialogResult.OK)
             {
                 LoadSettings();
@@ -175,7 +196,7 @@ namespace Easy3DPrint_NetFW
 
                     if (curaSettings.FileType != FileType._NONE)
                     {
-                        FilePathCura = SaveCurrentPart(exportSettings.ExportPath, curaSettings.FileType);
+                        FilePathCura = SaveCurrentPart(addInSettings.ExportPath, curaSettings.FileType);
                     }
                     else
                     {
@@ -197,7 +218,7 @@ namespace Easy3DPrint_NetFW
 
                     if (bambuSettings.FileType != FileType._NONE)
                     {
-                        FilePathBambu = SaveCurrentPart(exportSettings.ExportPath, bambuSettings.FileType);
+                        FilePathBambu = SaveCurrentPart(addInSettings.ExportPath, bambuSettings.FileType);
                     }
                     else
                     {
@@ -219,7 +240,7 @@ namespace Easy3DPrint_NetFW
 
                     if (ankerMakeSettings.FileType != FileType._NONE)
                     {
-                        FilePathAnker = SaveCurrentPart(exportSettings.ExportPath, ankerMakeSettings.FileType);
+                        FilePathAnker = SaveCurrentPart(addInSettings.ExportPath, ankerMakeSettings.FileType);
                     }
                     else
                     {
@@ -241,7 +262,7 @@ namespace Easy3DPrint_NetFW
 
                     if (prusaSettings.FileType != FileType._NONE)
                     {
-                        FilePathPrusa = SaveCurrentPart(exportSettings.ExportPath, prusaSettings.FileType);
+                        FilePathPrusa = SaveCurrentPart(addInSettings.ExportPath, prusaSettings.FileType);
                     }
                     else
                     {
@@ -263,7 +284,7 @@ namespace Easy3DPrint_NetFW
 
                     if (slic3rSettings.FileType != FileType._NONE)
                     {
-                        FilePathSlic3r = SaveCurrentPart(exportSettings.ExportPath, slic3rSettings.FileType);
+                        FilePathSlic3r = SaveCurrentPart(addInSettings.ExportPath, slic3rSettings.FileType);
                     }
                     else
                     {
@@ -277,6 +298,35 @@ namespace Easy3DPrint_NetFW
                     else
                     {
                         Application.ShowMessageBox("No Slic3r executable path entered in settings or file not saved sucessfully.");
+                    }
+                    break;
+
+                case Commands_e.OpenInOrca:
+                    string FilePathOrca = null;
+
+                    if (orcaSettings.FileType != FileType._NONE)
+                    {
+                        FilePathOrca = SaveCurrentPart(addInSettings.ExportPath, orcaSettings.FileType);
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("Select file format in settings.");
+                    }
+
+                    if (!string.IsNullOrEmpty(FilePathOrca) && !string.IsNullOrEmpty(orcaSettings.Path))
+                    {
+                        System.Diagnostics.Process.Start(orcaSettings.Path, $"\"{FilePathOrca}\"");
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("No Orca executable path entered in settings or file not saved sucessfully.");
+                    }
+                    break;
+
+                case Commands_e.QuickSave:
+                    if (addInSettings.QuickSaveType != FileType._NONE)
+                    {
+                        FilePathSlic3r = SaveCurrentPart(addInSettings.ExportPath, addInSettings.QuickSaveType);
                     }
                     break;
 

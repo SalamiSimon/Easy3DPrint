@@ -18,13 +18,15 @@ namespace Easy3DPrint_NetFW
         {
             public string ExportPath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AutoExportSW");
             public string DataPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Easy3DPrintSettings_" + Version + ".json");
-            public const string Version = "V1.0.2";
+            public FileType QuickSaveType { get; set; } = FileType._STL;
+            public const string Version = "V1.0.2"; // Oldest compatible settings config file structure 
 
             public AddinSettings() { }
 
-            public AddinSettings(string path)
+            public AddinSettings(string path, FileType quickSaveType)
             {
                 ExportPath = path;
+                QuickSaveType = quickSaveType;
             }
         }
 
@@ -108,5 +110,20 @@ namespace Easy3DPrint_NetFW
             }
         }
 
+        public class OrcaSettings
+        {
+            public string Path { get; set; } = "";
+            public FileType FileType { get; set; } = FileType._STL;
+            public bool Enabled { get; set; } = false;
+
+            public OrcaSettings() { }
+
+            public OrcaSettings(string path, FileType fileType, bool enabled)
+            {
+                Path = path;
+                FileType = fileType;
+                Enabled = enabled;
+            }
+        }
     }
 }
