@@ -127,7 +127,7 @@ namespace Easy3DPrint_NetFW
             }
         }
 
-        private bool LoadSettings()
+        public bool LoadSettings()
         {
             if (File.Exists(addInSettings.DataPath))
             {
@@ -335,8 +335,8 @@ namespace Easy3DPrint_NetFW
                     break;
 
                 case Commands_e.Settings:
-                    LoadSettings();
                     ShowSettingsDialog();
+                    LoadSettings();
                     break;
             }
         }
