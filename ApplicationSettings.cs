@@ -9,9 +9,11 @@ namespace Easy3DPrint_NetFW
         {
             _NONE,
             _STL,
-            _OBJ,
             _STEP,
-            _3MF
+            _3MF,
+            _AMF,
+            _SLDPRT,
+            _PLY
         }
 
         public class AddinSettings

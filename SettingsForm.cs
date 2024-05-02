@@ -320,13 +320,14 @@ namespace Easy3DPrint_NetFW
             btnSave = new Button { Text = "Save", Location = new Point(10, 840), Size = new Size(450, 30) };
 
             // Populate ComboBoxes
-            cmbExportFormatCura.Items.AddRange(new string[] { "OBJ", "STL", "3MF" });
-            cmbExportFormatBambuLab.Items.AddRange(new string[] { "OBJ", "STL", "STEP", "3MF" });
-            cmbExportFormatAnkerMake.Items.AddRange(new string[] { "OBJ", "STL", "3MF" }); // Potentially add PLY & AMF in the future
-            cmbExportFormatPrusa.Items.AddRange(new string[] { "OBJ", "STL", "STEP", "3MF" });
-            cmbExportFormatSlic3r.Items.AddRange(new string[] { "OBJ", "STL", "3MF" }); // Potentially add AMF in the future
-            cmbQuickSaveFileType.Items.AddRange(new string[] { "OBJ", "STL", "STEP", "3MF" });
-            cmbExportFormatOrca.Items.AddRange(new string[] { "OBJ", "STL", "STEP", "3MF" });
+            cmbExportFormatCura.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
+            cmbExportFormatBambuLab.Items.AddRange(new string[] { "AMF", "STL", "STEP", "3MF" });
+            cmbExportFormatAnkerMake.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
+            cmbExportFormatPrusa.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
+            cmbExportFormatSlic3r.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
+            cmbExportFormatOrca.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
+
+            cmbQuickSaveFileType.Items.AddRange(new string[] { "AMF", "STL", "STEP", "3MF", "SLDPRT", "PLY"});
 
             btnSave.Click += (sender, e) =>
             {
@@ -429,7 +430,7 @@ namespace Easy3DPrint_NetFW
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented, new StringEnumConverter());
             File.WriteAllText(addinSettings.DataPath, json);
 
-            MessageBox.Show("Settings saved.\n\nKnown issue: Changes are not applied until you open and close settings again");
+            MessageBox.Show("Settings saved.");
             this.Close();
         }
     }
