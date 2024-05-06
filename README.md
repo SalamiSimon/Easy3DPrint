@@ -2,6 +2,8 @@
 
 Easy3DPrint is a SolidWorks add-in designed to make it easy to open your 3D models directly in any slicing software. This add-in supports a range of file formats and is compatible with multiple slicing platforms.
 
+You can also directly open multiple parts by creating an assembly.
+
 <img width="750" alt="image" src="https://github.com/SalamiSimon/Easy3DPrint/assets/9504348/cd22afc3-f0ab-463e-bbd6-54b1f4f0ec9f">
 
 
