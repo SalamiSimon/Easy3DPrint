@@ -29,6 +29,13 @@ namespace Easy3DPrint_NetFW
         private readonly PrusaSettings prusaSettings = new PrusaSettings();
         private readonly Slic3rSettings slic3rSettings = new Slic3rSettings();
         private readonly OrcaSettings orcaSettings = new OrcaSettings();
+        private readonly CustomSettings customSettings = new CustomSettings();
+        private readonly string customSlicerName;
+
+        public Easy3DPrint()
+        {
+            customSlicerName = customSettings.slicerName;
+        }
 
         [Title("Easy3DPrint")]
         [Description("Open parts directly in slicing apps")]
@@ -65,6 +72,11 @@ namespace Easy3DPrint_NetFW
             [Icon(typeof(Resources), nameof(Resources.orca))]
             OpenInOrca,
 
+            [Title(customSlicerName)]
+            [Description("Opens the model in " + customSettings.slicerName)]
+            [IconFromPath("C:\\Path\\To\\Your\\Icon\\bambu.png")]
+            OpenInCustomSlicer,
+
             [Title("Settings")]
             [Description("Easy3DPrint Settings")]
             [Icon(typeof(Resources), nameof(Resources.settings))]
@@ -100,6 +112,12 @@ namespace Easy3DPrint_NetFW
             cmdGrp.CommandStateResolve += OnButtonEnable;
             cmdGrp.CommandClick += OnCommandClick;
 
+            // Load custom slicer icon dynamically
+            if (!string.IsNullOrEmpty(customSettings.imgPath))
+            {
+                var customIcon = new Bitmap(customSettings.imgPath);
+                cmdGrp.CommandItems[Commands_e.OpenInCustomSlicer].Icon = customIcon;
+            }
         }
 
         private void OnButtonEnable(Commands_e cmd, CommandState state)
@@ -122,6 +140,9 @@ namespace Easy3DPrint_NetFW
                     state.Enabled = slic3rSettings.Enabled;
                     break;
                 case Commands_e.OpenInOrca:
+                    state.Enabled = orcaSettings.Enabled;
+                    break;
+                case Commands_e.OpenInCustomSlicer:
                     state.Enabled = orcaSettings.Enabled;
                     break;
             }
@@ -162,6 +183,10 @@ namespace Easy3DPrint_NetFW
                     orcaSettings.Path = settings.OrcaPath;
                     orcaSettings.FileType = settings.ExportFormatOrca;
                     orcaSettings.Enabled = settings.OrcaEnabled;
+
+                    customSettings.Path = settings.CustomPath;
+                    customSettings.FileType = settings.ExportFormatCustom;
+                    customSettings.Enabled = settings.CustomEnabled;
 
                     if (settings.ExportFormatQuickSave != null)
                         addInSettings.QuickSaveType = settings.ExportFormatQuickSave;
@@ -320,6 +345,28 @@ namespace Easy3DPrint_NetFW
                     else
                     {
                         Application.ShowMessageBox("No Orca executable path entered in settings or file not saved sucessfully.");
+                    }
+                    break;
+
+                case Commands_e.OpenInCustomSlicer:
+                    string FilePathCustom = null;
+
+                    if (customSettings.FileType != FileType._NONE)
+                    {
+                        FilePathCustom = SaveCurrentPart(addInSettings.ExportPath, customSettings.FileType);
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("Select file format in settings.");
+                    }
+
+                    if (!string.IsNullOrEmpty(FilePathCustom) && !string.IsNullOrEmpty(customSettings.Path))
+                    {
+                        System.Diagnostics.Process.Start(customSettings.Path, $"\"{FilePathCustom}\"");
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("No Custom slicer executable path entered in settings or file not saved sucessfully.");
                     }
                     break;
 

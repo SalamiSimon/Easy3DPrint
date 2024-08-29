@@ -22,6 +22,8 @@ namespace Easy3DPrint_NetFW
         private ComboBox cmbExportFormatOrca;
         private ComboBox cmbQuickSaveFileType;
 
+            private ComboBox cmdExportFormatCustom;
+
         private TextBox txtCuraPath;
         private TextBox txtBambuLabPath;
         private TextBox txtAnkerMakePath;
@@ -30,12 +32,19 @@ namespace Easy3DPrint_NetFW
         private TextBox txtOrcaPath;
         private TextBox txtExportPath;
 
+            private TextBox txtCustomPath;
+
         private CheckBox chkCuraEnabled;
         private CheckBox chkSlic3rEnabled;
         private CheckBox chkPrusaEnabled;
         private CheckBox chkAnkerMakeEnabled;
         private CheckBox chkBambuEnabled;
         private CheckBox chkOrcaEnabled;
+
+            private Checkbox chkCustomEnabled;
+            private TextBox txtCustomSlicerName;
+            private TextBox txtCustomSlicerIconPath;
+            private Button btnBrowseCustomSlicerIcon;
 
         private Button btnSave;
 
@@ -46,6 +55,7 @@ namespace Easy3DPrint_NetFW
         public string PrusaPath => txtPrusaPath.Text;
         public string Slic3rPath => txtSlic3rPath.Text;
         public string OrcaPath => txtOrcaPath.Text;
+            public string CustomPath => txtCustomPath.Text;
         public string ExportFormatCura => cmbExportFormatCura.SelectedItem.ToString();
         public string ExportFormatBambuLab => cmbExportFormatBambuLab.SelectedItem.ToString();
         public string ExportFormatAnkerMake => cmbExportFormatAnkerMake.SelectedItem.ToString();
@@ -53,6 +63,7 @@ namespace Easy3DPrint_NetFW
         public string ExportFormatSlic3r => cmbExportFormatSlic3r.SelectedItem.ToString();
         public string ExportFormatOrca => cmbExportFormatOrca.SelectedItem.ToString();
         public string ExportFormatQuickSave => cmbQuickSaveFileType.SelectedItem.ToString();
+            public string ExportFormatCustom => cmdExportFormatCustom.SelectItem.ToString();
 
         public SettingsDialog(
             ApplicationSettings.AddinSettings addInSettings,
@@ -61,7 +72,8 @@ namespace Easy3DPrint_NetFW
             ApplicationSettings.AnkerMakeSettings ankerMakeSettings,
             ApplicationSettings.PrusaSettings prusaSettings,
             ApplicationSettings.Slic3rSettings slic3rSettings,
-            ApplicationSettings.OrcaSettings orcaSettings)
+            ApplicationSettings.OrcaSettings orcaSettings,
+            ApplicationSettings.OrcaSettings customSettings)
         {
             InitializeComponents();
 
@@ -91,6 +103,9 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatOrca.SelectedItem = orcaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
             chkOrcaEnabled.Checked = orcaSettings.Enabled;
 
+            txtCustomSlicerName.Text = addInSettings?.CustomSlicerName ?? string.Empty;
+            txtCustomSlicerIconPath.Text = addInSettings?.CustomSlicerIconPath ?? string.Empty;
+
             cmbQuickSaveFileType.SelectedItem = addInSettings?.QuickSaveType.ToString().TrimStart('_') ?? string.Empty;
         }
 
@@ -101,6 +116,23 @@ namespace Easy3DPrint_NetFW
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
+
+            // Custom Slicer Components
+            Label lblCustomSlicerTitle = new() { Text = "Custom Slicer", Location = new Point(10, 880), Size = new Size(150, 20) };
+            lblCustomSlicerTitle.Font = new Font(lblCustomSlicerTitle.Font, FontStyle.Bold);
+            lblCustomSlicerTitle.Font = new Font(lblCustomSlicerTitle.Font.FontFamily, lblCustomSlicerTitle.Font.Size + 1, FontStyle.Bold);
+            Label lblCustomSlicerName = new() { Text = "Slicer Name:", Location = new Point(10, 910), Size = new Size(150, 20) };
+            txtCustomSlicerName = new TextBox { Location = new Point(170, 910), Size = new Size(220, 20) };
+            Label lblCustomSlicerIcon = new() { Text = "Icon Path:", Location = new Point(10, 940), Size = new Size(150, 20) };
+            txtCustomSlicerIconPath = new TextBox { Location = new Point(170, 940), Size = new Size(220, 20) };
+            btnBrowseCustomSlicerIcon = new Button { Text = "Browse", Location = new Point(400, 940), Size = new Size(75, 20) };
+            btnBrowseCustomSlicerIcon.Click += (sender, e) => {
+                OpenFileDialog openFileDialog = new OpenFileDialog();
+                openFileDialog.Filter = "Image files (*.png;*.jpg;*.jpeg)|*.png;*.jpg;*.jpeg";
+                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+                    txtCustomSlicerIconPath.Text = openFileDialog.FileName;
+                }
+            };
 
             // Cura Components
             Label lblCuraSettingsTitle = new Label { Text = "UltiMaker Cura", Location = new Point(10, 20), Size = new Size(150, 20) };
@@ -340,6 +372,8 @@ namespace Easy3DPrint_NetFW
                 FileType quickSaveFileType = (!string.IsNullOrEmpty(this.ExportFormatQuickSave)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatQuickSave) : FileType._NONE;
 
                 SaveSettings(
+                    this.CustomSlicerName,
+                    this.CustomSlicerIconPath
                     this.ExportPath, 
                     this.CuraPath, 
                     this.BambuLabPath, 
@@ -372,11 +406,12 @@ namespace Easy3DPrint_NetFW
                 lblSlic3rSettingsTitle, chkSlic3rEnabled, lblSlic3rFormat, cmbExportFormatSlic3r, lblSlic3rPath, txtSlic3rPath, btnBrowseSlic3rPath,
                 lblOrcaSettingsTitle, chkOrcaEnabled, lblOrcaFormat, cmbExportFormatOrca, lblOrcaPath, txtOrcaPath, btnBrowseOrcaPath,
                 lblExportedTitle, lblExportPath, txtExportPath, btnBrowseExportPath,
-                lblQuickSaveFileTypeTitle, cmbQuickSaveFileType, btnSave
+                lblQuickSaveFileTypeTitle, cmbQuickSaveFileType, btnSave, 
+                lblCustomSlicerTitle, lblCustomSlicerName, txtCustomSlicerName, lblCustomSlicerIcon, txtCustomSlicerIconPath, btnBrowseCustomSlicerIcon
             });
 
         // Set the size of the form
-        Size = new Size(500, 950);
+        Size = new Size(500, 1000);
         }
 
         private void SaveSettings(

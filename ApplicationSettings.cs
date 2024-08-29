@@ -127,5 +127,23 @@ namespace Easy3DPrint_NetFW
                 Enabled = enabled;
             }
         }
+
+        public class CustomSettings
+        {
+            public string Path { get; set; } = "";
+            public FileType FileType {get; set; } = FileType._STL;
+            public bool Enabled { get; set; } = false;
+            public string imgPath { get; set; } = "";
+            public string slicerName { get; set; } = "";
+
+            public CustomSettings() {}
+
+            public CustomSettings(string path, FileType filetype, bool enabled)
+            {
+                Path = path;
+                FileType = filetype;
+                Enabled = enabled;
+            }
+        }
     }
 }
