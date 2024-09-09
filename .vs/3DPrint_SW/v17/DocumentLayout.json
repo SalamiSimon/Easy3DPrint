@@ -1,12 +1,5 @@
 {
   "Version": 1,
-<<<<<<< Updated upstream
-  "WorkspaceRootPath": "C:\\Users\\Sten\\source\\repos\\Easy3DPrint_NetFW\\Easy3DPrint_NetFW\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{2477F33E-D045-40C5-881E-459BFBA6AB0D}|Easy3DPrint_NetFW.csproj|c:\\users\\sten\\source\\repos\\easy3dprint_netfw\\easy3dprint_netfw\\easy3dprint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{2477F33E-D045-40C5-881E-459BFBA6AB0D}|Easy3DPrint_NetFW.csproj|solutionrelative:easy3dprint.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-=======
   "WorkspaceRootPath": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\",
   "Documents": [
     {
@@ -16,7 +9,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{2477F33E-D045-40C5-881E-459BFBA6AB0D}|Easy3DPrint_NetFW.csproj|c:\\users\\simon\\source\\repos\\3dprint_sw\\easy3dprint\\applicationsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{2477F33E-D045-40C5-881E-459BFBA6AB0D}|Easy3DPrint_NetFW.csproj|solutionrelative:applicationsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
->>>>>>> Stashed changes
     }
   ],
   "DocumentGroupContainers": [
@@ -32,15 +24,6 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Easy3DPrint.cs",
-<<<<<<< Updated upstream
-              "DocumentMoniker": "C:\\Users\\Sten\\source\\repos\\Easy3DPrint_NetFW\\Easy3DPrint_NetFW\\Easy3DPrint.cs",
-              "RelativeDocumentMoniker": "Easy3DPrint.cs",
-              "ToolTip": "C:\\Users\\Sten\\source\\repos\\Easy3DPrint_NetFW\\Easy3DPrint_NetFW\\Easy3DPrint.cs",
-              "RelativeToolTip": "Easy3DPrint.cs",
-              "ViewState": "AQIAACkAAAAAAAAAAAAQwD8AAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-04-28T19:14:36.182Z",
-=======
               "DocumentMoniker": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\Easy3DPrint.cs",
               "RelativeDocumentMoniker": "Easy3DPrint.cs",
               "ToolTip": "C:\\Users\\Simon\\source\\repos\\3DPrint_SW\\Easy3DPrint\\Easy3DPrint.cs",
@@ -61,7 +44,6 @@
               "ViewState": "AQIAAH4AAAAAAAAAAAAAAIoAAAAmAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-08-29T07:24:25.903Z",
->>>>>>> Stashed changes
               "EditorCaption": ""
             }
           ]
