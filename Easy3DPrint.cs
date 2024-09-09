@@ -13,6 +13,8 @@ using static Easy3DPrint_NetFW.ApplicationSettings;
 using System;
 using Easy3DPrint_NetFW.Properties;
 using Xarial.XCad.UI.Commands.Structures;
+using System.Net.Http;
+using System.Net;
 
 namespace Easy3DPrint_NetFW
 {
@@ -29,13 +31,6 @@ namespace Easy3DPrint_NetFW
         private readonly PrusaSettings prusaSettings = new PrusaSettings();
         private readonly Slic3rSettings slic3rSettings = new Slic3rSettings();
         private readonly OrcaSettings orcaSettings = new OrcaSettings();
-        private readonly CustomSettings customSettings = new CustomSettings();
-        private readonly string customSlicerName;
-
-        public Easy3DPrint()
-        {
-            customSlicerName = customSettings.slicerName;
-        }
 
         [Title("Easy3DPrint")]
         [Description("Open parts directly in slicing apps")]
@@ -72,11 +67,6 @@ namespace Easy3DPrint_NetFW
             [Icon(typeof(Resources), nameof(Resources.orca))]
             OpenInOrca,
 
-            [Title(customSlicerName)]
-            [Description("Opens the model in " + customSettings.slicerName)]
-            [IconFromPath("C:\\Path\\To\\Your\\Icon\\bambu.png")]
-            OpenInCustomSlicer,
-
             [Title("Settings")]
             [Description("Easy3DPrint Settings")]
             [Icon(typeof(Resources), nameof(Resources.settings))]
@@ -90,11 +80,17 @@ namespace Easy3DPrint_NetFW
             [Title("View Github Repo")]
             [Description("Easy3DPrint Github Repo")]
             [Icon(typeof(Resources), nameof(Resources.github))]
-            Github
+            Github,
+
+            [Title("Check for Update")]
+            [Description("Check for update")]
+            [Icon(typeof(Resources), nameof(Resources.update))]
+            UpdateCheck
         }
 
         public override void OnConnect()
         {
+
             if (!LoadSettings())
             {
                 Application.ShowMessageBox("Before use, enter executable paths and filetype in Easy3DPrint settings.");
@@ -112,12 +108,6 @@ namespace Easy3DPrint_NetFW
             cmdGrp.CommandStateResolve += OnButtonEnable;
             cmdGrp.CommandClick += OnCommandClick;
 
-            // Load custom slicer icon dynamically
-            if (!string.IsNullOrEmpty(customSettings.imgPath))
-            {
-                var customIcon = new Bitmap(customSettings.imgPath);
-                cmdGrp.CommandItems[Commands_e.OpenInCustomSlicer].Icon = customIcon;
-            }
         }
 
         private void OnButtonEnable(Commands_e cmd, CommandState state)
@@ -142,8 +132,8 @@ namespace Easy3DPrint_NetFW
                 case Commands_e.OpenInOrca:
                     state.Enabled = orcaSettings.Enabled;
                     break;
-                case Commands_e.OpenInCustomSlicer:
-                    state.Enabled = orcaSettings.Enabled;
+                case Commands_e.UpdateCheck:
+                    state.Enabled = true;
                     break;
             }
         }
@@ -183,10 +173,6 @@ namespace Easy3DPrint_NetFW
                     orcaSettings.Path = settings.OrcaPath;
                     orcaSettings.FileType = settings.ExportFormatOrca;
                     orcaSettings.Enabled = settings.OrcaEnabled;
-
-                    customSettings.Path = settings.CustomPath;
-                    customSettings.FileType = settings.ExportFormatCustom;
-                    customSettings.Enabled = settings.CustomEnabled;
 
                     if (settings.ExportFormatQuickSave != null)
                         addInSettings.QuickSaveType = settings.ExportFormatQuickSave;
@@ -348,28 +334,6 @@ namespace Easy3DPrint_NetFW
                     }
                     break;
 
-                case Commands_e.OpenInCustomSlicer:
-                    string FilePathCustom = null;
-
-                    if (customSettings.FileType != FileType._NONE)
-                    {
-                        FilePathCustom = SaveCurrentPart(addInSettings.ExportPath, customSettings.FileType);
-                    }
-                    else
-                    {
-                        Application.ShowMessageBox("Select file format in settings.");
-                    }
-
-                    if (!string.IsNullOrEmpty(FilePathCustom) && !string.IsNullOrEmpty(customSettings.Path))
-                    {
-                        System.Diagnostics.Process.Start(customSettings.Path, $"\"{FilePathCustom}\"");
-                    }
-                    else
-                    {
-                        Application.ShowMessageBox("No Custom slicer executable path entered in settings or file not saved sucessfully.");
-                    }
-                    break;
-
                 case Commands_e.QuickSave:
                     if (addInSettings.QuickSaveType != FileType._NONE)
                     {
@@ -385,6 +349,50 @@ namespace Easy3DPrint_NetFW
                     ShowSettingsDialog();
                     LoadSettings();
                     break;
+
+                case Commands_e.UpdateCheck:
+                    CheckForUpdates();
+                    break;
+            }
+        }
+
+        private async void CheckForUpdates()
+        {
+            string currentVersion = "v1.0.5";
+            string repoOwner = "SalamiSimon";
+            string repoName = "Easy3DPrint";
+
+            // Ensure TLS 1.2 is used
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    client.Headers.Add("User-Agent", "Easy3DPrint/1.0");
+                    string response = await client.DownloadStringTaskAsync(new Uri($"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest"));
+                    dynamic latestRelease = JsonConvert.DeserializeObject(response);
+
+                    string latestVersion = latestRelease.tag_name;
+                    if (latestVersion != currentVersion)
+                    {
+                        Application.ShowMessageBox($"A new version ({latestVersion}) is available!\n\nClick on 'View Github Repo' to download the latest version.");
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox($" ({currentVersion}) is the latest version! No update is needed.");
+                    }
+                }
+                catch (WebException webEx)
+                {
+                    Application.ShowMessageBox("An error occurred while sending the request.");
+                    Console.WriteLine("WebException: " + webEx.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Application.ShowMessageBox("An error occurred while checking for updates.");
+                    Console.WriteLine("Exception: " + ex.ToString());
+                }
             }
         }
 
