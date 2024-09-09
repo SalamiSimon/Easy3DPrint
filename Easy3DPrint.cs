@@ -13,6 +13,7 @@ using static Easy3DPrint_NetFW.ApplicationSettings;
 using System;
 using Easy3DPrint_NetFW.Properties;
 using Xarial.XCad.UI.Commands.Structures;
+using System.Net;
 
 namespace Easy3DPrint_NetFW
 {
@@ -78,11 +79,17 @@ namespace Easy3DPrint_NetFW
             [Title("View Github Repo")]
             [Description("Easy3DPrint Github Repo")]
             [Icon(typeof(Resources), nameof(Resources.github))]
-            Github
+            Github,
+
+            [Title("Check for Update")]
+            [Description("Check for update")]
+            [Icon(typeof(Resources), nameof(Resources.update))]
+            UpdateCheck
         }
 
         public override void OnConnect()
         {
+
             if (!LoadSettings())
             {
                 Application.ShowMessageBox("Before use, enter executable paths and filetype in Easy3DPrint settings.");
@@ -123,6 +130,9 @@ namespace Easy3DPrint_NetFW
                     break;
                 case Commands_e.OpenInOrca:
                     state.Enabled = orcaSettings.Enabled;
+                    break;
+                case Commands_e.UpdateCheck:
+                    state.Enabled = true;
                     break;
             }
         }
@@ -338,6 +348,50 @@ namespace Easy3DPrint_NetFW
                     ShowSettingsDialog();
                     LoadSettings();
                     break;
+
+                case Commands_e.UpdateCheck:
+                    CheckForUpdates();
+                    break;
+            }
+        }
+
+        private async void CheckForUpdates()
+        {
+            string currentVersion = "v1.0.5";
+            string repoOwner = "SalamiSimon";
+            string repoName = "Easy3DPrint";
+
+            // Ensure TLS 1.2 is used
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+            using (WebClient client = new WebClient())
+            {
+                try
+                {
+                    client.Headers.Add("User-Agent", "Easy3DPrint/1.0");
+                    string response = await client.DownloadStringTaskAsync(new Uri($"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest"));
+                    dynamic latestRelease = JsonConvert.DeserializeObject(response);
+
+                    string latestVersion = latestRelease.tag_name;
+                    if (latestVersion != currentVersion)
+                    {
+                        Application.ShowMessageBox($"A new version ({latestVersion}) is available!\n\nClick on 'View Github Repo' to download the latest version.");
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox($" ({currentVersion}) is the latest version! No update is needed.");
+                    }
+                }
+                catch (WebException webEx)
+                {
+                    Application.ShowMessageBox("An error occurred while sending the request.");
+                    Console.WriteLine("WebException: " + webEx.ToString());
+                }
+                catch (Exception ex)
+                {
+                    Application.ShowMessageBox("An error occurred while checking for updates.");
+                    Console.WriteLine("Exception: " + ex.ToString());
+                }
             }
         }
 

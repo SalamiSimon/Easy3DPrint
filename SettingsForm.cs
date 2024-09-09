@@ -102,16 +102,42 @@ namespace Easy3DPrint_NetFW
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
 
-            // Cura Components
-            Label lblCuraSettingsTitle = new Label { Text = "UltiMaker Cura", Location = new Point(10, 20), Size = new Size(150, 20) };
-            lblCuraSettingsTitle.Font = new Font(lblCuraSettingsTitle.Font, FontStyle.Bold);
-            lblCuraSettingsTitle.Font = new Font(lblCuraSettingsTitle.Font.FontFamily, lblCuraSettingsTitle.Font.Size + 1, FontStyle.Bold);
-            chkCuraEnabled = new CheckBox { Text = "Cura Enabled", Location = new Point(10, 50), Size = new Size(150, 20)};
-            Label lblCuraFormat = new() { Text = "Cura Filetype:", Location = new Point(10, 80), Size = new Size(150, 20) };
-            cmbExportFormatCura = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 80), Size = new Size(220, 20) };
-            Label lblCuraPath = new() { Text = "Cura .EXE Path:", Location = new Point(10, 110), Size = new Size(150, 20) };
-            txtCuraPath = new TextBox { Location = new Point(170, 110), Size = new Size(220, 20) };
-            Button btnBrowseCuraPath = new Button { Text = "Browse", Location = new Point(400, 110), Size = new Size(75, 20) };
+            // Create a TableLayoutPanel
+            TableLayoutPanel tableLayoutPanel = new TableLayoutPanel
+            {
+                ColumnCount = 3,
+                RowCount = 0,
+                Dock = DockStyle.Fill,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink
+            };
+
+            // Add columns
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 20F));
+
+            // Add rows dynamically
+            void AddRow(Control label, Control control, Control button = null)
+            {
+                tableLayoutPanel.RowCount++;
+                tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+                tableLayoutPanel.Controls.Add(label, 0, tableLayoutPanel.RowCount - 1);
+                tableLayoutPanel.Controls.Add(control, 1, tableLayoutPanel.RowCount - 1);
+                if (button != null)
+                {
+                    tableLayoutPanel.Controls.Add(button, 2, tableLayoutPanel.RowCount - 1);
+                }
+            }
+
+            // Ultimaker Cura
+            AddRow(new Label { Text = "UltiMaker Cura", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            chkCuraEnabled = new CheckBox { Text = "UltiMaker Cura Enabled", AutoSize = true };
+            AddRow(chkCuraEnabled, new Control());
+            cmbExportFormatCura = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
+            AddRow(new Label { Text = "UltiMaker Cura Filetype:", AutoSize = true }, cmbExportFormatCura);
+            txtCuraPath = new TextBox { Width = 250 };
+            Button btnBrowseCuraPath = new Button { Text = "Browse" };
             btnBrowseCuraPath.Click += (sender, e) => {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Executable files (*.exe)|*.exe";
@@ -119,32 +145,16 @@ namespace Easy3DPrint_NetFW
                     txtCuraPath.Text = openFileDialog.FileName;
                 }
             };
+            AddRow(new Label { Text = "UltiMaker Cura .EXE Path:", AutoSize = true}, txtCuraPath, btnBrowseCuraPath);
 
-            lblCuraFormat.Visible = chkCuraEnabled.Checked;
-            cmbExportFormatCura.Visible = chkCuraEnabled.Checked;
-            lblCuraPath.Visible = chkCuraEnabled.Checked;
-            txtCuraPath.Visible = chkCuraEnabled.Checked;
-            btnBrowseCuraPath.Visible = chkCuraEnabled.Checked;
-
-            chkCuraEnabled.CheckedChanged += (sender, e) =>
-            {
-                lblCuraFormat.Visible = chkCuraEnabled.Checked;
-                cmbExportFormatCura.Visible = chkCuraEnabled.Checked;
-                lblCuraPath.Visible = chkCuraEnabled.Checked;
-                txtCuraPath.Visible = chkCuraEnabled.Checked;
-                btnBrowseCuraPath.Visible = chkCuraEnabled.Checked;
-            };
-
-            // Bambu Lab Components
-            Label lblBambuSettingsTitle = new() { Text = "Bambu Lab", Location = new Point(10, 140), Size = new Size(150, 20) };
-            lblBambuSettingsTitle.Font = new Font(lblBambuSettingsTitle.Font, FontStyle.Bold);
-            lblBambuSettingsTitle.Font = new Font(lblBambuSettingsTitle.Font.FontFamily, lblBambuSettingsTitle.Font.Size + 1, FontStyle.Bold);
-            chkBambuEnabled = new CheckBox { Text = "Bambu Enabled", Location = new Point(10, 170), Size = new Size(150, 20)};
-            Label lblBambuFormat = new() { Text = "Bambu Filetype:", Location = new Point(10, 200), Size = new Size(150, 20) };
-            cmbExportFormatBambuLab = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 200), Size = new Size(220, 20) };
-            Label lblBambuPath = new() { Text = "Bambu .EXE Path:", Location = new Point(10, 230), Size = new Size(150, 20) };
-            txtBambuLabPath = new TextBox { Location = new Point(170, 230), Size = new Size(220, 20) };
-            Button btnBrowseBambuPath = new Button { Text = "Browse", Location = new Point(400, 230), Size = new Size(75, 20) };
+            // Bambu Lab
+            AddRow(new Label { Text = "Bambu Lab", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            chkBambuEnabled = new CheckBox { Text = "Bambu Lab Enabled", AutoSize = true };
+            AddRow(chkBambuEnabled, new Control());
+            cmbExportFormatBambuLab = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
+            AddRow(new Label { Text = "Bambu Lab Filetype:", AutoSize = true }, cmbExportFormatBambuLab);
+            txtBambuLabPath = new TextBox { Width = 250 };
+            Button btnBrowseBambuPath = new Button { Text = "Browse" };
             btnBrowseBambuPath.Click += (sender, e) => {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Executable files (*.exe)|*.exe";
@@ -152,32 +162,16 @@ namespace Easy3DPrint_NetFW
                     txtBambuLabPath.Text = openFileDialog.FileName;
                 }
             };
+            AddRow(new Label { Text = "Bambu Lab .EXE Path:", AutoSize = true }, txtBambuLabPath, btnBrowseBambuPath);
 
-            lblBambuFormat.Visible = chkBambuEnabled.Checked;
-            cmbExportFormatBambuLab.Visible = chkBambuEnabled.Checked;
-            lblBambuPath.Visible = chkBambuEnabled.Checked;
-            txtBambuLabPath.Visible = chkBambuEnabled.Checked;
-            btnBrowseBambuPath.Visible = chkBambuEnabled.Checked;
-
-            chkBambuEnabled.CheckedChanged += (sender, e) =>
-            {
-                lblBambuFormat.Visible = chkBambuEnabled.Checked;
-                cmbExportFormatBambuLab.Visible = chkBambuEnabled.Checked;
-                lblBambuPath.Visible = chkBambuEnabled.Checked;
-                txtBambuLabPath.Visible = chkBambuEnabled.Checked;
-                btnBrowseBambuPath.Visible = chkBambuEnabled.Checked;
-            };
-
-            // AnkerMake Components
-            Label lblAnkerMakeSettingsTitle = new() { Text = "AnkerMake Studio", Location = new Point(10, 260), Size = new Size(150, 20) };
-            lblAnkerMakeSettingsTitle.Font = new Font(lblAnkerMakeSettingsTitle.Font, FontStyle.Bold);
-            lblAnkerMakeSettingsTitle.Font = new Font(lblAnkerMakeSettingsTitle.Font.FontFamily, lblAnkerMakeSettingsTitle.Font.Size + 1, FontStyle.Bold);
-            chkAnkerMakeEnabled = new CheckBox { Text = "Anker Enabled", Location = new Point(10, 290), Size = new Size(150, 20)};
-            Label lblAnkerMakeFormat = new() { Text = "Anker Filetype:", Location = new Point(10, 320), Size = new Size(150, 20) };
-            cmbExportFormatAnkerMake = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 320), Size = new Size(220, 20) };
-            Label lblAnkerMakePath = new() { Text = "Anker .EXE Path:", Location = new Point(10, 350), Size = new Size(150, 20) };
-            txtAnkerMakePath = new TextBox { Location = new Point(170, 350), Size = new Size(220, 20) };
-            Button btnBrowseAnkerMakePath = new Button { Text = "Browse", Location = new Point(400, 350), Size = new Size(75, 20) };
+            // AnkerMake
+            AddRow(new Label { Text = "AnkerMake Studio", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            chkAnkerMakeEnabled = new CheckBox { Text = "AnkerMake Enabled", AutoSize = true };
+            AddRow(chkAnkerMakeEnabled, new Control());
+            cmbExportFormatAnkerMake = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
+            AddRow(new Label { Text = "AnkerMake Filetype:", AutoSize = true }, cmbExportFormatAnkerMake);
+            txtAnkerMakePath = new TextBox { Width = 250 };
+            Button btnBrowseAnkerMakePath = new Button { Text = "Browse" };
             btnBrowseAnkerMakePath.Click += (sender, e) => {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Executable files (*.exe)|*.exe";
@@ -185,32 +179,16 @@ namespace Easy3DPrint_NetFW
                     txtAnkerMakePath.Text = openFileDialog.FileName;
                 }
             };
+            AddRow(new Label { Text = "AnkerMake .EXE Path:", AutoSize = true }, txtAnkerMakePath, btnBrowseAnkerMakePath);
 
-            lblAnkerMakeFormat.Visible = chkAnkerMakeEnabled.Checked;
-            cmbExportFormatAnkerMake.Visible = chkAnkerMakeEnabled.Checked;
-            lblAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
-            txtAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
-            btnBrowseAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
-
-            chkAnkerMakeEnabled.CheckedChanged += (sender, e) =>
-            {
-                lblAnkerMakeFormat.Visible = chkAnkerMakeEnabled.Checked;
-                cmbExportFormatAnkerMake.Visible = chkAnkerMakeEnabled.Checked;
-                lblAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
-                txtAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
-                btnBrowseAnkerMakePath.Visible = chkAnkerMakeEnabled.Checked;
-            };
-
-            // Prusa Components
-            Label lblPrusaSettingsTitle = new() { Text = "Prusa", Location = new Point(10, 380), Size = new Size(150, 20) };
-            lblPrusaSettingsTitle.Font = new Font(lblPrusaSettingsTitle.Font, FontStyle.Bold);
-            lblPrusaSettingsTitle.Font = new Font(lblPrusaSettingsTitle.Font.FontFamily, lblPrusaSettingsTitle.Font.Size + 1, FontStyle.Bold);
-            chkPrusaEnabled = new CheckBox { Text = "Prusa Enabled", Location = new Point(10, 410), Size = new Size(150, 20)};
-            Label lblPrusaFormat = new() { Text = "Prusa Filetype:", Location = new Point(10, 440), Size = new Size(150, 20) };
-            cmbExportFormatPrusa = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 440), Size = new Size(220, 20) };
-            Label lblPrusaPath = new() { Text = "Prusa .EXE Path:", Location = new Point(10, 470), Size = new Size(150, 20) };
-            txtPrusaPath = new TextBox { Location = new Point(170, 470), Size = new Size(220, 20) };
-            Button btnBrowsePrusaPath = new Button { Text = "Browse", Location = new Point(400, 470), Size = new Size(75, 20) };
+            // Prusa
+            AddRow(new Label { Text = "Prusa", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            chkPrusaEnabled = new CheckBox { Text = "Prusa Enabled", AutoSize = true };
+            AddRow(chkPrusaEnabled, new Control());
+            cmbExportFormatPrusa = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
+            AddRow(new Label { Text = "Prusa Filetype:", AutoSize = true }, cmbExportFormatPrusa);
+            txtPrusaPath = new TextBox { Width = 250 };
+            Button btnBrowsePrusaPath = new Button { Text = "Browse" };
             btnBrowsePrusaPath.Click += (sender, e) => {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Executable files (*.exe)|*.exe";
@@ -218,32 +196,16 @@ namespace Easy3DPrint_NetFW
                     txtPrusaPath.Text = openFileDialog.FileName;
                 }
             };
+            AddRow(new Label { Text = "Prusa .EXE Path:", AutoSize = true }, txtPrusaPath, btnBrowsePrusaPath);
 
-            lblPrusaFormat.Visible = chkPrusaEnabled.Checked;
-            cmbExportFormatPrusa.Visible = chkPrusaEnabled.Checked;
-            lblPrusaPath.Visible = chkPrusaEnabled.Checked;
-            txtPrusaPath.Visible = chkPrusaEnabled.Checked;
-            btnBrowsePrusaPath.Visible = chkPrusaEnabled.Checked;
-
-            chkPrusaEnabled.CheckedChanged += (sender, e) =>
-            {
-                lblPrusaFormat.Visible = chkPrusaEnabled.Checked;
-                cmbExportFormatPrusa.Visible = chkPrusaEnabled.Checked;
-                lblPrusaPath.Visible = chkPrusaEnabled.Checked;
-                txtPrusaPath.Visible = chkPrusaEnabled.Checked;
-                btnBrowsePrusaPath.Visible = chkPrusaEnabled.Checked;
-            };
-
-            // Slic3r Components
-            Label lblSlic3rSettingsTitle = new() { Text = "Slic3r", Location = new Point(10, 500), Size = new Size(150, 20) };
-            lblSlic3rSettingsTitle.Font = new Font(lblSlic3rSettingsTitle.Font, FontStyle.Bold);
-            lblSlic3rSettingsTitle.Font = new Font(lblSlic3rSettingsTitle.Font.FontFamily, lblSlic3rSettingsTitle.Font.Size + 1, FontStyle.Bold);
-            chkSlic3rEnabled = new CheckBox { Text = "Slic3r Enabled", Location = new Point(10, 530), Size = new Size(150, 20) };
-            Label lblSlic3rFormat = new() { Text = "Slic3r Filetype:", Location = new Point(10, 560), Size = new Size(150, 20) };
-            cmbExportFormatSlic3r = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 560), Size = new Size(220, 20) };
-            Label lblSlic3rPath = new() { Text = "Slic3r .EXE Path:", Location = new Point(10, 590), Size = new Size(150, 20) };
-            txtSlic3rPath = new TextBox { Location = new Point(170, 590), Size = new Size(220, 20) };
-            Button btnBrowseSlic3rPath = new Button { Text = "Browse", Location = new Point(400, 590), Size = new Size(75, 20) };
+            // Slic3r
+            AddRow(new Label { Text = "Slic3r", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            chkSlic3rEnabled = new CheckBox { Text = "Slic3r Enabled", AutoSize = true };
+            AddRow(chkSlic3rEnabled, new Control());
+            cmbExportFormatSlic3r = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
+            AddRow(new Label { Text = "Slic3r Filetype:" }, cmbExportFormatSlic3r);
+            txtSlic3rPath = new TextBox { Width = 250 };
+            Button btnBrowseSlic3rPath = new Button { Text = "Browse" };
             btnBrowseSlic3rPath.Click += (sender, e) => {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Executable files (*.exe)|*.exe";
@@ -251,32 +213,16 @@ namespace Easy3DPrint_NetFW
                     txtSlic3rPath.Text = openFileDialog.FileName;
                 }
             };
+            AddRow(new Label { Text = "Slic3r .EXE Path:", AutoSize = true }, txtSlic3rPath, btnBrowseSlic3rPath);
 
-            lblSlic3rFormat.Visible = chkSlic3rEnabled.Checked;
-            cmbExportFormatSlic3r.Visible = chkSlic3rEnabled.Checked;
-            lblSlic3rPath.Visible = chkSlic3rEnabled.Checked;
-            txtSlic3rPath.Visible = chkSlic3rEnabled.Checked;
-            btnBrowseSlic3rPath.Visible = chkSlic3rEnabled.Checked;
-
-            chkSlic3rEnabled.CheckedChanged += (sender, e) =>
-            {
-                lblSlic3rFormat.Visible = chkSlic3rEnabled.Checked;
-                cmbExportFormatSlic3r.Visible = chkSlic3rEnabled.Checked;
-                lblSlic3rPath.Visible = chkSlic3rEnabled.Checked;
-                txtSlic3rPath.Visible = chkSlic3rEnabled.Checked;
-                btnBrowseSlic3rPath.Visible = chkSlic3rEnabled.Checked;
-            };
-
-            // Orca Components
-            Label lblOrcaSettingsTitle = new() { Text = "Orca Slicer", Location = new Point(10, 620), Size = new Size(150, 20) };
-            lblOrcaSettingsTitle.Font = new Font(lblOrcaSettingsTitle.Font, FontStyle.Bold);
-            lblOrcaSettingsTitle.Font = new Font(lblOrcaSettingsTitle.Font.FontFamily, lblOrcaSettingsTitle.Font.Size + 1, FontStyle.Bold);
-            chkOrcaEnabled = new CheckBox { Text = "Orca Enabled", Location = new Point(10, 650), Size = new Size(150, 20) };
-            Label lblOrcaFormat = new() { Text = "Orca Filetype:", Location = new Point(10, 680), Size = new Size(150, 20) };
-            cmbExportFormatOrca = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 680), Size = new Size(220, 20) };
-            Label lblOrcaPath = new() { Text = "Orca .EXE Path:", Location = new Point(10, 710), Size = new Size(150, 20) };
-            txtOrcaPath = new TextBox { Location = new Point(170, 710), Size = new Size(220, 20) };
-            Button btnBrowseOrcaPath = new Button { Text = "Browse", Location = new Point(400, 710), Size = new Size(75, 20) };
+            // Orca
+            AddRow(new Label { Text = "Orca Slicer", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            chkOrcaEnabled = new CheckBox { Text = "Orca Slicer Enabled", AutoSize = true };
+            AddRow(chkOrcaEnabled, new Control());
+            cmbExportFormatOrca = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
+            AddRow(new Label { Text = "Orca Slicer Filetype:", AutoSize = true }, cmbExportFormatOrca);
+            txtOrcaPath = new TextBox { Width = 250 };
+            Button btnBrowseOrcaPath = new Button { Text = "Browse" };
             btnBrowseOrcaPath.Click += (sender, e) => {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
                 openFileDialog.Filter = "Executable files (*.exe)|*.exe";
@@ -284,40 +230,32 @@ namespace Easy3DPrint_NetFW
                     txtOrcaPath.Text = openFileDialog.FileName;
                 }
             };
+            AddRow(new Label { Text = "Orca Slicer .EXE Path:", AutoSize = true }, txtOrcaPath, btnBrowseOrcaPath);
 
-            lblOrcaFormat.Visible = chkOrcaEnabled.Checked;
-            cmbExportFormatOrca.Visible = chkOrcaEnabled.Checked;
-            lblOrcaPath.Visible = chkOrcaEnabled.Checked;
-            txtOrcaPath.Visible = chkOrcaEnabled.Checked;
-            btnBrowseOrcaPath.Visible = chkOrcaEnabled.Checked;
-
-            chkOrcaEnabled.CheckedChanged += (sender, e) =>
-            {
-                lblOrcaFormat.Visible = chkOrcaEnabled.Checked;
-                cmbExportFormatOrca.Visible = chkOrcaEnabled.Checked;
-                lblOrcaPath.Visible = chkOrcaEnabled.Checked;
-                txtOrcaPath.Visible = chkOrcaEnabled.Checked;
-                btnBrowseOrcaPath.Visible = chkOrcaEnabled.Checked;
-            };
-
-            // Add-in settings Components
-            Label lblExportedTitle = new() { Text = "Add-In Settings", Location = new Point(10, 750), Size = new Size(150, 20) };
-            lblExportedTitle.Font = new Font(lblExportedTitle.Font, FontStyle.Bold);
-            lblExportedTitle.Font = new Font(lblExportedTitle.Font.FontFamily, lblExportedTitle.Font.Size + 1, FontStyle.Bold);
-            Label lblQuickSaveFileTypeTitle = new() { Text = "QuickSave Filetype", Location = new Point(10, 780), Size = new Size(150, 20) };
-            cmbQuickSaveFileType = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(170, 780), Size = new Size(220, 20) };
-            Label lblExportPath = new() { Text = "File Export Path:", Location = new Point(10, 810), Size = new Size(150, 20) };
-            txtExportPath = new TextBox { Location = new Point(170, 810), Size = new Size(220, 20) };
-            Button btnBrowseExportPath = new Button { Text = "Browse", Location = new Point(400, 810), Size = new Size(75, 20) };
+            // Add-in settings
+            AddRow(new Label { Text = "Add-In Settings", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            cmbQuickSaveFileType = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
+            AddRow(new Label { Text = "QuickSave Filetype", AutoSize = true }, cmbQuickSaveFileType);
+            txtExportPath = new TextBox { Width = 250 };
+            Button btnBrowseExportPath = new Button { Text = "Browse" };
             btnBrowseExportPath.Click += (sender, e) => {
                 FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
                 if (folderBrowserDialog.ShowDialog() == DialogResult.OK) {
                     txtExportPath.Text = folderBrowserDialog.SelectedPath;
                 }
             };
+            AddRow(new Label { Text = "File Export Path:", AutoSize = true }, txtExportPath, btnBrowseExportPath);
 
             // Save button
-            btnSave = new Button { Text = "Save", Location = new Point(10, 840), Size = new Size(450, 30) };
+            btnSave = new Button { Text = "Save", Dock = DockStyle.Fill };
+            tableLayoutPanel.Controls.Add(btnSave, 0, tableLayoutPanel.RowCount);
+            tableLayoutPanel.SetColumnSpan(btnSave, 3);
+
+            // Add the TableLayoutPanel to the form
+            this.Controls.Add(tableLayoutPanel);
+
+            // Set the size of the form
+            this.Size = new Size(500, 725);
 
             // Populate ComboBoxes
             cmbExportFormatCura.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
@@ -362,21 +300,6 @@ namespace Easy3DPrint_NetFW
                     chkOrcaEnabled.Checked
                 );
             };
-
-            // Add components to the form
-            Controls.AddRange(new Control[] {
-                lblCuraSettingsTitle, chkCuraEnabled, lblCuraFormat, cmbExportFormatCura, lblCuraPath, txtCuraPath, btnBrowseCuraPath,
-                lblBambuSettingsTitle, chkBambuEnabled, lblBambuFormat, cmbExportFormatBambuLab, lblBambuPath, txtBambuLabPath, btnBrowseBambuPath,
-                lblAnkerMakeSettingsTitle, chkAnkerMakeEnabled, lblAnkerMakeFormat, cmbExportFormatAnkerMake, lblAnkerMakePath, txtAnkerMakePath, btnBrowseAnkerMakePath,
-                lblPrusaSettingsTitle, chkPrusaEnabled, lblPrusaFormat, cmbExportFormatPrusa, lblPrusaPath, txtPrusaPath, btnBrowsePrusaPath,
-                lblSlic3rSettingsTitle, chkSlic3rEnabled, lblSlic3rFormat, cmbExportFormatSlic3r, lblSlic3rPath, txtSlic3rPath, btnBrowseSlic3rPath,
-                lblOrcaSettingsTitle, chkOrcaEnabled, lblOrcaFormat, cmbExportFormatOrca, lblOrcaPath, txtOrcaPath, btnBrowseOrcaPath,
-                lblExportedTitle, lblExportPath, txtExportPath, btnBrowseExportPath,
-                lblQuickSaveFileTypeTitle, cmbQuickSaveFileType, btnSave
-            });
-
-        // Set the size of the form
-        Size = new Size(500, 950);
         }
 
         private void SaveSettings(
