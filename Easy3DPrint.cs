@@ -13,7 +13,6 @@ using static Easy3DPrint_NetFW.ApplicationSettings;
 using System;
 using Easy3DPrint_NetFW.Properties;
 using Xarial.XCad.UI.Commands.Structures;
-using System.Net.Http;
 using System.Net;
 
 namespace Easy3DPrint_NetFW
