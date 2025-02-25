@@ -14,6 +14,7 @@ using System;
 using Easy3DPrint_NetFW.Properties;
 using Xarial.XCad.UI.Commands.Structures;
 using System.Net;
+using Xarial.XCad;
 
 namespace Easy3DPrint_NetFW
 {
@@ -358,7 +359,7 @@ namespace Easy3DPrint_NetFW
 
         private async void CheckForUpdates()
         {
-            string currentVersion = "v1.0.5";
+            string currentVersion = "v1.0.6";
             string repoOwner = "SalamiSimon";
             string repoName = "Easy3DPrint";
 
@@ -374,6 +375,7 @@ namespace Easy3DPrint_NetFW
                     dynamic latestRelease = JsonConvert.DeserializeObject(response);
 
                     string latestVersion = latestRelease.tag_name;
+
                     if (latestVersion != currentVersion)
                     {
                         Application.ShowMessageBox($"A new version ({latestVersion}) is available!\n\nClick on 'View Github Repo' to download the latest version.");

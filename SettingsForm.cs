@@ -251,7 +251,12 @@ namespace Easy3DPrint_NetFW
             AddRow(chkQuietMode, new Control());
 
             // Save button
-            btnSave = new Button { Text = "Save", Dock = DockStyle.Fill };
+            btnSave = new Button
+            {
+                Text = "Save",
+                Dock = DockStyle.Fill,
+                Margin = new Padding(20, 30, 20, 30)
+            };
             tableLayoutPanel.Controls.Add(btnSave, 0, tableLayoutPanel.RowCount);
             tableLayoutPanel.SetColumnSpan(btnSave, 3);
 
