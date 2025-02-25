@@ -46,6 +46,14 @@ To configure or change settings for Easy3DPrint:
 2. Select `Settings` to open the configuration dialog.
 3. Here, you can set the paths to your slicing software executables and choose default file formats for each slicer.
 
+## Common issues
+- Add-in not appearing after installation
+  
+Build from source or install v1.0.4. Create ticket if this happens in a later realease.
+- A specific slicer is not implemented
+  
+A temporary solution is to just enter the .exe path to your slicer in any other slicer in settings. Almost all slicers open files the same way.
+
 ## Contributing
 
 We welcome contributions to Easy3DPrint! If you have suggestions for new features, improvements, or want to add support for additional slicing software, please feel free to open an issue or submit a pull request. I'm still learning to code, so all feedback, positive or negative, is appreciated!
