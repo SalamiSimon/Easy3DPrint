@@ -148,6 +148,7 @@ namespace Easy3DPrint_NetFW
 
                     // Load settings
                     addInSettings.ExportPath = settings.ExportPath;
+                    addInSettings.QuietMode = settings?.QuietMode;
 
                     curaSettings.Path = settings.CuraPath;
                     curaSettings.FileType = settings.ExportFormatCura;
@@ -413,7 +414,9 @@ namespace Easy3DPrint_NetFW
                     bool status = extension.SaveAs(fullPath, (int)swSaveAsVersion_e.swSaveAsCurrentVersion, (int)swSaveAsOptions_e.swSaveAsOptions_Silent, null, ref errors, ref warnings);
                     if (status)
                     {
-                        this.Application.ShowMessageBox($"Part saved as {format.ToString().TrimStart('_')} at: {fullPath}");
+                        if (!addInSettings.QuietMode) {
+                            this.Application.ShowMessageBox($"Part saved as {format.ToString().TrimStart('_')} at: {fullPath}");
+                        }
                         return fullPath; // Return the path of the saved file
                     }
                     else

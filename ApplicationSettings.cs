@@ -21,14 +21,16 @@ namespace Easy3DPrint_NetFW
             public string ExportPath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AutoExportSW");
             public string DataPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Easy3DPrintSettings_" + Version + ".json");
             public FileType QuickSaveType { get; set; } = FileType._STL;
+            public bool QuietMode { get; set; } = false;
             public const string Version = "V1.0.2"; // Oldest compatible settings config file structure 
 
             public AddinSettings() { }
 
-            public AddinSettings(string path, FileType quickSaveType)
+            public AddinSettings(string path, FileType quickSaveType, bool quietMode)
             {
                 ExportPath = path;
                 QuickSaveType = quickSaveType;
+                QuietMode = quietMode;
             }
         }
 

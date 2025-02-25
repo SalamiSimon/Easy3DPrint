@@ -30,6 +30,7 @@ namespace Easy3DPrint_NetFW
         private TextBox txtOrcaPath;
         private TextBox txtExportPath;
 
+        private CheckBox chkQuietMode;
         private CheckBox chkCuraEnabled;
         private CheckBox chkSlic3rEnabled;
         private CheckBox chkPrusaEnabled;
@@ -66,6 +67,7 @@ namespace Easy3DPrint_NetFW
             InitializeComponents();
 
             txtExportPath.Text = addInSettings?.ExportPath ?? string.Empty;
+            chkQuietMode.Checked = addInSettings?.QuietMode ?? false;
 
             txtCuraPath.Text = curaSettings?.Path ?? string.Empty;
             cmbExportFormatCura.SelectedItem = curaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
@@ -245,6 +247,8 @@ namespace Easy3DPrint_NetFW
                 }
             };
             AddRow(new Label { Text = "File Export Path:", AutoSize = true }, txtExportPath, btnBrowseExportPath);
+            chkQuietMode = new CheckBox { Text = "Quiet Mode", AutoSize = true };
+            AddRow(chkQuietMode, new Control());
 
             // Save button
             btnSave = new Button { Text = "Save", Dock = DockStyle.Fill };
@@ -255,7 +259,7 @@ namespace Easy3DPrint_NetFW
             this.Controls.Add(tableLayoutPanel);
 
             // Set the size of the form
-            this.Size = new Size(500, 725);
+            this.Size = new Size(500, 850);
 
             // Populate ComboBoxes
             cmbExportFormatCura.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
@@ -297,7 +301,8 @@ namespace Easy3DPrint_NetFW
                     chkAnkerMakeEnabled.Checked, 
                     chkPrusaEnabled.Checked, 
                     chkSlic3rEnabled.Checked, 
-                    chkOrcaEnabled.Checked
+                    chkOrcaEnabled.Checked,
+                    chkQuietMode.Checked
                 );
             };
         }
@@ -322,7 +327,8 @@ namespace Easy3DPrint_NetFW
             bool ankerMakeEnabled, 
             bool prusaEnabled, 
             bool slic3rEnabled,
-            bool orcaEnabled
+            bool orcaEnabled,
+            bool quietMode
         )
         {
             var settings = new
@@ -346,7 +352,8 @@ namespace Easy3DPrint_NetFW
                 OrcaPath = orcaPath ?? "",
                 ExportFormatOrca = exportFormatOrca,
                 OrcaEnabled = orcaEnabled,
-                ExportFormatQuickSave = quickSaveFileType
+                ExportFormatQuickSave = quickSaveFileType,
+                QuietMode = quietMode
             };
 
             AddinSettings addinSettings = new AddinSettings();
