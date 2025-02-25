@@ -29,6 +29,16 @@ You can also directly open multiple parts by creating an assembly.
 
 Run installer or build from source
 
+## Build from source
+- Open Easy3DPrint.sln in Visual Studio.
+- In Solution Explorer, right-click the solution and select Properties.
+- Go to Configuration Properties > Debug.
+- Set Start External Program to your SolidWorks executable.
+- Apply and save changes.
+- Build & Run
+- Select Build > Build Solution (Ctrl + Shift + B).
+- Click Start Debugging (F5).
+
 ## Usage
 
 After installation, you can access Easy3DPrint from the SolidWorks Tools menu:
