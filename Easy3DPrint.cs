@@ -15,6 +15,7 @@ using Easy3DPrint_NetFW.Properties;
 using Xarial.XCad.UI.Commands.Structures;
 using System.Net;
 using Xarial.XCad;
+using System.Runtime.InteropServices.ComTypes;
 
 namespace Easy3DPrint_NetFW
 {
@@ -338,7 +339,7 @@ namespace Easy3DPrint_NetFW
                 case Commands_e.QuickSave:
                     if (addInSettings.QuickSaveType != FileType._NONE)
                     {
-                        FilePathSlic3r = SaveCurrentPart(addInSettings.ExportPath, addInSettings.QuickSaveType);
+                        SaveCurrentPart(addInSettings.ExportPath, addInSettings.QuickSaveType);
                     }
                     break;
 
@@ -359,7 +360,7 @@ namespace Easy3DPrint_NetFW
 
         private async void CheckForUpdates()
         {
-            string currentVersion = "v1.0.6";
+            string currentVersion = "v1.0.7";
             string repoOwner = "SalamiSimon";
             string repoName = "Easy3DPrint";
 
@@ -398,7 +399,7 @@ namespace Easy3DPrint_NetFW
             }
         }
 
-        private string? SaveCurrentPart(string savePath, FileType format)
+        private string SaveCurrentPart(string savePath, FileType format)
         {
             var activeDoc = this.Application.Documents.Active;
             if (activeDoc != null)
@@ -406,14 +407,26 @@ namespace Easy3DPrint_NetFW
                 var swModel = activeDoc.Model as ModelDoc2;
                 if (swModel != null)
                 {
-                    string fileName = System.IO.Path.ChangeExtension(swModel.GetTitle(), format.ToString().ToLower().TrimStart('_'));
-                    string? fullPath = System.IO.Path.Combine(savePath, fileName);
+                    string configName = swModel.ConfigurationManager.ActiveConfiguration.Name;
+                    string fileName;
+
+                    if (configName == "Default")
+                        fileName = System.IO.Path.ChangeExtension(swModel.GetTitle(), format.ToString().ToLower().TrimStart('_'));
+                    else
+                    {
+                        string configFileName = System.IO.Path.GetFileNameWithoutExtension(swModel.GetTitle()) + "_" + configName;
+                        fileName = System.IO.Path.ChangeExtension(configFileName, format.ToString().ToLower().TrimStart('_'));
+                    }
+
+                    string fullPath = System.IO.Path.Combine(savePath, fileName);
 
                     int errors = 0;
                     int warnings = 0;
 
-                    ModelDocExtension? extension = swModel.Extension;
+                    ModelDocExtension extension = swModel.Extension;
+
                     bool status = extension.SaveAs(fullPath, (int)swSaveAsVersion_e.swSaveAsCurrentVersion, (int)swSaveAsOptions_e.swSaveAsOptions_Silent, null, ref errors, ref warnings);
+
                     if (status)
                     {
                         if (!addInSettings.QuietMode) {

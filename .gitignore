@@ -1,0 +1,23 @@
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.cache
+*.dbtcache.json
+
+# Build and output directories
+bin/
+obj/
+Debug/
+Release/
+
+# Temporary files
+*.tmp
+*.log
+*.pdb
+*.ilk
+
+# JSON and other IDE-related files
+*.json
+*.xml
+*.Up2Date
