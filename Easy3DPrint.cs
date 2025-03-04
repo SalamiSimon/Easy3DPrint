@@ -360,7 +360,7 @@ namespace Easy3DPrint_NetFW
 
         private async void CheckForUpdates()
         {
-            string currentVersion = "v1.0.7";
+            string currentVersion = addInSettings.CurrentVersion;
             string repoOwner = "SalamiSimon";
             string repoName = "Easy3DPrint";
 
@@ -377,7 +377,7 @@ namespace Easy3DPrint_NetFW
 
                     string latestVersion = latestRelease.tag_name;
 
-                    if (latestVersion != currentVersion)
+                    if (VersionComparer.IsNewerVersion(currentVersion, latestVersion))
                     {
                         Application.ShowMessageBox($"A new version ({latestVersion}) is available!\n\nClick on 'View Github Repo' to download the latest version.");
                     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace Easy3DPrint_NetFW
 {
@@ -19,10 +20,11 @@ namespace Easy3DPrint_NetFW
         public class AddinSettings
         {
             public string ExportPath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AutoExportSW");
-            public string DataPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Easy3DPrintSettings_" + Version + ".json");
+            public string DataPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Easy3DPrintSettings_" + ConfigVersion + ".json");
             public FileType QuickSaveType { get; set; } = FileType._STL;
             public bool QuietMode { get; set; } = false;
-            public const string Version = "V1.0.2"; // Oldest compatible settings config file structure 
+            public const string ConfigVersion = "V1.0.2"; // Oldest compatible settings config file structure
+            public string CurrentVersion { get; } = "v1.0.7";
 
             public AddinSettings() { }
 
@@ -127,6 +129,31 @@ namespace Easy3DPrint_NetFW
                 Path = path;
                 FileType = fileType;
                 Enabled = enabled;
+            }
+        }
+
+        public static class VersionComparer
+        {
+            public static bool IsNewerVersion(string currentVersion, string latestVersion)
+            {
+                currentVersion = currentVersion.TrimStart('v', 'V');
+                latestVersion = latestVersion.TrimStart('v', 'V');
+
+                var currentParts = currentVersion.Split('.').Select(int.Parse).ToArray();
+                var latestParts = latestVersion.Split('.').Select(int.Parse).ToArray();
+
+                Array.Resize(ref currentParts, 3);
+                Array.Resize(ref latestParts, 3);
+
+                for (int i = 0; i < 3; i++)
+                {
+                    if (latestParts[i] > currentParts[i])
+                        return true;
+                    else if (latestParts[i] < currentParts[i])
+                        return false;
+                }
+
+                return false;
             }
         }
     }
