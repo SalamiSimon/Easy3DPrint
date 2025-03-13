@@ -12,9 +12,11 @@ You can also directly open multiple parts by creating an assembly.
 ## Supported File Formats
 
 - STL (.stl)
-- OBJ (.obj) (soon)
 - STEP (.step)
-- 3MF (.3mf)
+- 3D Manufacturing (.3mf)
+- Additive Manufacturing (.amf)
+- Solidworks Part (.sldprt)
+- Polygon (.ply)
 
 ## Supported Slicing Software
 
