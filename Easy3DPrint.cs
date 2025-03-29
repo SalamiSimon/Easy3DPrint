@@ -1,21 +1,21 @@
-﻿using System.ComponentModel;
+﻿#nullable enable
+using Easy3DPrint_NetFW.Properties;
+using Newtonsoft.Json;
+using SolidWorks.Interop.sldworks;
+using SolidWorks.Interop.swconst;
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.IO;
+using System.Net;
 using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Xarial.XCad.Base.Attributes;
 using Xarial.XCad.SolidWorks;
 using Xarial.XCad.UI.Commands;
-using SolidWorks.Interop.sldworks;
-using SolidWorks.Interop.swconst;
-using System.Windows.Forms;
-using System.Drawing;
-using Newtonsoft.Json;
-using System.IO;
-using static Easy3DPrint_NetFW.ApplicationSettings;
-using System;
-using Easy3DPrint_NetFW.Properties;
 using Xarial.XCad.UI.Commands.Structures;
-using System.Net;
-using Xarial.XCad;
-using System.Runtime.InteropServices.ComTypes;
+using static Easy3DPrint_NetFW.ApplicationSettings;
 
 namespace Easy3DPrint_NetFW
 {
@@ -25,13 +25,13 @@ namespace Easy3DPrint_NetFW
 
     public class Easy3DPrint : SwAddInEx
     {
-        private readonly AddinSettings addInSettings = new AddinSettings();
-        private readonly CuraSettings curaSettings = new CuraSettings();
-        private readonly BambuSettings bambuSettings = new BambuSettings();
-        private readonly AnkerMakeSettings ankerMakeSettings = new AnkerMakeSettings();
-        private readonly PrusaSettings prusaSettings = new PrusaSettings();
-        private readonly Slic3rSettings slic3rSettings = new Slic3rSettings();
-        private readonly OrcaSettings orcaSettings = new OrcaSettings();
+        private readonly AddinSettings addInSettings = new();
+        private readonly CuraSettings curaSettings = new();
+        private readonly BambuSettings bambuSettings = new();
+        private readonly AnkerMakeSettings ankerMakeSettings = new();
+        private readonly PrusaSettings prusaSettings = new();
+        private readonly Slic3rSettings slic3rSettings = new();
+        private readonly OrcaSettings orcaSettings = new();
 
         [Title("Easy3DPrint")]
         [Description("Open parts directly in slicing apps")]
@@ -86,7 +86,12 @@ namespace Easy3DPrint_NetFW
             [Title("Check for Update")]
             [Description("Check for update")]
             [Icon(typeof(Resources), nameof(Resources.update))]
-            UpdateCheck
+            UpdateCheck,
+
+            [Title("Support Me!")]
+            [Description("Buy me a coffee")]
+            [Icon(typeof(Resources), nameof(Resources.coffee))]
+            BuyMeCoffe
         }
 
         public override void OnConnect()
@@ -136,6 +141,9 @@ namespace Easy3DPrint_NetFW
                 case Commands_e.UpdateCheck:
                     state.Enabled = true;
                     break;
+                case Commands_e.BuyMeCoffe:
+                    state.Enabled = true;
+                    break;
             }
         }
 
@@ -147,36 +155,43 @@ namespace Easy3DPrint_NetFW
                 {
                     string json = File.ReadAllText(addInSettings.DataPath);
                     var settings = JsonConvert.DeserializeObject<dynamic>(json);
+                    
+                    // Check if settings is null before accessing properties
+                    if (settings == null)
+                    {
+                        return false;
+                    }
 
                     // Load settings
-                    addInSettings.ExportPath = settings.ExportPath;
-                    addInSettings.QuietMode = settings?.QuietMode;
+                    addInSettings.ExportPath = settings?.ExportPath ?? addInSettings.ExportPath;
+                    addInSettings.QuietMode = settings?.QuietMode ?? false;
 
-                    curaSettings.Path = settings.CuraPath;
-                    curaSettings.FileType = settings.ExportFormatCura;
-                    curaSettings.Enabled = settings.CuraEnabled;
+                    // Add null checks for all settings
+                    curaSettings.Path = settings?.CuraPath ?? string.Empty;
+                    curaSettings.FileType = settings?.ExportFormatCura ?? FileType._NONE;
+                    curaSettings.Enabled = settings?.CuraEnabled ?? false;
 
-                    bambuSettings.Path = settings.BambuPath;
-                    bambuSettings.FileType = settings.ExportFormatBambu;
-                    bambuSettings.Enabled = settings.BambuEnabled;
+                    bambuSettings.Path = settings?.BambuPath ?? string.Empty;
+                    bambuSettings.FileType = settings?.ExportFormatBambu ?? FileType._NONE;
+                    bambuSettings.Enabled = settings?.BambuEnabled ?? false;
 
-                    ankerMakeSettings.Path = settings.AnkerMakePath;
-                    ankerMakeSettings.FileType = settings.ExportFormatAnkerMake;
-                    ankerMakeSettings.Enabled = settings.AnkerMakeEnabled;
+                    ankerMakeSettings.Path = settings?.AnkerMakePath ?? string.Empty;
+                    ankerMakeSettings.FileType = settings?.ExportFormatAnkerMake ?? FileType._NONE;
+                    ankerMakeSettings.Enabled = settings?.AnkerMakeEnabled ?? false;
 
-                    slic3rSettings.Path = settings.Slic3rPath;
-                    slic3rSettings.FileType = settings.ExportFormatSlic3r;
-                    slic3rSettings.Enabled = settings.Slic3rEnabled;
+                    slic3rSettings.Path = settings?.Slic3rPath ?? string.Empty;
+                    slic3rSettings.FileType = settings?.ExportFormatSlic3r ?? FileType._NONE;
+                    slic3rSettings.Enabled = settings?.Slic3rEnabled ?? false;
 
-                    prusaSettings.Path = settings.PrusaPath;
-                    prusaSettings.FileType = settings.ExportFormatPrusa;
-                    prusaSettings.Enabled = settings.PrusaEnabled;
+                    prusaSettings.Path = settings?.PrusaPath ?? string.Empty;
+                    prusaSettings.FileType = settings?.ExportFormatPrusa ?? FileType._NONE;
+                    prusaSettings.Enabled = settings?.PrusaEnabled ?? false;
 
-                    orcaSettings.Path = settings.OrcaPath;
-                    orcaSettings.FileType = settings.ExportFormatOrca;
-                    orcaSettings.Enabled = settings.OrcaEnabled;
+                    orcaSettings.Path = settings?.OrcaPath ?? string.Empty;
+                    orcaSettings.FileType = settings?.ExportFormatOrca ?? FileType._NONE;
+                    orcaSettings.Enabled = settings?.OrcaEnabled ?? false;
 
-                    if (settings.ExportFormatQuickSave != null)
+                    if (settings?.ExportFormatQuickSave != null)
                         addInSettings.QuickSaveType = settings.ExportFormatQuickSave;
 
                     return true; // Settings loaded successfully
@@ -187,13 +202,12 @@ namespace Easy3DPrint_NetFW
                 }
             }
             // Settings not loaded
-
             return false;
         }
 
         public void ShowSettingsDialog()
         {
-            SettingsDialog settingsDialog = new SettingsDialog(addInSettings, curaSettings, bambuSettings, ankerMakeSettings, prusaSettings, slic3rSettings, orcaSettings);
+            SettingsDialog settingsDialog = new(addInSettings, curaSettings, bambuSettings, ankerMakeSettings, prusaSettings, slic3rSettings, orcaSettings);
             if (settingsDialog.ShowDialog() == DialogResult.OK)
             {
                 LoadSettings();
@@ -205,7 +219,7 @@ namespace Easy3DPrint_NetFW
             switch (spec)
             {
                 case Commands_e.OpenInUltimakerCura:
-                    string FilePathCura = null;
+                    string? FilePathCura = null;
 
                     if (curaSettings.FileType != FileType._NONE)
                     {
@@ -227,7 +241,7 @@ namespace Easy3DPrint_NetFW
                     break;
 
                 case Commands_e.OpenInBambuLab:
-                    string FilePathBambu = null;
+                    string? FilePathBambu = null;
 
                     if (bambuSettings.FileType != FileType._NONE)
                     {
@@ -249,7 +263,7 @@ namespace Easy3DPrint_NetFW
                     break;
 
                 case Commands_e.OpenInAnkerMake:
-                    string FilePathAnker = null;
+                    string? FilePathAnker = null;
 
                     if (ankerMakeSettings.FileType != FileType._NONE)
                     {
@@ -271,7 +285,7 @@ namespace Easy3DPrint_NetFW
                     break;
 
                 case Commands_e.OpenInPrusa:
-                    string FilePathPrusa = null;
+                    string? FilePathPrusa = null;
 
                     if (prusaSettings.FileType != FileType._NONE)
                     {
@@ -293,7 +307,7 @@ namespace Easy3DPrint_NetFW
                     break;
 
                 case Commands_e.OpenInSlic3r:
-                    string FilePathSlic3r = null;
+                    string? FilePathSlic3r = null;
 
                     if (slic3rSettings.FileType != FileType._NONE)
                     {
@@ -315,7 +329,7 @@ namespace Easy3DPrint_NetFW
                     break;
 
                 case Commands_e.OpenInOrca:
-                    string FilePathOrca = null;
+                    string? FilePathOrca = null;
 
                     if (orcaSettings.FileType != FileType._NONE)
                     {
@@ -355,6 +369,38 @@ namespace Easy3DPrint_NetFW
                 case Commands_e.UpdateCheck:
                     CheckForUpdates();
                     break;
+
+                case Commands_e.BuyMeCoffe:
+                    var result = Application.ShowMessageBox(
+                        "Support my work!\n\nGive a small donation by clicking the OK button below. Any amount is appreciated!",
+                        Xarial.XCad.Base.Enums.MessageBoxIcon_e.Info,
+                        Xarial.XCad.Base.Enums.MessageBoxButtons_e.OkCancel);
+                    
+                    if (result == Xarial.XCad.Base.Enums.MessageBoxResult_e.Ok)
+                    {
+                        OpenDonationPage();
+                    }
+                    break;
+            }
+        }
+
+        private void OpenDonationPage()
+        {
+            try
+            {
+                string url = "https://buymeacoffee.com/myname";
+                
+                var processStartInfo = new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                System.Diagnostics.Process.Start(processStartInfo);
+            }
+            catch (Exception ex)
+            {
+                Application.ShowMessageBox("Failed to open donation page.");
+                Console.WriteLine("Exception: " + ex.ToString());
             }
         }
 
@@ -364,38 +410,36 @@ namespace Easy3DPrint_NetFW
             string repoOwner = "SalamiSimon";
             string repoName = "Easy3DPrint";
 
-            // Ensure TLS 1.2 is used
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
-            using (WebClient client = new WebClient())
+            using WebClient client = new();
+            try
             {
-                try
-                {
-                    client.Headers.Add("User-Agent", "Easy3DPrint/1.0");
-                    string response = await client.DownloadStringTaskAsync(new Uri($"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest"));
-                    dynamic latestRelease = JsonConvert.DeserializeObject(response);
+                client.Headers.Add("User-Agent", "Easy3DPrint/1.0");
+                string response = await client.DownloadStringTaskAsync(new Uri($"https://api.github.com/repos/{repoOwner}/{repoName}/releases/latest"));
+                dynamic latestRelease = JsonConvert.DeserializeObject(response);
 
-                    string latestVersion = latestRelease.tag_name;
+                // Fix possible null reference
+                string latestVersion = latestRelease?.tag_name?.ToString() ?? string.Empty;
 
-                    if (VersionComparer.IsNewerVersion(currentVersion, latestVersion))
-                    {
-                        Application.ShowMessageBox($"A new version ({latestVersion}) is available!\n\nClick on 'View Github Repo' to download the latest version.");
-                    }
-                    else
-                    {
-                        Application.ShowMessageBox($" ({currentVersion}) is the latest version! No update is needed.");
-                    }
-                }
-                catch (WebException webEx)
+                if (!string.IsNullOrEmpty(latestVersion) && VersionComparer.IsNewerVersion(currentVersion, latestVersion))
                 {
-                    Application.ShowMessageBox("An error occurred while sending the request.");
-                    Console.WriteLine("WebException: " + webEx.ToString());
+                    Application.ShowMessageBox($"A new version ({latestVersion}) is available!\n\nClick on 'View Github Repo' to download the latest version.");
                 }
-                catch (Exception ex)
+                else
                 {
-                    Application.ShowMessageBox("An error occurred while checking for updates.");
-                    Console.WriteLine("Exception: " + ex.ToString());
+                    Application.ShowMessageBox($" ({currentVersion}) is the latest version! No update is needed.");
                 }
+            }
+            catch (WebException webEx)
+            {
+                Application.ShowMessageBox("An error occurred while sending the request.");
+                Console.WriteLine("WebException: " + webEx.ToString());
+            }
+            catch (Exception ex)
+            {
+                Application.ShowMessageBox("An error occurred while checking for updates.");
+                Console.WriteLine("Exception: " + ex.ToString());
             }
         }
 
@@ -404,10 +448,9 @@ namespace Easy3DPrint_NetFW
             var activeDoc = this.Application.Documents.Active;
             if (activeDoc != null)
             {
-                var swModel = activeDoc.Model as ModelDoc2;
-                if (swModel != null)
+                if (activeDoc.Model is ModelDoc2 swModel)
                 {
-                    string configName = swModel.ConfigurationManager.ActiveConfiguration.Name;
+                    string configName = swModel.ConfigurationManager?.ActiveConfiguration?.Name ?? "Default";
                     string fileName;
 
                     if (configName == "Default")
@@ -429,7 +472,8 @@ namespace Easy3DPrint_NetFW
 
                     if (status)
                     {
-                        if (!addInSettings.QuietMode) {
+                        if (!addInSettings.QuietMode)
+                        {
                             this.Application.ShowMessageBox($"Part saved as {format.ToString().TrimStart('_')} at: {fullPath}");
                         }
                         return fullPath; // Return the path of the saved file
@@ -444,7 +488,7 @@ namespace Easy3DPrint_NetFW
             {
                 this.Application.ShowMessageBox("No active part document found or the document is not a part.");
             }
-            return null; // Return null if saving fails or no document is active
+            return null!; // Use null! to suppress the CS8603 warning when null is required
         }
     }
 }

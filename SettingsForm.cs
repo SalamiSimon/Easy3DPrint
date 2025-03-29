@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using static Easy3DPrint_NetFW.ApplicationSettings;
 using Formatting = Newtonsoft.Json.Formatting;
 using MessageBox = System.Windows.Forms.MessageBox;
-using Point = System.Drawing.Point;
 using Size = System.Drawing.Size;
 
 namespace Easy3DPrint_NetFW
@@ -40,20 +39,20 @@ namespace Easy3DPrint_NetFW
 
         private Button btnSave;
 
-        public string ExportPath => txtExportPath.Text;
-        public string CuraPath => txtCuraPath.Text;
-        public string BambuLabPath => txtBambuLabPath.Text;
-        public string AnkerMakePath => txtAnkerMakePath.Text;
-        public string PrusaPath => txtPrusaPath.Text;
-        public string Slic3rPath => txtSlic3rPath.Text;
-        public string OrcaPath => txtOrcaPath.Text;
-        public string ExportFormatCura => cmbExportFormatCura.SelectedItem.ToString();
-        public string ExportFormatBambuLab => cmbExportFormatBambuLab.SelectedItem.ToString();
-        public string ExportFormatAnkerMake => cmbExportFormatAnkerMake.SelectedItem.ToString();
-        public string ExportFormatPrusa => cmbExportFormatPrusa.SelectedItem.ToString();
-        public string ExportFormatSlic3r => cmbExportFormatSlic3r.SelectedItem.ToString();
-        public string ExportFormatOrca => cmbExportFormatOrca.SelectedItem.ToString();
-        public string ExportFormatQuickSave => cmbQuickSaveFileType.SelectedItem.ToString();
+        public string ExportPath => txtExportPath?.Text ?? string.Empty;
+        public string CuraPath => txtCuraPath?.Text ?? string.Empty;
+        public string BambuLabPath => txtBambuLabPath?.Text ?? string.Empty;
+        public string AnkerMakePath => txtAnkerMakePath?.Text ?? string.Empty;
+        public string PrusaPath => txtPrusaPath?.Text ?? string.Empty;
+        public string Slic3rPath => txtSlic3rPath?.Text ?? string.Empty;
+        public string OrcaPath => txtOrcaPath?.Text ?? string.Empty;
+        public string ExportFormatCura => cmbExportFormatCura?.SelectedItem?.ToString() ?? string.Empty;
+        public string ExportFormatBambuLab => cmbExportFormatBambuLab?.SelectedItem?.ToString() ?? string.Empty;
+        public string ExportFormatAnkerMake => cmbExportFormatAnkerMake?.SelectedItem?.ToString() ?? string.Empty;
+        public string ExportFormatPrusa => cmbExportFormatPrusa?.SelectedItem?.ToString() ?? string.Empty;
+        public string ExportFormatSlic3r => cmbExportFormatSlic3r?.SelectedItem?.ToString() ?? string.Empty;
+        public string ExportFormatOrca => cmbExportFormatOrca?.SelectedItem?.ToString() ?? string.Empty;
+        public string ExportFormatQuickSave => cmbQuickSaveFileType?.SelectedItem?.ToString() ?? string.Empty;
 
         public SettingsDialog(
             ApplicationSettings.AddinSettings addInSettings,
@@ -71,27 +70,27 @@ namespace Easy3DPrint_NetFW
 
             txtCuraPath.Text = curaSettings?.Path ?? string.Empty;
             cmbExportFormatCura.SelectedItem = curaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
-            chkCuraEnabled.Checked = curaSettings.Enabled;
+            chkCuraEnabled.Checked = curaSettings?.Enabled ?? false;
 
             txtBambuLabPath.Text = bambuSettings?.Path ?? string.Empty;
             cmbExportFormatBambuLab.SelectedItem = bambuSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
-            chkBambuEnabled.Checked = bambuSettings.Enabled;
+            chkBambuEnabled.Checked = bambuSettings?.Enabled ?? false;
 
             txtAnkerMakePath.Text = ankerMakeSettings?.Path ?? string.Empty;
             cmbExportFormatAnkerMake.SelectedItem = ankerMakeSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
-            chkAnkerMakeEnabled.Checked = ankerMakeSettings.Enabled;
+            chkAnkerMakeEnabled.Checked = ankerMakeSettings?.Enabled ?? false;
 
             txtPrusaPath.Text = prusaSettings?.Path ?? string.Empty;
             cmbExportFormatPrusa.SelectedItem = prusaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
-            chkPrusaEnabled.Checked = prusaSettings.Enabled;
+            chkPrusaEnabled.Checked = prusaSettings?.Enabled ?? false;
 
             txtSlic3rPath.Text = slic3rSettings?.Path ?? string.Empty;
             cmbExportFormatSlic3r.SelectedItem = slic3rSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
-            chkSlic3rEnabled.Checked = slic3rSettings.Enabled;
+            chkSlic3rEnabled.Checked = slic3rSettings?.Enabled ?? false;
 
             txtOrcaPath.Text = orcaSettings?.Path ?? string.Empty;
             cmbExportFormatOrca.SelectedItem = orcaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
-            chkOrcaEnabled.Checked = orcaSettings.Enabled;
+            chkOrcaEnabled.Checked = orcaSettings?.Enabled ?? false;
 
             cmbQuickSaveFileType.SelectedItem = addInSettings?.QuickSaveType.ToString().TrimStart('_') ?? string.Empty;
         }
@@ -105,7 +104,7 @@ namespace Easy3DPrint_NetFW
             this.StartPosition = FormStartPosition.CenterScreen;
 
             // Create a TableLayoutPanel
-            TableLayoutPanel tableLayoutPanel = new TableLayoutPanel
+            TableLayoutPanel tableLayoutPanel = new()
             {
                 ColumnCount = 3,
                 RowCount = 0,
@@ -133,116 +132,142 @@ namespace Easy3DPrint_NetFW
             }
 
             // Ultimaker Cura
-            AddRow(new Label { Text = "UltiMaker Cura", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            AddRow(new Label { Text = "UltiMaker Cura", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkCuraEnabled = new CheckBox { Text = "UltiMaker Cura Enabled", AutoSize = true };
             AddRow(chkCuraEnabled, new Control());
             cmbExportFormatCura = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
             AddRow(new Label { Text = "UltiMaker Cura Filetype:", AutoSize = true }, cmbExportFormatCura);
             txtCuraPath = new TextBox { Width = 250 };
-            Button btnBrowseCuraPath = new Button { Text = "Browse" };
-            btnBrowseCuraPath.Click += (sender, e) => {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Executable files (*.exe)|*.exe";
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+            Button btnBrowseCuraPath = new() { Text = "Browse" };
+            btnBrowseCuraPath.Click += (sender, e) =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Executable files (*.exe)|*.exe"
+                };
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
                     txtCuraPath.Text = openFileDialog.FileName;
                 }
             };
-            AddRow(new Label { Text = "UltiMaker Cura .EXE Path:", AutoSize = true}, txtCuraPath, btnBrowseCuraPath);
+            AddRow(new Label { Text = "UltiMaker Cura .EXE Path:", AutoSize = true }, txtCuraPath, btnBrowseCuraPath);
 
             // Bambu Lab
-            AddRow(new Label { Text = "Bambu Lab", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            AddRow(new Label { Text = "Bambu Lab", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkBambuEnabled = new CheckBox { Text = "Bambu Lab Enabled", AutoSize = true };
             AddRow(chkBambuEnabled, new Control());
             cmbExportFormatBambuLab = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
             AddRow(new Label { Text = "Bambu Lab Filetype:", AutoSize = true }, cmbExportFormatBambuLab);
             txtBambuLabPath = new TextBox { Width = 250 };
-            Button btnBrowseBambuPath = new Button { Text = "Browse" };
-            btnBrowseBambuPath.Click += (sender, e) => {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Executable files (*.exe)|*.exe";
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+            Button btnBrowseBambuPath = new() { Text = "Browse" };
+            btnBrowseBambuPath.Click += (sender, e) =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Executable files (*.exe)|*.exe"
+                };
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
                     txtBambuLabPath.Text = openFileDialog.FileName;
                 }
             };
             AddRow(new Label { Text = "Bambu Lab .EXE Path:", AutoSize = true }, txtBambuLabPath, btnBrowseBambuPath);
 
             // AnkerMake
-            AddRow(new Label { Text = "AnkerMake Studio", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            AddRow(new Label { Text = "AnkerMake Studio", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkAnkerMakeEnabled = new CheckBox { Text = "AnkerMake Enabled", AutoSize = true };
             AddRow(chkAnkerMakeEnabled, new Control());
             cmbExportFormatAnkerMake = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
             AddRow(new Label { Text = "AnkerMake Filetype:", AutoSize = true }, cmbExportFormatAnkerMake);
             txtAnkerMakePath = new TextBox { Width = 250 };
-            Button btnBrowseAnkerMakePath = new Button { Text = "Browse" };
-            btnBrowseAnkerMakePath.Click += (sender, e) => {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Executable files (*.exe)|*.exe";
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+            Button btnBrowseAnkerMakePath = new() { Text = "Browse" };
+            btnBrowseAnkerMakePath.Click += (sender, e) =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Executable files (*.exe)|*.exe"
+                };
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
                     txtAnkerMakePath.Text = openFileDialog.FileName;
                 }
             };
             AddRow(new Label { Text = "AnkerMake .EXE Path:", AutoSize = true }, txtAnkerMakePath, btnBrowseAnkerMakePath);
 
             // Prusa
-            AddRow(new Label { Text = "Prusa", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            AddRow(new Label { Text = "Prusa", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkPrusaEnabled = new CheckBox { Text = "Prusa Enabled", AutoSize = true };
             AddRow(chkPrusaEnabled, new Control());
             cmbExportFormatPrusa = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
             AddRow(new Label { Text = "Prusa Filetype:", AutoSize = true }, cmbExportFormatPrusa);
             txtPrusaPath = new TextBox { Width = 250 };
-            Button btnBrowsePrusaPath = new Button { Text = "Browse" };
-            btnBrowsePrusaPath.Click += (sender, e) => {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Executable files (*.exe)|*.exe";
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+            Button btnBrowsePrusaPath = new() { Text = "Browse" };
+            btnBrowsePrusaPath.Click += (sender, e) =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Executable files (*.exe)|*.exe"
+                };
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
                     txtPrusaPath.Text = openFileDialog.FileName;
                 }
             };
             AddRow(new Label { Text = "Prusa .EXE Path:", AutoSize = true }, txtPrusaPath, btnBrowsePrusaPath);
 
             // Slic3r
-            AddRow(new Label { Text = "Slic3r", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            AddRow(new Label { Text = "Slic3r", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkSlic3rEnabled = new CheckBox { Text = "Slic3r Enabled", AutoSize = true };
             AddRow(chkSlic3rEnabled, new Control());
             cmbExportFormatSlic3r = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
             AddRow(new Label { Text = "Slic3r Filetype:" }, cmbExportFormatSlic3r);
             txtSlic3rPath = new TextBox { Width = 250 };
-            Button btnBrowseSlic3rPath = new Button { Text = "Browse" };
-            btnBrowseSlic3rPath.Click += (sender, e) => {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Executable files (*.exe)|*.exe";
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+            Button btnBrowseSlic3rPath = new() { Text = "Browse" };
+            btnBrowseSlic3rPath.Click += (sender, e) =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Executable files (*.exe)|*.exe"
+                };
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
                     txtSlic3rPath.Text = openFileDialog.FileName;
                 }
             };
             AddRow(new Label { Text = "Slic3r .EXE Path:", AutoSize = true }, txtSlic3rPath, btnBrowseSlic3rPath);
 
             // Orca
-            AddRow(new Label { Text = "Orca Slicer", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            AddRow(new Label { Text = "Orca Slicer", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkOrcaEnabled = new CheckBox { Text = "Orca Slicer Enabled", AutoSize = true };
             AddRow(chkOrcaEnabled, new Control());
             cmbExportFormatOrca = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
             AddRow(new Label { Text = "Orca Slicer Filetype:", AutoSize = true }, cmbExportFormatOrca);
             txtOrcaPath = new TextBox { Width = 250 };
-            Button btnBrowseOrcaPath = new Button { Text = "Browse" };
-            btnBrowseOrcaPath.Click += (sender, e) => {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-                openFileDialog.Filter = "Executable files (*.exe)|*.exe";
-                if (openFileDialog.ShowDialog() == DialogResult.OK) {
+            Button btnBrowseOrcaPath = new() { Text = "Browse" };
+            btnBrowseOrcaPath.Click += (sender, e) =>
+            {
+                OpenFileDialog openFileDialog = new()
+                {
+                    Filter = "Executable files (*.exe)|*.exe"
+                };
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
                     txtOrcaPath.Text = openFileDialog.FileName;
                 }
             };
             AddRow(new Label { Text = "Orca Slicer .EXE Path:", AutoSize = true }, txtOrcaPath, btnBrowseOrcaPath);
 
             // Add-in settings
-            AddRow(new Label { Text = "Add-In Settings", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Control());
+            AddRow(new Label { Text = "Add-In Settings", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             cmbQuickSaveFileType = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
             AddRow(new Label { Text = "QuickSave Filetype", AutoSize = true }, cmbQuickSaveFileType);
             txtExportPath = new TextBox { Width = 250 };
-            Button btnBrowseExportPath = new Button { Text = "Browse" };
-            btnBrowseExportPath.Click += (sender, e) => {
-                FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-                if (folderBrowserDialog.ShowDialog() == DialogResult.OK) {
+            Button btnBrowseExportPath = new() { Text = "Browse" };
+            btnBrowseExportPath.Click += (sender, e) =>
+            {
+                FolderBrowserDialog folderBrowserDialog = new();
+                if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                {
                     txtExportPath.Text = folderBrowserDialog.SelectedPath;
                 }
             };
@@ -274,7 +299,7 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatSlic3r.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
             cmbExportFormatOrca.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
 
-            cmbQuickSaveFileType.Items.AddRange(new string[] { "AMF", "STL", "STEP", "3MF", "SLDPRT", "PLY"});
+            cmbQuickSaveFileType.Items.AddRange(new string[] { "AMF", "STL", "STEP", "3MF", "SLDPRT", "PLY" });
 
             btnSave.Click += (sender, e) =>
             {
@@ -287,25 +312,25 @@ namespace Easy3DPrint_NetFW
                 FileType quickSaveFileType = (!string.IsNullOrEmpty(this.ExportFormatQuickSave)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatQuickSave) : FileType._NONE;
 
                 SaveSettings(
-                    this.ExportPath, 
-                    this.CuraPath, 
-                    this.BambuLabPath, 
-                    this.AnkerMakePath, 
-                    this.PrusaPath, 
+                    this.ExportPath,
+                    this.CuraPath,
+                    this.BambuLabPath,
+                    this.AnkerMakePath,
+                    this.PrusaPath,
                     this.Slic3rPath,
                     this.OrcaPath,
-                    exportFormatCura, 
-                    exportFormatBambu, 
-                    exportFormatAnkerMake, 
-                    exportFormatPrusa, 
-                    exportFormatSlic3r, 
-                    exportFormatOrca, 
-                    quickSaveFileType, 
-                    chkCuraEnabled.Checked, 
-                    chkBambuEnabled.Checked, 
-                    chkAnkerMakeEnabled.Checked, 
-                    chkPrusaEnabled.Checked, 
-                    chkSlic3rEnabled.Checked, 
+                    exportFormatCura,
+                    exportFormatBambu,
+                    exportFormatAnkerMake,
+                    exportFormatPrusa,
+                    exportFormatSlic3r,
+                    exportFormatOrca,
+                    quickSaveFileType,
+                    chkCuraEnabled.Checked,
+                    chkBambuEnabled.Checked,
+                    chkAnkerMakeEnabled.Checked,
+                    chkPrusaEnabled.Checked,
+                    chkSlic3rEnabled.Checked,
                     chkOrcaEnabled.Checked,
                     chkQuietMode.Checked
                 );
@@ -313,24 +338,24 @@ namespace Easy3DPrint_NetFW
         }
 
         private void SaveSettings(
-            string exportPath, 
-            string curaPath, 
-            string bambuPath, 
-            string ankerMakePath, 
-            string prusaPath, 
+            string exportPath,
+            string curaPath,
+            string bambuPath,
+            string ankerMakePath,
+            string prusaPath,
             string slic3rPath,
             string orcaPath,
-            FileType exportFormatCura, 
-            FileType exportFormatBambu, 
-            FileType exportFormatAnkerMake, 
-            FileType exportFormatPrusa, 
+            FileType exportFormatCura,
+            FileType exportFormatBambu,
+            FileType exportFormatAnkerMake,
+            FileType exportFormatPrusa,
             FileType exportFormatSlic3r,
             FileType exportFormatOrca,
-            FileType quickSaveFileType, 
-            bool curaEnabled, 
-            bool bambuEnabled, 
-            bool ankerMakeEnabled, 
-            bool prusaEnabled, 
+            FileType quickSaveFileType,
+            bool curaEnabled,
+            bool bambuEnabled,
+            bool ankerMakeEnabled,
+            bool prusaEnabled,
             bool slic3rEnabled,
             bool orcaEnabled,
             bool quietMode
@@ -361,7 +386,7 @@ namespace Easy3DPrint_NetFW
                 QuietMode = quietMode
             };
 
-            AddinSettings addinSettings = new AddinSettings();
+            AddinSettings addinSettings = new();
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented, new StringEnumConverter());
             File.WriteAllText(addinSettings.DataPath, json);
 
