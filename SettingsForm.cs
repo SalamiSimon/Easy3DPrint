@@ -102,15 +102,25 @@ namespace Easy3DPrint_NetFW
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.StartPosition = FormStartPosition.CenterScreen;
+            this.AutoScaleMode = AutoScaleMode.Dpi;
+
+            // Make it scrollable
+            Panel mainPanel = new()
+            {
+                Dock = DockStyle.Fill,
+                AutoScroll = true
+            };
+            this.Controls.Add(mainPanel);
 
             // Create a TableLayoutPanel
             TableLayoutPanel tableLayoutPanel = new()
             {
                 ColumnCount = 3,
                 RowCount = 0,
-                Dock = DockStyle.Fill,
+                Dock = DockStyle.Top,
                 AutoSize = true,
-                AutoSizeMode = AutoSizeMode.GrowAndShrink
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Padding = new Padding(10)
             };
 
             // Add columns
@@ -286,10 +296,12 @@ namespace Easy3DPrint_NetFW
             tableLayoutPanel.SetColumnSpan(btnSave, 3);
 
             // Add the TableLayoutPanel to the form
-            this.Controls.Add(tableLayoutPanel);
+            mainPanel.Controls.Add(tableLayoutPanel);
 
             // Set the size of the form
-            this.Size = new Size(500, 850);
+            this.MinimumSize = new Size(550, 650);
+            this.Size = new Size(550, 850);
+            this.ClientSize = new Size(this.ClientSize.Width, Math.Min(tableLayoutPanel.Height + 50, 850));
 
             // Populate ComboBoxes
             cmbExportFormatCura.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
@@ -335,6 +347,16 @@ namespace Easy3DPrint_NetFW
                     chkQuietMode.Checked
                 );
             };
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            
+            if (!btnSave.Visible || btnSave.Bottom > this.ClientSize.Height)
+            {
+                this.ClientSize = new Size(this.ClientSize.Width, btnSave.Bottom + 20);
+            }
         }
 
         private void SaveSettings(

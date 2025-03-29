@@ -21,3 +21,6 @@ Release/
 *.json
 *.xml
 *.Up2Date
+*.snk
+RegisterAddin.bat
+UnregisterAddin.bat

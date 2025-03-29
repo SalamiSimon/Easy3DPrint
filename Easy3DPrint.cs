@@ -388,7 +388,7 @@ namespace Easy3DPrint_NetFW
         {
             try
             {
-                string url = "https://buymeacoffee.com/myname";
+                string url = "https://buymeacoffee.com/SalamiSimon";
                 
                 var processStartInfo = new System.Diagnostics.ProcessStartInfo
                 {
