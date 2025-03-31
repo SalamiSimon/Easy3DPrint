@@ -38,6 +38,7 @@ namespace Easy3DPrint_NetFW
         private CheckBox chkOrcaEnabled;
 
         private Button btnSave;
+        private TableLayoutPanel tableLayoutPanel;
 
         public string ExportPath => txtExportPath?.Text ?? string.Empty;
         public string CuraPath => txtCuraPath?.Text ?? string.Empty;
@@ -113,7 +114,7 @@ namespace Easy3DPrint_NetFW
             this.Controls.Add(mainPanel);
 
             // Create a TableLayoutPanel
-            TableLayoutPanel tableLayoutPanel = new()
+            tableLayoutPanel = new TableLayoutPanel
             {
                 ColumnCount = 3,
                 RowCount = 0,
@@ -289,8 +290,10 @@ namespace Easy3DPrint_NetFW
             btnSave = new Button
             {
                 Text = "Save",
-                Dock = DockStyle.Fill,
-                Margin = new Padding(20, 30, 20, 30)
+                Dock = DockStyle.None,
+                Margin = new Padding(20, 30, 20, 30),
+                Size = new Size(120, 40),
+                Anchor = AnchorStyles.Bottom | AnchorStyles.Right
             };
             tableLayoutPanel.Controls.Add(btnSave, 0, tableLayoutPanel.RowCount);
             tableLayoutPanel.SetColumnSpan(btnSave, 3);
@@ -298,10 +301,20 @@ namespace Easy3DPrint_NetFW
             // Add the TableLayoutPanel to the form
             mainPanel.Controls.Add(tableLayoutPanel);
 
-            // Set the size of the form
-            this.MinimumSize = new Size(550, 650);
-            this.Size = new Size(550, 850);
-            this.ClientSize = new Size(this.ClientSize.Width, Math.Min(tableLayoutPanel.Height + 50, 850));
+            // Set the size of the form based on DPI
+            float dpiScale = this.CreateGraphics().DpiX / 96f;
+            int formWidth = (int)(550 * dpiScale);
+            
+            // Calculate max height based on screen size
+            int screenHeight = Screen.PrimaryScreen.WorkingArea.Height;
+            int maxFormHeight = (int)(screenHeight * 0.85);
+            
+            int formHeight = (int)(850 * dpiScale);
+            
+            this.MinimumSize = new Size(formWidth, 300);
+            this.MaximumSize = new Size(formWidth, maxFormHeight);
+            this.Size = new Size(formWidth, Math.Min(formHeight, maxFormHeight));
+            this.ClientSize = new Size(this.ClientSize.Width, Math.Min(tableLayoutPanel.Height + 50, Math.Min(formHeight, maxFormHeight)));
 
             // Populate ComboBoxes
             cmbExportFormatCura.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
@@ -353,10 +366,15 @@ namespace Easy3DPrint_NetFW
         {
             base.OnLoad(e);
             
-            if (!btnSave.Visible || btnSave.Bottom > this.ClientSize.Height)
+            float dpiScale = CreateGraphics().DpiX / 96f;
+            int bottomPadding = (int)(50 * dpiScale);
+            
+            if (!btnSave.Visible || btnSave.Bottom > this.ClientSize.Height - bottomPadding)
             {
-                this.ClientSize = new Size(this.ClientSize.Width, btnSave.Bottom + 20);
+                this.ClientSize = new Size(this.ClientSize.Width, btnSave.Bottom + bottomPadding);
             }
+            btnSave.Top = Math.Max(tableLayoutPanel.Bottom + 10, this.ClientSize.Height - btnSave.Height - bottomPadding);
+            btnSave.Left = this.ClientSize.Width - btnSave.Width - (int)(20 * dpiScale);
         }
 
         private void SaveSettings(

@@ -9,7 +9,6 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Xarial.XCad.Base.Attributes;
 using Xarial.XCad.SolidWorks;
