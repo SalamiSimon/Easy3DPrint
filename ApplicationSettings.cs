@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace Easy3DPrint_NetFW
 {
@@ -21,17 +22,17 @@ namespace Easy3DPrint_NetFW
         {
             public string ExportPath { get; set; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "AutoExportSW");
             public string DataPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData), "Easy3DPrintSettings_" + ConfigVersion + ".json");
-            public FileType QuickSaveType { get; set; } = FileType._STL;
+            public List<FileType> QuickSaveTypes { get; set; } = new List<FileType> { FileType._STL };
             public bool QuietMode { get; set; } = false;
             public const string ConfigVersion = "V1.0.2"; // Oldest compatible settings config file structure
             public string CurrentVersion { get; } = "v1.0.8";
 
             public AddinSettings() { }
 
-            public AddinSettings(string path, FileType quickSaveType, bool quietMode)
+            public AddinSettings(string path, List<FileType> quickSaveTypes, bool quietMode)
             {
                 ExportPath = path;
-                QuickSaveType = quickSaveType;
+                QuickSaveTypes = quickSaveTypes;
                 QuietMode = quietMode;
             }
         }
