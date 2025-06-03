@@ -22,7 +22,7 @@ You can also directly open multiple parts by creating an assembly.
 
 - Ultimaker Cura
 - Bambu Lab Studio
-- AnkerMake Studio
+- eufymake Studio
 - PrusaSlicer
 - Slic3r
 - Orca Slicer
