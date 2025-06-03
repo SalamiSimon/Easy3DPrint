@@ -208,11 +208,11 @@ namespace Easy3DPrint_NetFW
             AddRow(new Label { Text = "Bambu Lab .EXE Path:", AutoSize = true }, txtBambuLabPath, btnBrowseBambuPath);
 
             // AnkerMake
-            AddRow(new Label { Text = "AnkerMake Studio", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
-            chkAnkerMakeEnabled = new CheckBox { Text = "AnkerMake Enabled", AutoSize = true };
+            AddRow(new Label { Text = "eufyMake Studio", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
+            chkAnkerMakeEnabled = new CheckBox { Text = "eufyMake Enabled", AutoSize = true };
             AddRow(chkAnkerMakeEnabled, new Control());
             cmbExportFormatAnkerMake = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
-            AddRow(new Label { Text = "AnkerMake Filetype:", AutoSize = true }, cmbExportFormatAnkerMake);
+            AddRow(new Label { Text = "eufyMake Filetype:", AutoSize = true }, cmbExportFormatAnkerMake);
             txtAnkerMakePath = new TextBox { Width = 250 };
             Button btnBrowseAnkerMakePath = new() { Text = "Browse" };
             btnBrowseAnkerMakePath.Click += (sender, e) =>
@@ -226,7 +226,7 @@ namespace Easy3DPrint_NetFW
                     txtAnkerMakePath.Text = openFileDialog.FileName;
                 }
             };
-            AddRow(new Label { Text = "AnkerMake .EXE Path:", AutoSize = true }, txtAnkerMakePath, btnBrowseAnkerMakePath);
+            AddRow(new Label { Text = "eufyMake .EXE Path:", AutoSize = true }, txtAnkerMakePath, btnBrowseAnkerMakePath);
 
             // Prusa
             AddRow(new Label { Text = "Prusa", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());

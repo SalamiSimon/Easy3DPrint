@@ -49,8 +49,8 @@ namespace Easy3DPrint_NetFW
             [Icon(typeof(Resources), nameof(Resources.bambu))]
             OpenInBambuLab,
 
-            [Title("Open in AnkerMake Studio")]
-            [Description("Opens the model in AnkerMake Studio")]
+            [Title("Open in eufyMake Studio")]
+            [Description("Opens the model in eufyMake Studio")]
             [Icon(typeof(Resources), nameof(Resources.ankermake))]
             OpenInAnkerMake,
 
@@ -296,7 +296,7 @@ namespace Easy3DPrint_NetFW
                     }
                     else
                     {
-                        Application.ShowMessageBox("No AnkerMake executable path entered in settings or file not saved sucessfully.");
+                        Application.ShowMessageBox("No eufyMake executable path entered in settings or file not saved sucessfully.");
                     }
                     break;
 
