@@ -377,6 +377,10 @@ namespace Easy3DPrint_NetFW
                             }
                         }
                     }
+                    else
+                    {
+                        Application.ShowMessageBox("No QuickSave file formats entered in settings.");
+                    }
                     break;
 
                 case Commands_e.Github:
@@ -510,7 +514,7 @@ namespace Easy3DPrint_NetFW
             {
                 this.Application.ShowMessageBox("No active part document found or the document is not a part.");
             }
-            return null!; // Use null! to suppress the CS8603 warning when null is required
+            return null!;
         }
     }
 }
