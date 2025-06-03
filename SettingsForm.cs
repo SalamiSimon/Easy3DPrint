@@ -1,8 +1,10 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using static Easy3DPrint_NetFW.ApplicationSettings;
 using Formatting = Newtonsoft.Json.Formatting;
@@ -19,7 +21,7 @@ namespace Easy3DPrint_NetFW
         private ComboBox cmbExportFormatPrusa;
         private ComboBox cmbExportFormatSlic3r;
         private ComboBox cmbExportFormatOrca;
-        private ComboBox cmbQuickSaveFileType;
+        private CheckedListBox clbQuickSaveFileTypes;
 
         private TextBox txtCuraPath;
         private TextBox txtBambuLabPath;
@@ -53,7 +55,19 @@ namespace Easy3DPrint_NetFW
         public string ExportFormatPrusa => cmbExportFormatPrusa?.SelectedItem?.ToString() ?? string.Empty;
         public string ExportFormatSlic3r => cmbExportFormatSlic3r?.SelectedItem?.ToString() ?? string.Empty;
         public string ExportFormatOrca => cmbExportFormatOrca?.SelectedItem?.ToString() ?? string.Empty;
-        public string ExportFormatQuickSave => cmbQuickSaveFileType?.SelectedItem?.ToString() ?? string.Empty;
+        public List<FileType> QuickSaveFileTypes
+        {
+            get
+            {
+                var list = new List<FileType>();
+                foreach (var checkedItem in clbQuickSaveFileTypes.CheckedItems)
+                {
+                    if (checkedItem is string s && Enum.TryParse<FileType>("_" + s, out var val))
+                        list.Add(val);
+                }
+                return list;
+            }
+        }
 
         public SettingsDialog(
             ApplicationSettings.AddinSettings addInSettings,
@@ -93,7 +107,16 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatOrca.SelectedItem = orcaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
             chkOrcaEnabled.Checked = orcaSettings?.Enabled ?? false;
 
-            cmbQuickSaveFileType.SelectedItem = addInSettings?.QuickSaveType.ToString().TrimStart('_') ?? string.Empty;
+            if (addInSettings?.QuickSaveTypes != null)
+            {
+                foreach (var type in addInSettings.QuickSaveTypes)
+                {
+                    string typeStr = type.ToString().TrimStart('_');
+                    int idx = clbQuickSaveFileTypes.Items.IndexOf(typeStr);
+                    if (idx >= 0)
+                        clbQuickSaveFileTypes.SetItemChecked(idx, true);
+                }
+            }
         }
 
         private void InitializeComponents()
@@ -270,8 +293,9 @@ namespace Easy3DPrint_NetFW
 
             // Add-in settings
             AddRow(new Label { Text = "Add-In Settings", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
-            cmbQuickSaveFileType = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 250 };
-            AddRow(new Label { Text = "QuickSave Filetype", AutoSize = true }, cmbQuickSaveFileType);
+            clbQuickSaveFileTypes = new CheckedListBox { CheckOnClick = true, Width = 250, Height = 80 };
+            clbQuickSaveFileTypes.Items.AddRange(new string[] { "AMF", "STL", "STEP", "3MF", "SLDPRT", "PLY" });
+            AddRow(new Label { Text = "QuickSave Filetypes", AutoSize = true }, clbQuickSaveFileTypes);
             txtExportPath = new TextBox { Width = 250 };
             Button btnBrowseExportPath = new() { Text = "Browse" };
             btnBrowseExportPath.Click += (sender, e) =>
@@ -324,8 +348,6 @@ namespace Easy3DPrint_NetFW
             cmbExportFormatSlic3r.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
             cmbExportFormatOrca.Items.AddRange(new string[] { "AMF", "STL", "3MF", "STEP" });
 
-            cmbQuickSaveFileType.Items.AddRange(new string[] { "AMF", "STL", "STEP", "3MF", "SLDPRT", "PLY" });
-
             btnSave.Click += (sender, e) =>
             {
                 FileType exportFormatCura = (!string.IsNullOrEmpty(this.ExportFormatCura)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatCura) : FileType._NONE;
@@ -334,7 +356,8 @@ namespace Easy3DPrint_NetFW
                 FileType exportFormatPrusa = (!string.IsNullOrEmpty(this.ExportFormatPrusa)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatPrusa) : FileType._NONE;
                 FileType exportFormatSlic3r = (!string.IsNullOrEmpty(this.ExportFormatSlic3r)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatSlic3r) : FileType._NONE;
                 FileType exportFormatOrca = (!string.IsNullOrEmpty(this.ExportFormatOrca)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatOrca) : FileType._NONE;
-                FileType quickSaveFileType = (!string.IsNullOrEmpty(this.ExportFormatQuickSave)) ? (FileType)Enum.Parse(typeof(FileType), "_" + this.ExportFormatQuickSave) : FileType._NONE;
+
+                var quickSaveFileTypes = QuickSaveFileTypes;
 
                 SaveSettings(
                     this.ExportPath,
@@ -350,7 +373,7 @@ namespace Easy3DPrint_NetFW
                     exportFormatPrusa,
                     exportFormatSlic3r,
                     exportFormatOrca,
-                    quickSaveFileType,
+                    quickSaveFileTypes,
                     chkCuraEnabled.Checked,
                     chkBambuEnabled.Checked,
                     chkAnkerMakeEnabled.Checked,
@@ -359,6 +382,9 @@ namespace Easy3DPrint_NetFW
                     chkOrcaEnabled.Checked,
                     chkQuietMode.Checked
                 );
+                MessageBox.Show("Settings saved.");
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             };
         }
 
@@ -391,7 +417,7 @@ namespace Easy3DPrint_NetFW
             FileType exportFormatPrusa,
             FileType exportFormatSlic3r,
             FileType exportFormatOrca,
-            FileType quickSaveFileType,
+            List<FileType> quickSaveFileTypes,
             bool curaEnabled,
             bool bambuEnabled,
             bool ankerMakeEnabled,
@@ -422,16 +448,13 @@ namespace Easy3DPrint_NetFW
                 OrcaPath = orcaPath ?? "",
                 ExportFormatOrca = exportFormatOrca,
                 OrcaEnabled = orcaEnabled,
-                ExportFormatQuickSave = quickSaveFileType,
+                ExportFormatQuickSave = quickSaveFileTypes,
                 QuietMode = quietMode
             };
 
             AddinSettings addinSettings = new();
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented, new StringEnumConverter());
             File.WriteAllText(addinSettings.DataPath, json);
-
-            MessageBox.Show("Settings saved.");
-            this.Close();
         }
     }
 }

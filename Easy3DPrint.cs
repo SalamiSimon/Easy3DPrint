@@ -4,9 +4,11 @@ using Newtonsoft.Json;
 using SolidWorks.Interop.sldworks;
 using SolidWorks.Interop.swconst;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -191,7 +193,22 @@ namespace Easy3DPrint_NetFW
                     orcaSettings.Enabled = settings?.OrcaEnabled ?? false;
 
                     if (settings?.ExportFormatQuickSave != null)
-                        addInSettings.QuickSaveType = settings.ExportFormatQuickSave;
+                    {
+                        if (settings.ExportFormatQuickSave is Newtonsoft.Json.Linq.JArray arr)
+                        {
+                            addInSettings.QuickSaveTypes = arr
+                                .Select(x => Enum.TryParse<FileType>(x.ToString(), out var val) ? val : FileType._NONE)
+                                .Where(x => x != FileType._NONE)
+                                .ToList();
+                        }
+                        else
+                        {
+                            // Single value fallback
+                            var valStr = settings.ExportFormatQuickSave.ToString();
+                            if (Enum.TryParse<FileType>(valStr, out FileType val) && val != FileType._NONE)
+                                addInSettings.QuickSaveTypes = new List<FileType> { val };
+                        }
+                    }
 
                     return true; // Settings loaded successfully
                 }
@@ -350,9 +367,19 @@ namespace Easy3DPrint_NetFW
                     break;
 
                 case Commands_e.QuickSave:
-                    if (addInSettings.QuickSaveType != FileType._NONE)
+                    if (addInSettings.QuickSaveTypes != null && addInSettings.QuickSaveTypes.Count > 0)
                     {
-                        SaveCurrentPart(addInSettings.ExportPath, addInSettings.QuickSaveType);
+                        foreach (var format in addInSettings.QuickSaveTypes)
+                        {
+                            if (format != FileType._NONE)
+                            {
+                                SaveCurrentPart(addInSettings.ExportPath, format);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Application.ShowMessageBox("No QuickSave file formats entered in settings.");
                     }
                     break;
 
@@ -487,7 +514,7 @@ namespace Easy3DPrint_NetFW
             {
                 this.Application.ShowMessageBox("No active part document found or the document is not a part.");
             }
-            return null!; // Use null! to suppress the CS8603 warning when null is required
+            return null!;
         }
     }
 }
