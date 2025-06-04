@@ -479,12 +479,17 @@ namespace Easy3DPrint_NetFW
                     string configName = swModel.ConfigurationManager?.ActiveConfiguration?.Name ?? "Default";
                     string fileName;
 
+                    string ext = format.ToString().ToLower().TrimStart('_');
                     if (configName == "Default")
-                        fileName = System.IO.Path.ChangeExtension(swModel.GetTitle(), format.ToString().ToLower().TrimStart('_'));
+                    {
+                        string baseName = System.IO.Path.GetFileNameWithoutExtension(swModel.GetTitle());
+                        fileName = $"{baseName}.{ext}";
+                    }
                     else
                     {
-                        string configFileName = System.IO.Path.GetFileNameWithoutExtension(swModel.GetTitle()) + "_" + configName;
-                        fileName = System.IO.Path.ChangeExtension(configFileName, format.ToString().ToLower().TrimStart('_'));
+                        string baseName = System.IO.Path.GetFileNameWithoutExtension(swModel.GetTitle());
+                        string configFileName = $"{baseName}_{configName}";
+                        fileName = $"{configFileName}.{ext}";
                     }
 
                     string fullPath = System.IO.Path.Combine(savePath, fileName);

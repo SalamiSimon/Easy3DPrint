@@ -25,7 +25,7 @@ namespace Easy3DPrint_NetFW
             public List<FileType> QuickSaveTypes { get; set; } = new List<FileType> { FileType._STL };
             public bool QuietMode { get; set; } = false;
             public const string ConfigVersion = "V1.0.2"; // Oldest compatible settings config file structure
-            public string CurrentVersion { get; } = "v1.1.2";
+            public string CurrentVersion { get; } = "v1.1.3";
 
             public AddinSettings() { }
 
