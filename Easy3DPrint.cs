@@ -171,6 +171,7 @@ namespace Easy3DPrint_NetFW
                     curaSettings.Path = settings?.CuraPath ?? string.Empty;
                     curaSettings.FileType = settings?.ExportFormatCura ?? FileType._NONE;
                     curaSettings.Enabled = settings?.CuraEnabled ?? false;
+                    curaSettings.ForceSingleInstance = settings?.CuraForceSingleInstance ?? false;
 
                     bambuSettings.Path = settings?.BambuPath ?? string.Empty;
                     bambuSettings.FileType = settings?.ExportFormatBambu ?? FileType._NONE;
@@ -179,6 +180,7 @@ namespace Easy3DPrint_NetFW
                     ankerMakeSettings.Path = settings?.AnkerMakePath ?? string.Empty;
                     ankerMakeSettings.FileType = settings?.ExportFormatAnkerMake ?? FileType._NONE;
                     ankerMakeSettings.Enabled = settings?.AnkerMakeEnabled ?? false;
+                    ankerMakeSettings.ForceSingleInstance = settings?.AnkerMakeForceSingleInstance ?? false;
 
                     slic3rSettings.Path = settings?.Slic3rPath ?? string.Empty;
                     slic3rSettings.FileType = settings?.ExportFormatSlic3r ?? FileType._NONE;
@@ -187,6 +189,7 @@ namespace Easy3DPrint_NetFW
                     prusaSettings.Path = settings?.PrusaPath ?? string.Empty;
                     prusaSettings.FileType = settings?.ExportFormatPrusa ?? FileType._NONE;
                     prusaSettings.Enabled = settings?.PrusaEnabled ?? false;
+                    prusaSettings.ForceSingleInstance = settings?.PrusaForceSingleInstance ?? false;
 
                     orcaSettings.Path = settings?.OrcaPath ?? string.Empty;
                     orcaSettings.FileType = settings?.ExportFormatOrca ?? FileType._NONE;
@@ -248,7 +251,10 @@ namespace Easy3DPrint_NetFW
 
                     if (!string.IsNullOrEmpty(FilePathCura) && !string.IsNullOrEmpty(curaSettings.Path))
                     {
-                        System.Diagnostics.Process.Start(curaSettings.Path, $"\"{FilePathCura}\"");
+                        string arguments = $"\"{FilePathCura}\"";
+                        if (curaSettings.ForceSingleInstance)
+                            arguments = $"--single-instance {arguments}";
+                        System.Diagnostics.Process.Start(curaSettings.Path, arguments);
                     }
                     else
                     {
@@ -292,7 +298,10 @@ namespace Easy3DPrint_NetFW
 
                     if (!string.IsNullOrEmpty(FilePathAnker) && !string.IsNullOrEmpty(ankerMakeSettings.Path))
                     {
-                        System.Diagnostics.Process.Start(ankerMakeSettings.Path, $"\"{FilePathAnker}\"");
+                        string arguments = $"\"{FilePathAnker}\"";
+                        if (ankerMakeSettings.ForceSingleInstance)
+                            arguments = $"--single-instance {arguments}";
+                        System.Diagnostics.Process.Start(ankerMakeSettings.Path, arguments);
                     }
                     else
                     {
@@ -314,7 +323,10 @@ namespace Easy3DPrint_NetFW
 
                     if (!string.IsNullOrEmpty(FilePathPrusa) && !string.IsNullOrEmpty(prusaSettings.Path))
                     {
-                        System.Diagnostics.Process.Start(prusaSettings.Path, $"\"{FilePathPrusa}\"");
+                        string arguments = $"\"{FilePathPrusa}\"";
+                        if (prusaSettings.ForceSingleInstance)
+                            arguments = $"--single-instance {arguments}";
+                        System.Diagnostics.Process.Start(prusaSettings.Path, arguments);
                     }
                     else
                     {

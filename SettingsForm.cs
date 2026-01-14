@@ -38,6 +38,10 @@ namespace Easy3DPrint_NetFW
         private CheckBox chkAnkerMakeEnabled;
         private CheckBox chkBambuEnabled;
         private CheckBox chkOrcaEnabled;
+        
+        private CheckBox chkCuraForceSingleInstance;
+        private CheckBox chkAnkerMakeForceSingleInstance;
+        private CheckBox chkPrusaForceSingleInstance;
 
         private Button btnSave;
         private TableLayoutPanel tableLayoutPanel;
@@ -86,6 +90,8 @@ namespace Easy3DPrint_NetFW
             txtCuraPath.Text = curaSettings?.Path ?? string.Empty;
             cmbExportFormatCura.SelectedItem = curaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
             chkCuraEnabled.Checked = curaSettings?.Enabled ?? false;
+            if (chkCuraForceSingleInstance != null)
+                chkCuraForceSingleInstance.Checked = curaSettings?.ForceSingleInstance ?? false;
 
             txtBambuLabPath.Text = bambuSettings?.Path ?? string.Empty;
             cmbExportFormatBambuLab.SelectedItem = bambuSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
@@ -94,10 +100,14 @@ namespace Easy3DPrint_NetFW
             txtAnkerMakePath.Text = ankerMakeSettings?.Path ?? string.Empty;
             cmbExportFormatAnkerMake.SelectedItem = ankerMakeSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
             chkAnkerMakeEnabled.Checked = ankerMakeSettings?.Enabled ?? false;
+            if (chkAnkerMakeForceSingleInstance != null)
+                chkAnkerMakeForceSingleInstance.Checked = ankerMakeSettings?.ForceSingleInstance ?? false;
 
             txtPrusaPath.Text = prusaSettings?.Path ?? string.Empty;
             cmbExportFormatPrusa.SelectedItem = prusaSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
             chkPrusaEnabled.Checked = prusaSettings?.Enabled ?? false;
+            if (chkPrusaForceSingleInstance != null)
+                chkPrusaForceSingleInstance.Checked = prusaSettings?.ForceSingleInstance ?? false;
 
             txtSlic3rPath.Text = slic3rSettings?.Path ?? string.Empty;
             cmbExportFormatSlic3r.SelectedItem = slic3rSettings?.FileType.ToString().TrimStart('_') ?? string.Empty;
@@ -165,6 +175,15 @@ namespace Easy3DPrint_NetFW
                 }
             }
 
+            void AddDivider()
+            {
+                tableLayoutPanel.RowCount++;
+                tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 30));
+                Panel spacer = new Panel { Height = 50, Dock = DockStyle.Fill };
+                tableLayoutPanel.Controls.Add(spacer, 0, tableLayoutPanel.RowCount - 1);
+                tableLayoutPanel.SetColumnSpan(spacer, 3);
+            }
+
             // Ultimaker Cura
             AddRow(new Label { Text = "UltiMaker Cura", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkCuraEnabled = new CheckBox { Text = "UltiMaker Cura Enabled", AutoSize = true };
@@ -185,8 +204,26 @@ namespace Easy3DPrint_NetFW
                 }
             };
             AddRow(new Label { Text = "UltiMaker Cura .EXE Path:", AutoSize = true }, txtCuraPath, btnBrowseCuraPath);
+            chkCuraForceSingleInstance = new CheckBox { Text = "Force single instance", AutoSize = true };
+            chkCuraForceSingleInstance.CheckedChanged += (sender, e) =>
+            {
+                if (chkCuraForceSingleInstance.Checked)
+                {
+                    MessageBox.Show(
+                        "Single instance mode works, but replaces the original part instead of adding it.\n\n" +
+                        "To add files to an existing instance of Cura:\n" +
+                        "1. Open Cura\n" +
+                        "2. Go to: Preferences -> Configure Cura\n" +
+                        "3. Check 'Use a single instance of Cura'",
+                        "Cura Single Instance",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            };
+            AddRow(chkCuraForceSingleInstance, new Control());
 
             // Bambu Lab
+            AddDivider();
             AddRow(new Label { Text = "Bambu Lab", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkBambuEnabled = new CheckBox { Text = "Bambu Lab Enabled", AutoSize = true };
             AddRow(chkBambuEnabled, new Control());
@@ -208,6 +245,7 @@ namespace Easy3DPrint_NetFW
             AddRow(new Label { Text = "Bambu Lab .EXE Path:", AutoSize = true }, txtBambuLabPath, btnBrowseBambuPath);
 
             // AnkerMake
+            AddDivider();
             AddRow(new Label { Text = "eufyMake Studio", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkAnkerMakeEnabled = new CheckBox { Text = "eufyMake Enabled", AutoSize = true };
             AddRow(chkAnkerMakeEnabled, new Control());
@@ -227,8 +265,22 @@ namespace Easy3DPrint_NetFW
                 }
             };
             AddRow(new Label { Text = "eufyMake .EXE Path:", AutoSize = true }, txtAnkerMakePath, btnBrowseAnkerMakePath);
+            chkAnkerMakeForceSingleInstance = new CheckBox { Text = "Force single instance", AutoSize = true };
+            chkAnkerMakeForceSingleInstance.Click += (sender, e) =>
+            {
+                MessageBox.Show(
+                    "Single instance support is only available for eufyMake Studio version 1.5.25 or lower.\n\n" +
+                    "Versions above 1.5.25 do not support this feature.\n\n" +
+                    "A lower version can be downloaded from eufyMake's GitHub repository.",
+                    "eufyMake Single Instance",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                chkAnkerMakeForceSingleInstance.Checked = false;
+            };
+            AddRow(chkAnkerMakeForceSingleInstance, new Control());
 
             // Prusa
+            AddDivider();
             AddRow(new Label { Text = "Prusa", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkPrusaEnabled = new CheckBox { Text = "Prusa Enabled", AutoSize = true };
             AddRow(chkPrusaEnabled, new Control());
@@ -248,8 +300,11 @@ namespace Easy3DPrint_NetFW
                 }
             };
             AddRow(new Label { Text = "Prusa .EXE Path:", AutoSize = true }, txtPrusaPath, btnBrowsePrusaPath);
+            chkPrusaForceSingleInstance = new CheckBox { Text = "Force single instance", AutoSize = true };
+            AddRow(chkPrusaForceSingleInstance, new Control());
 
             // Slic3r
+            AddDivider();
             AddRow(new Label { Text = "Slic3r", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkSlic3rEnabled = new CheckBox { Text = "Slic3r Enabled", AutoSize = true };
             AddRow(chkSlic3rEnabled, new Control());
@@ -271,6 +326,7 @@ namespace Easy3DPrint_NetFW
             AddRow(new Label { Text = "Slic3r .EXE Path:", AutoSize = true }, txtSlic3rPath, btnBrowseSlic3rPath);
 
             // Orca
+            AddDivider();
             AddRow(new Label { Text = "Orca Slicer", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             chkOrcaEnabled = new CheckBox { Text = "Orca Slicer Enabled", AutoSize = true };
             AddRow(chkOrcaEnabled, new Control());
@@ -292,6 +348,7 @@ namespace Easy3DPrint_NetFW
             AddRow(new Label { Text = "Orca Slicer .EXE Path:", AutoSize = true }, txtOrcaPath, btnBrowseOrcaPath);
 
             // Add-in settings
+            AddDivider();
             AddRow(new Label { Text = "Add-In Settings", Font = new Font(Font, FontStyle.Bold), AutoSize = true }, new Label());
             clbQuickSaveFileTypes = new CheckedListBox { CheckOnClick = true, Width = 250, Height = 80 };
             clbQuickSaveFileTypes.Items.AddRange(new string[] { "AMF", "STL", "STEP", "3MF", "SLDPRT", "PLY" });
@@ -380,7 +437,10 @@ namespace Easy3DPrint_NetFW
                     chkPrusaEnabled.Checked,
                     chkSlic3rEnabled.Checked,
                     chkOrcaEnabled.Checked,
-                    chkQuietMode.Checked
+                    chkQuietMode.Checked,
+                    chkCuraForceSingleInstance.Checked,
+                    chkAnkerMakeForceSingleInstance.Checked,
+                    chkPrusaForceSingleInstance.Checked
                 );
                 MessageBox.Show("Settings saved.");
                 this.DialogResult = DialogResult.OK;
@@ -424,7 +484,10 @@ namespace Easy3DPrint_NetFW
             bool prusaEnabled,
             bool slic3rEnabled,
             bool orcaEnabled,
-            bool quietMode
+            bool quietMode,
+            bool curaForceSingleInstance,
+            bool ankerMakeForceSingleInstance,
+            bool prusaForceSingleInstance
         )
         {
             var settings = new
@@ -433,15 +496,18 @@ namespace Easy3DPrint_NetFW
                 CuraPath = curaPath ?? "",
                 ExportFormatCura = exportFormatCura,
                 CuraEnabled = curaEnabled,
+                CuraForceSingleInstance = curaForceSingleInstance,
                 ExportFormatBambu = exportFormatBambu,
                 BambuPath = bambuPath ?? "",
                 BambuEnabled = bambuEnabled,
                 AnkerMakePath = ankerMakePath ?? "",
                 ExportFormatAnkerMake = exportFormatAnkerMake,
                 AnkerMakeEnabled = ankerMakeEnabled,
+                AnkerMakeForceSingleInstance = ankerMakeForceSingleInstance,
                 PrusaPath = prusaPath ?? "",
                 ExportFormatPrusa = exportFormatPrusa,
                 PrusaEnabled = prusaEnabled,
+                PrusaForceSingleInstance = prusaForceSingleInstance,
                 Slic3rPath = slic3rPath ?? "",
                 ExportFormatSlic3r = exportFormatSlic3r,
                 Slic3rEnabled = slic3rEnabled,
